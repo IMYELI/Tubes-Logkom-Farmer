@@ -1,16 +1,16 @@
 
-:- dynamic(isGameStart/1).
+% Dynamic Variable:
+% playerStats(ID, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold)
 
+:- dynamic(isGameStart/1).
+:- dynamic(playerLocation/2).
+:- dynamic(playerStats/10).
+
+:- include('exp.pl').
 
 startGame:-
-    \+ isGameStart(_),
-    asserta(isGameStart(true)),
     title,
     menu.
-
-startGame:-
-    isGameStart(_),
-    write('The game has already been started, use "help." to see available commands.').
 
 title:-
     write('$$\\   $$\\                                                     $$\\           $$$$$$$\\                                '), nl,
@@ -24,7 +24,7 @@ title:-
         write('"A Farmer''s Life is Not That Bad, I Think"'), nl, nl,
         write('------------ MENU ------------'), nl,
         write('1. start'), nl,
-        write('2. map'), nl,
+        write('2. status'), nl,
         write('------------ MENU ------------'), nl,
         write('[Dont''t forget to end your commands with a dot! Example: "start."]'), nl, nl.
 
@@ -34,30 +34,60 @@ menu :-
     catch(read(Input), error(_,_), errorMessage), (
         Input = 'start' -> call(start);
         Input = 'map' -> call(map);
+        Input = 'status' -> call(status);
         Input = _ -> write('Unknown input, please try again!'), nl, nl
     ),
     fail.
 
-map :-
-    write('oho').
+
+% playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold)
+
+status :-
+    nl,
+    playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
+    job(ID, JobName),
+    write('[PLAYER STATUS]'), nl,
+    (
+    ID = 1 ->   write('Job: '), write(JobName), nl,
+                write('Gold: '), write(Gold), write(/), write(2000), nl, nl,
+                write('[LEVEL]'), nl,
+                write('Player Level: '), write('LvlPlayer'), nl,
+                write('[TOTAL EXP]: '), write('ExpTotal'), write('/'), write('300'), nl, nl,
+                write('Fishing level: '), write('LvlFish'), nl,
+                write('[EXP]: '), write('ExpFish'), nl, nl,
+                write('Farming Level: '), write('LvlFarm'), nl,
+                write('[EXP]: '), write('ExpFarm'), nl, nl,
+                write('Ranching level: '), write('LvlRanch'), nl,
+                write('[EXP]: '), write('ExpRanch'), nl, nl, !;
+    ).
 
 start :-
+    \+ isGameStart(true),
+    asserta(isGameStart(true)),
+    initJob,
     nl, 
-    write('Choose your profession: '), nl,
+    write('Choose your Job: '), nl,
     write('1. Fisherman'), nl,
     write('2. Farmer'), nl,
     write('3. Rancher'), nl, nl,
-    write('Profession >> '),
-    catch(read(Profession), error(_,_), errorMessage), (
-            Profession = 1 ->
-            write('You choose Fisherman, let''s start paying your debts!'), nl;
-            Profession = 2 ->
-            write('You choose Farmer, let''s start paying your debts!'), nl;
-            Profession = 3 ->
-            write('You choose Rancer, let''s start paying your debts!'), nl;
-            Profession = _ -> 
-            write('Whoops, no profession have been chosen. You should choose one!'), nl
-        ), nl.
+    write('Job >> '),
+    catch(read(Job), error(_,_), errorMessage), (
+            Job = 1 ->
+                asserta(playerStats(1, 1, 1, 56, 1, 76, 1, 56, 0, 0)),
+                write('You choose Fisherman!'), nl;
+            Job = 2 ->
+                asserta(playerStats(2, 1, 1, 76, 1, 56, 1, 56, 0, 0)),
+                write('You choose Farmer!'), nl;
+            Job = 3 ->
+                asserta(playerStats(3, 1, 1, 56, 1, 56, 1, 76, 0, 0)),
+                write('You choose Rancer!'), nl;
+            Job = _ -> 
+                write('Whoops, no Job have been chosen. You should choose one!'), nl
+        ), nl, !.
+
+start :-
+    isGameStart(true),
+    write('The game has already been started, use "help." to see available commands.'), nl, nl.
 
 errorMessage:-
     write('[ERROR] Something''s wrong with your input, exiting the program..'), halt.
