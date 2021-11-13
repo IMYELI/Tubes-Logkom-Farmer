@@ -25,11 +25,12 @@ title:-
         write('------------ MENU ------------'), nl,
         write('1. start'), nl,
         write('2. map'), nl,
-        write('------------ MENU ------------'), nl, nl, !.
+        write('------------ MENU ------------'), nl,
+        write('[Dont''t forget to end your commands with a dot! Example: "start."]'), nl, nl.
 
 menu :-
     repeat,
-    write('> '),
+    write('Input >> '),
     catch(read(Input), error(_,_), errorMessage), (
         Input = 'start' -> call(start);
         Input = 'map' -> call(map);
@@ -42,11 +43,11 @@ map :-
 
 start :-
     nl, 
-    write('Choose your job'), nl,
+    write('Choose your profession: '), nl,
     write('1. Fisherman'), nl,
     write('2. Farmer'), nl,
     write('3. Rancher'), nl, nl,
-    write('Choose your profession: '),
+    write('Profession >> '),
     catch(read(Profession), error(_,_), errorMessage), (
             Profession = 1 ->
             write('You choose Fisherman, let''s start paying your debts!'), nl;
