@@ -45,21 +45,22 @@ menu :-
 status :-
     nl,
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
-    job(ID, JobName),
     write('[PLAYER STATUS]'), nl,
-    (
-    ID = 1 ->   write('Job: '), write(JobName), nl,
-                write('Gold: '), write(Gold), write(/), write(2000), nl, nl,
-                write('[LEVEL]'), nl,
-                write('Player Level: '), write('LvlPlayer'), nl,
-                write('[TOTAL EXP]: '), write('ExpTotal'), write('/'), write('300'), nl, nl,
-                write('Fishing level: '), write('LvlFish'), nl,
-                write('[EXP]: '), write('ExpFish'), nl, nl,
-                write('Farming Level: '), write('LvlFarm'), nl,
-                write('[EXP]: '), write('ExpFarm'), nl, nl,
-                write('Ranching level: '), write('LvlRanch'), nl,
-                write('[EXP]: '), write('ExpRanch'), nl, nl, !;
-    ).
+    write('Job: '), (
+        ID = 1 -> write('Fisherman');
+        ID = 2 -> write('Farmer');
+        ID = 3 -> write('Rancher')), 
+    nl,
+    write('Gold: '), write(Gold), write(/), write(2000), nl, nl,
+    write('[LEVEL]'), nl,
+    write('Player Level: '), write(LvlPlayer), nl,
+    write('[TOTAL EXP]: '), write(ExpTotal), write('/'), write('300'), nl, nl,
+    write('Fishing Level: '), write(LvlFish), nl,
+    write('[EXP]: '), write(ExpFish), nl, nl,
+    write('Farming Level: '), write(LvlFarm), nl,
+    write('[EXP]: '), write(ExpFarm), nl, nl,
+    write('Ranching Level: '), write(LvlRanch), nl,
+    write('[EXP]: '), write(ExpRanch), nl, nl, !.
 
 start :-
     \+ isGameStart(true),
