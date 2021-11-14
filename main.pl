@@ -41,8 +41,8 @@ menu :-
 
 
 % playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold)
-
 status :-
+    isGameStart(true),
     nl,
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     write('[PLAYER STATUS]'), nl,
@@ -60,11 +60,16 @@ status :-
     write('Farming Level: '), write(LvlFarm), nl,
     write('[EXP]: '), write(ExpFarm), nl, nl,
     write('Ranching Level: '), write(LvlRanch), nl,
-    write('[EXP]: '), write(ExpRanch), nl, nl, !.
+    write('[EXP]: '), write(ExpRanch), nl, nl, !;
+
+    \+ isGameStart(true),
+    write('The game hasn''t started yet, use "start." to start the game.').
 
 start :-
+    isGameStart(true),
+    write('The game has already been started, use "help." to see available commands.'), nl, nl, !;
+
     \+ isGameStart(true),
-    asserta(isGameStart(true)),
     initJob,
     nl, 
     write('Choose your Job: '), nl,
@@ -82,13 +87,12 @@ start :-
             Job = 3 ->
                 asserta(playerStats(3, 1, 1, 56, 1, 56, 1, 76, 0, 0)),
                 write('You choose Rancer!'), nl;
-            Job = _ -> 
-                write('Whoops, no Job have been chosen. You should choose one!'), nl
-        ), nl, !.
+            Job = _ -> write('Whoops, no Job have been chosen. You should choose one!')
+        ), isJobValid(Job), nl, asserta(isGameStart(true)), !;
+    start.
 
-start :-
-    isGameStart(true),
-    write('The game has already been started, use "help." to see available commands.'), nl, nl.
+isJobValid(X) :-
+    X < 4.
 
 errorMessage:-
     write('[ERROR] Something''s wrong with your input, exiting the program..'), halt.
