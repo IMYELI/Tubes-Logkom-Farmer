@@ -23,16 +23,22 @@ inventoryTotal([HeadID|TailID], TotalAmount) :-
   inventoryTotal(TailID, NewAmount),
   TotalAmount is Amount + NewAmount.
 
-isInventoryFull(Amount) :-
+isInventoryFull :-
+  findall(ID, inventory(ID, _, _, _), IDs),
+  inventoryCapacity(Capacity),
+  inventoryTotal(IDs, TotalAmount),
+  TotalAmount =:= Capacity.
+
+isInventoryPartiallyFull(Amount) :-
   findall(ID, inventory(ID, _, _, _), IDs),
   inventoryCapacity(Capacity),
   inventoryTotal(IDs, TotalAmount),
   Amount + TotalAmount >= Capacity.
 
 add(ID, ID_Amount) :-
-  isInventoryFull(ID_Amount),
+  isInventoryFull,
   write('Inventory is Full!'), nl, !;
-  
+
   inventory(ID, Category, Name, Amount),
   NewAmount is Amount + ID_Amount,
   retract(inventory(ID, _, _, _)),
@@ -58,8 +64,9 @@ inventory :-
   findall(ID, inventory(ID, _, _, _), IDs),
   inventoryTotal(IDs, TotalAmount),
   inventoryCapacity(Capacity),
-  write('Inventory Capacity: '), write(TotalAmount), write(' / '), 
-  write(Capacity), nl,
+  nl,
+  write('Your inventory ('), write(TotalAmount), write(' / '), 
+  write(Capacity), write(')'), nl,
   displayInventory(IDs).
 
   

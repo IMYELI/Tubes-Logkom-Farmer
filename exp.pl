@@ -1,7 +1,8 @@
 
-:- dynamic(job/2).
+job(1, 'Fisherman').
+job(2, 'Farmer').
+job(3, 'Rancher').
 
-initJob :-
-  asserta(job(1, fisherman)),
-  asserta(job(2, farmer)),
-  asserta(job(3, rancher)).
+levelCap(1, 300).
+levelCap(2, 500).
+levelCap(3, 1000).
