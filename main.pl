@@ -7,8 +7,9 @@
 :- dynamic(playerStats/10).
 
 :- include('exp.pl').
+:- include('inventory.pl').
 
-startGame:-
+startFile:-
     title,
     mainMenu.
 
@@ -67,7 +68,7 @@ status :-
     job(ID, Name),
     levelCap(LvlPlayer, Cap),
     write('========== PLAYER STATUS =========='), nl,
-    write('Job: '), write(Name),
+    write('Job: '), write(Name), nl,
     write('Gold: '), write(Gold), write(/), write(2000), nl, nl,
     write('======== LEVEL ======='), nl,
     write('Player Level: '), write(LvlPlayer), nl,
@@ -77,16 +78,12 @@ status :-
     write('Farming Level: '), write(LvlFarm), nl,
     write('[EXP]: '), write(ExpFarm), nl, nl,
     write('Ranching Level: '), write(LvlRanch), nl,
-    write('[EXP]: '), write(ExpRanch), nl, nl, !;
-
-    \+ isGameStart(true),
-    write('The game hasn''t started yet, use "start." to start the game.').
+    write('[EXP]: '), write(ExpRanch), nl, nl, !.
 
 start :-
     isGameStart(true),
     write('The game has already been started, use "help." to see available commands.'), nl, nl, !;
 
-    \+ isGameStart(true),
     nl, 
     write('======= Choose your Job (Example: ">>> 1.") ======='), nl,
     write('1. Fisherman'), nl,
