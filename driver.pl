@@ -1,4 +1,3 @@
-
 startGame :-
     ['main.pl'],
     title, 

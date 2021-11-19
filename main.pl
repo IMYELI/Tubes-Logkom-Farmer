@@ -26,7 +26,8 @@ title:-
         write('==============================='), nl,
         write('       START GAME (start.)     '), nl,
         write('==============================='), nl,
-        write('[Dont''t forget to end your commands with a dot! Example: "start."]'), nl, nl.
+        write('Dont''t forget to end your commands with a dot! '), nl, 
+        write('Example: ">>> start."'), nl, nl.
 
 gameMenu :-
     repeat,
@@ -34,10 +35,11 @@ gameMenu :-
     catch(read(Input), error(_,_), errorMessage), (
         Input = 'help' -> call(help);
         Input = 'status' -> call(status);
-        Input = _ -> write('Unknown input, please try again!'), nl, nl
-    ),
-    fail.
+        Input = _ -> write('Unknown input, try again!'), nl, nl
+    ).
+
 welcome :-
+    nl,
     write('Welcome To Harvest Rune!'), nl,
     write('You have 2000 gold debts from being tricked,'), nl,
     write('now you go back to your hometown as a farmer to pay your debts.'), nl,
@@ -51,18 +53,17 @@ help :-
     write('=========== HELP ==========='), nl,
     write('(help.) Menampilkan segala bantuan dan command'), nl,
     write('(status.) Menampilkan kondisi pemain'), nl, nl.
+
 mainMenu :-
-    repeat,
     write('>>> '),
     catch(read(Input), error(_,_), errorMessage), (
-        Input = 'start' -> call(start), welcome, gameMenu, !
-    ),
-    fail. 
+        Input = 'start' -> call(start), welcome, gameMenu, !;
+        Input = _ -> write('Unknown input, try again!'), nl, nl, mainMenu, !
+    ).
 
 
 % playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold)
 status :-
-    isGameStart(true),
     nl,
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     job(ID, Name),
@@ -72,7 +73,7 @@ status :-
     write('Gold: '), write(Gold), write(/), write(2000), nl, nl,
     write('======== LEVEL ======='), nl,
     write('Player Level: '), write(LvlPlayer), nl,
-    write('[TOTAL EXP]: '), write(ExpTotal), write('/'), write(Cap), nl, nl,
+    write('[PLAYER EXP]: '), write(ExpTotal), write('/'), write(Cap), nl, nl,
     write('Fishing Level: '), write(LvlFish), nl,
     write('[EXP]: '), write(ExpFish), nl, nl,
     write('Farming Level: '), write(LvlFarm), nl,
@@ -81,28 +82,25 @@ status :-
     write('[EXP]: '), write(ExpRanch), nl, nl, !.
 
 start :-
-    isGameStart(true),
-    write('The game has already been started, use "help." to see available commands.'), nl, nl, !;
-
     nl, 
-    write('======= Choose your Job (Example: ">>> 1.") ======='), nl,
-    write('1. Fisherman'), nl,
-    write('2. Farmer'), nl,
-    write('3. Rancher'), nl, nl,
+    write('======= Choose your Job ======='), nl,
+    write('- fisherman'), nl,
+    write('- farmer'), nl,
+    write('- rancher'), nl,
+    write('Example: ">>> fisherman."'), nl, nl,
     write('>>> '),
     catch(read(Job), error(_,_), errorMessage), (
-            Job = 1 ->
+            Job = 'fisherman' ->
                 asserta(playerStats(1, 1, 1, 56, 1, 76, 1, 56, 0, 0)),
-                write('You choose Fisherman!'), nl;
-            Job = 2 ->
+                write('Your job is now a Fisherman.'), nl;
+            Job = 'farmer' ->
                 asserta(playerStats(2, 1, 1, 76, 1, 56, 1, 56, 0, 0)),
-                write('You choose Farmer!'), nl;
-            Job = 3 ->
+                write('Your job is now a Farmer.'), nl;
+            Job = 'rancher' ->
                 asserta(playerStats(3, 1, 1, 56, 1, 56, 1, 76, 0, 0)),
-                write('You choose Rancher!'), nl;
-            Job = _ -> write('Whoops, no Job have been chosen. You should choose one!'), nl
-        ), integer(Job), isJobValid(Job), nl, asserta(isGameStart(true)), !;
-    start.
+                write('Your job is now a Rancher.'), nl;
+            Job = _ -> write('Unknown input, try again!'), nl, !, start
+    ).
 
 isJobValid(X) :-
     X > 0,

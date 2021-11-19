@@ -14,8 +14,6 @@ item(3, 1, 'Strawberry').
 % 2 -> tools
 % 3 -> misc
 
-
-
 /* inventory(ID, Category, Name, Amount) */
 inventoryTotal([], 0).
 inventoryTotal([HeadID|TailID], TotalAmount) :-
