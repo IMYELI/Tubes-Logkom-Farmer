@@ -1,6 +1,6 @@
 :- dynamic(date/4).
 :- dynamic(isWrite/1).
-:- dynamic(diary/4).
+:- dynamic(diary/5).
 :- dynamic(diaryID/5).
 
 /* diary(ID, Content, Day, Month, Year) */
@@ -31,7 +31,7 @@ houseMenu :-
             Input = 'sleep' -> call(sleep);
             Input = 'writeDiary' -> call(writeDiary);
             Input = 'readDiary' -> call(readDiary);
-            Input = 'exit' -> 'exit' -> call(exit);
+            Input = 'exit' -> call(exit);
 
             write('Unknown input, try again!'), nl, houseMenu
     ).
@@ -99,7 +99,6 @@ sleep :-
     date(Total, Day, Month, Year),
     season(Month, Season),
     write('======= NEXT DAY ======='), nl,
-    write('Total Day: '), write(Total), nl,
     write('Day: '), write(Day), nl,
     write('Season: '), write(Season), nl,
     write('Year: '), write(Year), nl.
