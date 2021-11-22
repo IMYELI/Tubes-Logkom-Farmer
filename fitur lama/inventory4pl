@@ -1,27 +1,23 @@
 :- dynamic(inventory/3).
 :- dynamic(inventoryList/2).
-:- include('main.pl').
 
 /* Deklarasi Fakta */
 /* inventoryCapacity(Capacity)*/
 inventoryCapacity(100).
 
-/* item(Category, Name, Othername) */
-item(1, 'Carrot', carrot).
-item(1, 'Potato', potato).
-item(1, 'Strawberry', strawberry).
-item(2, 'Cow', cow).
-item(2, 'Chicken', chicken).
-item(2, 'Sheep', sheep).
-item(3, 'Milk', milk).
-item(3, 'Egg', egg).
-item(3, 'Wool', wool).
-item(4, 'Carrot Seeds', carrot).
-item(4, 'Potato Seeds', potato).
-item(4, 'Strawberry Seeds', strawberry).
-
-/* inventory(Category, Name, Amount) */
-/* inventoryList(Category, Name) */
+/* item(Category, Name, Othername, Amount) */
+item(1, 'Carrot', carrot, 0).
+item(1, 'Potato', potato, 0).
+item(1, 'Strawberry', strawberry, 0).
+item(2, 'Cow', cow, 0).
+item(2, 'Chicken', chicken, 0).
+item(2, 'Sheep', sheep, 0).
+item(3, 'Milk', milk, 0).
+item(3, 'Egg', egg, 0).
+item(3, 'Wool', wool, 0).
+item(4, 'Carrot Seeds', carrot, 0).
+item(4, 'Potato Seeds', potato, 0).
+item(4, 'Strawberry Seeds', strawberry, 0).
 
 /* Category */
 % 1 -> plants
@@ -31,29 +27,30 @@ item(4, 'Strawberry Seeds', strawberry).
 % 5 -> tools
 % 6 -> misc
 
+/* inventory(Category, Name, Amount) */
 inventoryTotal([], 0).
 inventoryTotal([H|T], TotalAmount) :-
-  inventory(_, H, Amount),
+  item(_, H, _, Amount),
   inventoryTotal(T, NewAmount),
   TotalAmount is Amount + NewAmount.
 
 isInventoryFull(Amount) :-
-  findall(Name, inventory(_, Name, _), Names),
+  findall(Name, inventoryList(_, Name), Names),
   inventoryCapacity(Capacity),
   inventoryTotal(Names, TotalAmount),
   Amount + TotalAmount >= Capacity.
 
 add(Name, IN_Amount) :-
+  item(Category, Name, Othername, Amount),
   ( 
     inventoryList(_, Name) ->
-    inventory(Category, Name, Amount),
     NewAmount is Amount + IN_Amount,
-    retract(inventory(_, Name, _)),
-    assertz(inventory(Category, Name, NewAmount));
+    retract(item(_, Name, _, _)),
+    assertz(item(Category, Name, Othername, NewAmount));
     
-    item(Category, Name, _),
     assertz(inventoryList(Category, Name)),
-    assertz(inventory(Category, Name, IN_Amount))
+    retract(item(_, Name, _, _)),
+    assertz(item(Category, Name, Othername, IN_Amount))
   ),
   format('You got %d %s', [IN_Amount, Name]).
 
@@ -88,7 +85,6 @@ throwItem :-
         format('You threw away %d %s', [NInput, X]),
         throw(X, NInput);
    
-        
         format('You don''t have that many %s! try again!\n', [X]), 
         throwItem
       );
@@ -96,7 +92,8 @@ throwItem :-
   ).
 
 throw(Name, IN_Amount) :-
-  inventory(Category, Name, Amount),
+  item(Category, Name, Othername, Amount),
+
   NewAmount is Amount - IN_Amount,
   retract(inventory(_, Name, _)), (
     NewAmount > 0 -> assertz(inventory(Category, Name, NewAmount));
@@ -105,7 +102,7 @@ throw(Name, IN_Amount) :-
 
 displayInventory([]).
 displayInventory([H|T]) :-
-  inventory(_, H, Amount),
+  item(_, H, _, Amount),
   format('- %d %s\n', [Amount, H]),
   displayInventory(T).
 

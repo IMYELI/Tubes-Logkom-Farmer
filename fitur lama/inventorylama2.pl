@@ -1,6 +1,4 @@
 :- dynamic(inventory/3).
-:- dynamic(inventoryList/2).
-:- include('main.pl').
 
 /* Deklarasi Fakta */
 /* inventoryCapacity(Capacity)*/
@@ -20,9 +18,6 @@ item(4, 'Carrot Seeds', carrot).
 item(4, 'Potato Seeds', potato).
 item(4, 'Strawberry Seeds', strawberry).
 
-/* inventory(Category, Name, Amount) */
-/* inventoryList(Category, Name) */
-
 /* Category */
 % 1 -> plants
 % 2 -> animals
@@ -31,6 +26,7 @@ item(4, 'Strawberry Seeds', strawberry).
 % 5 -> tools
 % 6 -> misc
 
+/* inventory(Category, Name, Amount) */
 inventoryTotal([], 0).
 inventoryTotal([H|T], TotalAmount) :-
   inventory(_, H, Amount),
@@ -45,14 +41,12 @@ isInventoryFull(Amount) :-
 
 add(Name, IN_Amount) :-
   ( 
-    inventoryList(_, Name) ->
-    inventory(Category, Name, Amount),
+    inventory(Category, Name, Amount) ->
     NewAmount is Amount + IN_Amount,
     retract(inventory(_, Name, _)),
     assertz(inventory(Category, Name, NewAmount));
     
     item(Category, Name, _),
-    assertz(inventoryList(Category, Name)),
     assertz(inventory(Category, Name, IN_Amount))
   ),
   format('You got %d %s', [IN_Amount, Name]).
@@ -66,7 +60,7 @@ displayThrow([H|T], Index) :-
   displayThrow(T, NIndex).
 
 throwItem :-
-  findall(Name, inventoryList(_, Name), Names),
+  findall(Name, inventory(_, Name, _), Names),
   length(Names, Len),
   inventoryTotal(Names, TotalAmount),
   inventoryCapacity(Capacity), nl,
@@ -99,8 +93,7 @@ throw(Name, IN_Amount) :-
   inventory(Category, Name, Amount),
   NewAmount is Amount - IN_Amount,
   retract(inventory(_, Name, _)), (
-    NewAmount > 0 -> assertz(inventory(Category, Name, NewAmount));
-    retract(inventoryList(Name))
+    NewAmount > 0 -> assertz(inventory(Category, Name, NewAmount))
   ).
 
 displayInventory([]).
@@ -109,8 +102,9 @@ displayInventory([H|T]) :-
   format('- %d %s\n', [Amount, H]),
   displayInventory(T).
 
+
 inventory :-
-  findall(Name, inventoryList(_, Name), Names),
+  findall(Name, inventory(_, Name, _), Names),
   inventoryTotal(Names, TotalAmount),
   inventoryCapacity(Capacity), nl,
   format('Your Inventory %d/%d\n', [TotalAmount, Capacity]),

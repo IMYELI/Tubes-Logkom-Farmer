@@ -8,6 +8,7 @@
 /* date(Total, Day, Month, Year) */
 date(1, 1, 1, 1).
 
+
 /* diaryID */
 diaryID(1).
 
@@ -16,7 +17,6 @@ season(1, 'Spring').
 season(2, 'Summer').
 season(3, 'Fall').
 season(4, 'Winter').
-
 
 houseMenu :-
     nl, 

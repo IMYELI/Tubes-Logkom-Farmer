@@ -1,39 +1,57 @@
-:- dynamic(animal/4).
+:- dynamic(animal/3).
 :- dynamic(animalAmount/2).
+:- dynamic(animalID/1).
+:- dynamic(animalList/1).
+
 :- include('inventory.pl').
 
+/* Deklarasi Fakta */
 %produceType(Type, SmallName, ProdName, ProdString)
 produceType('Cow', milk, produce).
 produceType('Chicken', egg, lay).
 produceType('Sheep', wool, produce).
 
-%lowerCase(Type, Lower)
-lowerCase('Cow', cow).
-lowerCase('Chicken', chicken).
-lowerCase('Sheep', sheep).
+%production(Type, Production)
+production('Cow', 4).
+production('Chicken', 3).
+production('Sheep', 4).
 
-%upperCase(Type, Upper)
-upperCase(egg, 'Egg').
-upperCase(wool, 'Wool').
-upperCase(milk, 'Milk').
+%animal(ID, Type, Time)
+animal(1, 'Cow', 4).
+animal(2, 'Cow', 4).
+animal(3, 'Chicken', 3).
+animal(4, 'Sheep', 4).
 
-%animal(ID, Type, Name, Time, Production)
-animal('Cow', 'Jonathan', 3, 3).
-animal('Cow', 'Sooka', 3, 3).
-animal('Chicken', 'Choco', 3, 3).
-animal('Sheep', 'Monka', 3, 3).
+%animalList(Type)
+%animalID(ID)
+animalID(1).
+
+
+/* Deklarasi Rules */
+addAnimal(Type):-
+  animalID(ID),
+  assertz(ID, Type, 0),
+  NID is ID + 1,
+  retract(animalID(_)),
+  assertz(animalID(NID)), 
+  (
+    \+ animalList(Type) ->
+    assertz(animalList(Type)) 
+  ).
+
 
 displayAnimal([], _).
 displayAnimal([H|T], Index) :-
-  findall(Name, animal(H, Name, _, _), Names),
-  length(Names, Len),
+  findall(ID, animal(ID, H, _), IDs),
+  length(IDs, Len),
   format('%d. %s, Amount: %d\n', [Index, H, Len]),
   NIndex is Index + 1,
   displayAnimal(T, NIndex).
 
 infoDetail([], 0).
 infoDetail([H|T], Amount) :-
-  animal(_, H, Time, Production),
+  animal(H, Type, Time),
+  production(Type, Production),
   infoDetail(T, NAmount),
   (
     Time = Production ->
@@ -41,19 +59,22 @@ infoDetail([H|T], Amount) :-
     Amount is NAmount + 0
   ).
 
-
 resetProd([]).
 resetProd([H|T]) :-
-    animal(Type, H, T, P),
-    retract(animal(_, H, _, _)),
-    assertz(animal(Type, H, 0, P)),
+    animal(H, Type, Time),
+    production(Type, Production),
+    (
+    Time = Production ->
+    retract(animal(H, _, _)),
+    assertz(animal(H, Type, 0))
+    ),
     resetProd(T).
 
-animalInfo(Names, Type):-
-  infoDetail(Names, Amount),
+animalInfo(IDs, Type):-
+  infoDetail(IDs, Amount),
   produceType(Type, ProdName, ProdString),
-  lowerCase(Type, NType),
-  upperCase(ProdName, NProdName), nl,
+  item(_, Type, NType), 
+  nl,
   (
     Amount > 0 ->
       format('Your %s %s %d %s\n', [NType, ProdString, Amount, ProdName]),
@@ -61,9 +82,10 @@ animalInfo(Names, Type):-
         isInventoryFull(Amount) ->
         write('Your inventory is full!');
         
+        item(_, NProdName, ProdName),
         add(NProdName, Amount),
-        findall(A, animal(Type, A, X, X), AA),
-        resetProd(AA)
+        findall(NID, animal(NID, Type, _), NIDs),
+        resetProd(NIDs)
       );
     format('Your %s haven''t %s any %s\n', [NType, ProdString, ProdName])
   ), nl, rancherMenu.
@@ -72,7 +94,7 @@ rancherMenu :-
   nl,
   write('======= Welcome To The Ranch ======='), nl,
   write('Your Animals: '), nl,
-  findall(Type, animal(Type, _, _, _), Types),
+  findall(Type, animal(_, Type, _), Types),
   set(Types, NTypes),
   length(NTypes, Len),
   displayAnimal(NTypes, 1),
@@ -81,22 +103,12 @@ rancherMenu :-
   catch(read(Input), error(_,_), errorMessage), (
     integer(Input), Input > 0 , Input =< Len -> 
       Index is Input - 1,
-      nth0(Index, NTypes, Type),
-      findall(Name, animal(Type, Name, _, _), Names),
-      animalInfo(Names, Type);
+      nth0(Index, NTypes, X),
+      findall(ID, animal(ID, X, _), IDs),
+      animalInfo(IDs, X);
     Input \== 'exit' -> write('Unknown input, try again!'), nl, rancherMenu
   ).
 
 errorMessage:-
-    write('[ERROR] Something''s wrong with your input, exiting the program..'), halt.
-
-
-set([], []).
-set([H|T], [H|T1]) :- 
-    remv(H, T, T2),
-    set(T2, T1).
-remv(_, [], []).
-remv(X, [X|T], T1) :- remv(X, T, T1).
-remv(X, [H|T], [H|T1]) :-
-    X \= H,
-    remv(X, T, T1).
+    write('[ERROR] Something''s wrong with your input, exiting the program..'),
+    halt.

@@ -1,6 +1,5 @@
 :- dynamic(inventory/3).
 :- dynamic(inventoryList/2).
-:- include('main.pl').
 
 /* Deklarasi Fakta */
 /* inventoryCapacity(Capacity)*/
@@ -20,9 +19,6 @@ item(4, 'Carrot Seeds', carrot).
 item(4, 'Potato Seeds', potato).
 item(4, 'Strawberry Seeds', strawberry).
 
-/* inventory(Category, Name, Amount) */
-/* inventoryList(Category, Name) */
-
 /* Category */
 % 1 -> plants
 % 2 -> animals
@@ -31,6 +27,7 @@ item(4, 'Strawberry Seeds', strawberry).
 % 5 -> tools
 % 6 -> misc
 
+/* inventory(Category, Name, Amount) */
 inventoryTotal([], 0).
 inventoryTotal([H|T], TotalAmount) :-
   inventory(_, H, Amount),

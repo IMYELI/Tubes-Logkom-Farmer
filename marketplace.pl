@@ -9,7 +9,7 @@ marketSpring :-
     write('     4. Cow (1500 golds)                 '), nl,
     write('     5. Level 2 shovel (300 golds)       '), nl,
     write('     6. Level 2 Fishing rod (500 golds)  '), nl,
-    write('-----------------------------------------'), nl,
+    write('-----------------------------------------'), nl.
 
 marketSummer :-
     nl,
@@ -22,7 +22,7 @@ marketSummer :-
     write('     4. Cow (1500 golds)                 '), nl,
     write('     5. Level 2 shovel (300 golds)       '), nl,
     write('     6. Level 2 Fishing rod (500 golds)  '), nl,
-    write('-----------------------------------------'), nl,
+    write('-----------------------------------------'), nl.
 
 marketFall :-
     nl,
@@ -35,7 +35,7 @@ marketFall :-
     write('     4. Cow (1500 golds)                 '), nl,
     write('     5. Level 2 shovel (300 golds)       '), nl,
     write('     6. Level 2 Fishing rod (500 golds)  '), nl,
-    write('-----------------------------------------'), nl,
+    write('-----------------------------------------'), nl.
 
 marketWinter :-
     nl,
@@ -48,7 +48,7 @@ marketWinter :-
     write('     4. Cow (1500 golds)                 '), nl,
     write('     5. Level 2 shovel (300 golds)       '), nl,
     write('     6. Level 2 Fishing rod (500 golds)  '), nl,
-    write('-----------------------------------------'), nl,
+    write('-----------------------------------------'), nl.
     
 
 
