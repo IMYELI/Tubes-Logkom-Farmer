@@ -3,11 +3,11 @@
 :- dynamic(diary/5).
 :- dynamic(diaryID/5).
 
+/* Deklarasi Fakta */
 /* diary(ID, Content, Day, Month, Year) */
 
 /* date(Total, Day, Month, Year) */
 date(1, 1, 1, 1).
-
 
 /* diaryID */
 diaryID(1).
@@ -18,6 +18,7 @@ season(2, 'Summer').
 season(3, 'Fall').
 season(4, 'Winter').
 
+/* Deklarasi Rules */
 houseMenu :-
     nl, 
     write('======= HOUSE ======='), nl,
@@ -31,9 +32,7 @@ houseMenu :-
             Input = 'sleep' -> call(sleep);
             Input = 'writeDiary' -> call(writeDiary);
             Input = 'readDiary' -> call(readDiary);
-            Input = 'exit' -> call(exit);
-
-            write('Unknown input, try again!'), nl, houseMenu
+            Input \== 'exit' -> write('Unknown input, try again!'), nl, houseMenu
     ).
 
 updateDay :-
@@ -96,7 +95,7 @@ sleep :-
     write('You sleep on the bed, waiting for the next day.'), nl,
     write('Zzzz.....'), nl, nl,
     updateDay,
-    date(Total, Day, Month, Year),
+    date(_, Day, Month, Year),
     season(Month, Season),
     write('======= NEXT DAY ======='), nl,
     write('Day: '), write(Day), nl,

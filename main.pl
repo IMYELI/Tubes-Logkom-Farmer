@@ -1,13 +1,14 @@
 
 % Dynamic Variable:
-% playerStats(ID, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold)
+% playerStats(ID, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold) sebagai status player
 
 :- dynamic(isGameStart/1).
 :- dynamic(playerLocation/2).
 :- dynamic(playerStats/10).
 
 :- include('exp.pl').
-:- include('inventory.pl').
+:- include('house.pl').
+
 
 startFile:-
     title,
@@ -36,7 +37,7 @@ gameMenu :-
         Input = 'help' -> call(help);
         Input = 'status' -> call(status);
         Input = _ -> write('Unknown input, try again!'), nl, nl
-    ).
+    ), gameMenu.
 
 welcome :-
     nl,
@@ -62,7 +63,7 @@ mainMenu :-
     ).
 
 
-% playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold)
+% playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold) sebagai status player
 status :-
     nl,
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),

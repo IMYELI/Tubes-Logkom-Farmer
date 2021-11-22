@@ -26,11 +26,10 @@ animal(4, 'Sheep', 4).
 %animalID(ID)
 animalID(1).
 
-
 /* Deklarasi Rules */
 addAnimal(Type):-
   animalID(ID),
-  assertz(ID, Type, 0),
+  assertz(animal(ID, Type, 0)),
   NID is ID + 1,
   retract(animalID(_)),
   assertz(animalID(NID)), 
@@ -38,7 +37,6 @@ addAnimal(Type):-
     \+ animalList(Type) ->
     assertz(animalList(Type)) 
   ).
-
 
 displayAnimal([], _).
 displayAnimal([H|T], Index) :-
@@ -94,16 +92,15 @@ rancherMenu :-
   nl,
   write('======= Welcome To The Ranch ======='), nl,
   write('Your Animals: '), nl,
-  findall(Type, animal(_, Type, _), Types),
-  set(Types, NTypes),
-  length(NTypes, Len),
-  displayAnimal(NTypes, 1),
+  findall(Type, animalList(Type), Types),
+  length(Types, Len),
+  displayAnimal(Types, 1),
   write('Choose the animals you want to check, exit. to go back.\n\n'),
   write('>>> '),
   catch(read(Input), error(_,_), errorMessage), (
     integer(Input), Input > 0 , Input =< Len -> 
       Index is Input - 1,
-      nth0(Index, NTypes, X),
+      nth0(Index, Types, X),
       findall(ID, animal(ID, X, _), IDs),
       animalInfo(IDs, X);
     Input \== 'exit' -> write('Unknown input, try again!'), nl, rancherMenu

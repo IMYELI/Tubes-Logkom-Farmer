@@ -1,9 +1,8 @@
 :- dynamic(inventory/3).
 :- dynamic(inventoryList/2).
-:- include('main.pl').
 
 /* Deklarasi Fakta */
-/* inventoryCapacity(Capacity)*/
+/* inventoryCapacity(Capacity) sebagai kapasitas inventory */
 inventoryCapacity(100).
 
 /* item(Category, Name, Othername) */
@@ -20,10 +19,10 @@ item(4, 'Carrot Seeds', carrot).
 item(4, 'Potato Seeds', potato).
 item(4, 'Strawberry Seeds', strawberry).
 
-/* inventory(Category, Name, Amount) */
-/* inventoryList(Category, Name) */
+/* inventory(Category, Name, Amount) sebagai info dari inventory */
+/* inventoryList(Category, Name) sebagai list inventory */
 
-/* Category */
+/* Category yaitu kategori item */
 % 1 -> plants
 % 2 -> animals
 % 3 -> products
@@ -74,7 +73,7 @@ throwItem :-
   displayThrow(Names, 1),
   write('\nWhat do you want to throw?\n'),
   write('>>> '),
-  catch(read(Input), error(_,_), errorMessage),
+  catch(read(Input), error(_,_), _),
   (
     integer(Input), Input > 0 , Input =< Len -> 
       Index is Input - 1,
@@ -82,7 +81,7 @@ throwItem :-
       inventory(_, X, Amount),
       format('\nYou have %d %s. How many do you want to throw?\n', [Amount, X]),
       write('>>> '),
-      catch(read(NInput), error(_,_), errorMessage),
+      catch(read(NInput), error(_,_), _),
       (
         integer(NInput), NInput > 0, NInput =< Amount ->
         format('You threw away %d %s', [NInput, X]),
