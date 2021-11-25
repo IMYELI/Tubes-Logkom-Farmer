@@ -157,5 +157,3 @@ ranchLevelPrice(4, 500).
 
 %animalID(ID)
 animalID(1).
-
-%B

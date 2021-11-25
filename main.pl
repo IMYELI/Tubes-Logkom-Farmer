@@ -1,4 +1,7 @@
 :- include('fact.pl').
+:- include('inventory.pl').
+:- include('rancher.pl').
+:- include('house.pl').
 
 startFile:-
     title,
@@ -26,32 +29,31 @@ gameMenu :-
     catch(read(Input), error(_,_), errorMessage), (
         Input = 'help' -> call(help);
         Input = 'status' -> call(status);
-        Input = _ -> write('Unknown input, try again!'), nl, nl
-    ), gameMenu.
+        Input = _ -> write('Unknown input, try again!\n\n')
+    ), !, gameMenu.
 
 welcome :-
     nl,
-    write('Welcome To Harvest Rune!'), nl,
-    write('You have 2000 gold debts from being tricked,'), nl,
-    write('now you go back to your hometown as a farmer to pay your debts.'), nl,
-    write('The deadline for your debts is 3 years from now, good luck!'), nl, nl,
-    write('=========== COMMANDS ==========='), nl,
-    write('(help.) Menampilkan segala bantuan dan command'), nl,
-    write('(status.) Menampilkan kondisi pemain'), nl, nl.
+    write('Welcome To Harvest Rune!\n'),
+    write('Your goal is to pay your 2000 gold debts.\n'),
+    write('The deadline for your debts is 3 years from now, good luck!\n\n'),
+    write('=========== Commands ===========\n'),
+    write('(help.) Menampilkan segala bantuan dan command\n'),
+    write('(status.) Menampilkan kondisi pemain\n\n').
 
 help :-
     nl,
-    write('=========== HELP ==========='), nl,
-    write('(help.) Menampilkan segala bantuan dan command'), nl,
-    write('(status.) Menampilkan kondisi pemain'), nl, nl.
+    write('=========== Help Menu ===========\n'),
+    write('(help.) Menampilkan segala bantuan dan command\n'),
+    write('(status.) Menampilkan kondisi pemain\n\n').
 
 mainMenu :-
     write('>>> '),
     catch(read(Input), error(_,_), errorMessage), (
         Input = 'start' -> call(start), welcome, gameMenu;
-        Input = 'exit' ->
-            write('Thank''s for playing the game!');
-        write('Unknown input, try again!'), nl, nl, mainMenu
+        Input = 'exit' -> write('Thank you for playing the game!');
+        Input = 'exit' -> write('')
+        write('Unknown input, try again!\n\n'), !, mainMenu
     ).
 
 status :-
@@ -59,12 +61,12 @@ status :-
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     levelCap(LvlPlayer, Cap),
     job(ID, Name),
-    write('=========== PLAYER STATUS ===========\n'),
+    write('=========== Player Status ===========\n'),
     format('Job: %s\n', [Name]),
     format('Gold: %d / 2000\n', [Gold]),
     format('Player Level: %d\n', [LvlPlayer]),
     format('[PLAYER EXP] %d/%d\n', [ExpTotal, Cap]),
-    write('=========== PROFESSION ===========\n'),
+    write('============  Profession  ===========\n'),
     format('Fishing Level: %d\n', [LvlFish]),
     format('[EXP] %d\n', [ExpFish]),
     format('Farming Level: %d\n', [LvlFarm]),
@@ -94,4 +96,4 @@ start :-
     ).
 
 errorMessage:-
-    write('[ERROR] Your input broke the game, exiting now...'), halt.
+    write('[ERROR] Your input broke the game, exiting the game...'), halt.
