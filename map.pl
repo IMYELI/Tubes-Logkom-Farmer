@@ -1,3 +1,7 @@
+:- dynamic(playerKoord/2).
+:- include('fact.pl').
+:- include('farmer.pl').
+
 generateMap:- generate(0,0).
 
 %Generate RIGHT BORDER
@@ -29,6 +33,12 @@ generate(X,Y) :-
     playerKoord(PX,PY),
     NewX is X+1,
     X =:= PX, Y =:= PY,!,write('P'),generate(NewX,Y).
+
+%Generate PLAYER
+generate(X,Y) :-
+    patchDug(X,Y),!,
+    NewX is X+1,
+    write('X'),generate(NewX,Y).
 
 generate(X,Y) :-
     isTopPatch(X,Y),!,

@@ -14,7 +14,7 @@
 :- dynamic(diaryID/1).
 :- dynamic(hoe/1).
 :- dynamic(rod/1).
-:- dynamic(playerKoord/2).
+
 
 /* Deklarasi Fakta */
 /* diary(ID, Content, Day, Month, Year) */
@@ -158,3 +158,11 @@ ranchLevelPrice(4, 500).
 
 %animalID(ID)
 animalID(1).
+
+%koordinat benda di Map(X,Y)
+mapSize(15,15).
+playerKoord(10,9).
+houseKoord(10,9).
+ranchKoord(5,9).
+questKoord(3,5).
+marketplaceKoord(3,3).

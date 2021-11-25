@@ -1,5 +1,4 @@
-:- include('inventory.pl').
-
+:- dynamic(patchDug/2).
 plant :-
     \+ inventoryList(4, _),
     write('You don''t have any seeds to plant!');
@@ -19,6 +18,154 @@ plant :-
         throw(Name, 1);
     write('Unknown input, try again!\n\n'), plant  
     ).
+
+dig :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> asserta(patchDug(X,Y)),generateMap;
+      write('You can not do that here!')
+    ).
+
+digL :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> asserta(patchDug(X,Y)),NewX is X-1,
+        (isPatch(NewX,Y)->asserta(patchDug(NewX,Y))),generateMap;
+      write('You can not do that here!')
+    ).
+digR :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> asserta(patchDug(X,Y)),NewX is X+1,
+        (isPatch(NewX,Y)->asserta(patchDug(NewX,Y))),generateMap;
+      write('You can not do that here!')
+    ).
+digT :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> asserta(patchDug(X,Y)),NewY is Y-1,
+        (isPatch(X,NewY)->asserta(patchDug(X,NewY))),generateMap;
+      write('You can not do that here!')
+    ).
+digB :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> asserta(patchDug(X,Y)),NewY is Y+1,
+        (isPatch(X,NewY)->asserta(patchDug(X,NewY))),generateMap;
+      write('You can not do that here!')
+    ).
+digS :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> asserta(patchDug(X,Y)),NewY is Y+1,NewY2 is Y-1,NewX is X+1,NewX2 X-1,
+        (isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+            isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+                isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+                    isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)
+                );
+                isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+                    isPatch(NewX,Y)->asserta(patchDug(NewX,Y))
+                )
+            );
+            isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+                isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+                    isPatch(X,NewY2)->asserta(patchDug(X,NewY2))
+                );
+                isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+                    isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y))
+                )
+            );
+            isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+                isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+                    isPatch(NewX,Y)->asserta(patchDug(NewX,Y))
+                );
+                isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+                    isPatch(X,NewY2)->asserta(patchDug(X,NewY2))
+                )
+            )   
+        );
+         isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+            isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+                isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+                    isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y))
+                );
+                isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+                    isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y))
+                )
+            );
+            isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+                isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+                    isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y))
+                );
+                isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+                    isPatch(X,NewY)->asserta(patchDug(X,NewY))
+                )
+            );
+            isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+                isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+                    isPatch(NewX,Y)->asserta(patchDug(NewX,Y))
+                );
+                isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+                    isPatch(X,NewY)->asserta(patchDug(X,NewY))
+                )
+            )
+         );
+         isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+            isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+                isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+                    isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y))
+                );
+                isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+                    isPatch(X,NewY2)->asserta(patchDug(X,NewY2))
+                )
+            );
+            isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+                isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+                    isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y))
+                );
+                isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+                    isPatch(X,NewY)->asserta(patchDug(X,NewY))
+                )
+            );
+            isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+                isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+                    isPatch(X,NewY2)->asserta(patchDug(X,NewY2))
+                );
+                isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+                    isPatch(X,NewY)->asserta(patchDug(X,NewY))
+                )
+            )
+         );
+         isPatch(NewX2,Y)->asserta(patchDug(NewX2,Y)),(
+            isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+                isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+                    isPatch(NewX,Y)->asserta(patchDug(NewX,Y))
+                );
+                isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+                    isPatch(X,NewY2)->asserta(patchDug(X,NewY2))
+                )
+            );
+            isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+                isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+                    isPatch(NewX,Y)->asserta(patchDug(NewX,Y))
+                );
+                isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+                    isPatch(X,NewY)->asserta(patchDug(X,NewY))
+                )
+            );
+            isPatch(NewX,Y)->asserta(patchDug(NewX,Y)),(
+                isPatch(X,NewY)->asserta(patchDug(X,NewY)),(
+                    isPatch(X,NewY2)->asserta(patchDug(X,NewY2))
+                );
+                isPatch(X,NewY2)->asserta(patchDug(X,NewY2)),(
+                    isPatch(X,NewY)->asserta(patchDug(X,NewY))
+                )
+            )
+         )
+         ),generateMap;
+      write('You can not do that here!')
+    ).
+
 
 errorMessage:-
     write('[ERROR] Something''s wrong with your input, exiting the program..'),
