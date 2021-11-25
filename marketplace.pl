@@ -4,21 +4,30 @@ marketSpring :-
     assertz(marketList('Strawberry Seeds')).
 
 marketplace :-
-    nl,
     write('========== Welcome To The Market ==========\n'),
     write('What do you want to do?\n'),
-    write('- Upgrade\n'),
-    write('- Buy\n'),
-    write('- Sell\n\n'),
-    write('>>> '),
-    read(Input), nl, !,
+    write('- upgrade\n'),
+    write('- buy\n'),
+    write('- sell\n'),
+    write('- exit\n\n'),
+    write('MARKETPLACE >>> '),
+    read(Input), nl,
     (
         Input = 'upgrade' -> call(upgrade);
         Input = 'buy' -> call(buy);
         Input = 'sell' -> call(sell);
-        Input \== 'exit' -> write('Unknown input, try again!\n'),
-        marketplace
+        Input \== 'exit' -> write('Unknown input, try again!\n\n'),
+        marketplace;
+        write('Hope to see you again in the market!\n\n')
     ).
+
+displayMarket2([], _).
+displayMarket2([H|T], Index) :-
+    inventory(H, Amount),
+    format('%d. %s (Amount: %d)\n', [Index, H, Amount]),
+    NIndex is Index + 1,
+    displayMarket2(T, NIndex).
+
 
 displayMarket([], _).
 displayMarket([H|T], Index) :-
@@ -44,8 +53,8 @@ upgrade :-
     toolList(2, RodLvl, Rod),
     NHoeLvl is HoeLvl + 1,
     NRodLvl is RodLvl + 1,
-    write('========== Upgrade Menu ==========\n'),
-    write('What do you want to upgrade?\n'),
+    write('========== Upgrade Menu ==========\n\n'),
+    write('What do you want to upgrade?'),
     displayUpgrade(1, Hoe, NHoeLvl),
     displayUpgrade(2, Rod, NRodLvl), nl,
     write('>>> '),
@@ -54,12 +63,9 @@ upgrade :-
         Input = 1 ->
             (
                 NHoeLvl =\= 5 ->
-                (
-                    Price
-                    retract(hoe(_)),
-                    assertz(hoe(NHoeLvl));
-                    write('Your Hoe is already at max upgrade!\n');
-                )
+                retract(hoe(_)),
+                assertz(hoe(NHoeLvl));
+                write('Your Hoe is already at max upgrade!\n')
             );
         Input = 2 ->
             (
@@ -68,65 +74,66 @@ upgrade :-
                 assertz(rod(NRodLvl));
                 write('Your Fishing Rod is already at max upgrade!\n')
             );
-        Input \== 'exit' -> write('Unknown input, try again!\n\n'), !, upgrade;
-        true
-    ), marketplace.
+        Input \== 'exit' -> write('Unknown input, try again!\n\n'), upgrade;
+        marketplace
+    ).
 
 sell :-
     \+ inventoryList(1, _),
     \+ inventoryList(3, _),
-    write('There''s nothing that worth to sell in your inventory.\n'), !, marketplace;
+    write('There''s nothing that worth to sell in your inventory.\n\n'), marketplace;
 
     write('Here are the items in your inventory:\n'),
     findall(Name, (inventoryList(1, Name); inventoryList(3, Name)), Names),
     length(Names, Len),
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
-    displayMarket(Names, 1),
-    write('What do you want to sell?\n\n'),
+    displayMarket2(Names, 1), nl,
+    write('What do you want to sell?\n'),
     write('>>> '),
-    read(Input),
+    read(Input), nl,
     (
         integer(Input), Input > 0, Input =< Len ->
         (
             NInput is Input - 1,
             nth0(NInput, Names, Element),
             inventoryList(Category, Element),
-            write('\nHow many do you want to sell?\n'),
+            write('How many do you want to sell?\n'),
             write('>>> '),
-            read(Amount),
+            read(Amount), nl,
             (
                 integer(Amount), Amount > 0 ->
-                buyPrice(Element, Price),
-                farmLevelPrice(LvlFarm, BonusFarm),
-                ranchLevelPrice(LvlRanch, BonusRanch),
-                inventory(Element, InitialAmount),
-                (
-                    InitialAmount < Amount ->
-                    format('You only have %d %s!', [InitialAmount, Element]);
-
-                    format('You have sold %d %s!', [Amount, Element]),
-                    item(Category, Element, _),
+                    buyPrice(Element, Price),
+                    farmLevelPrice(LvlFarm, BonusFarm),
+                    ranchLevelPrice(LvlRanch, BonusRanch),
+                    inventory(Element, InitialAmount),
                     (
-                        Category = 1 ->
-                        NewPrice is Price + BonusFarm;
+                        InitialAmount < Amount ->
+                        format('You only have %d %s!', [InitialAmount, Element]);
 
-                        Category = 2 ->
-                        NewPrice is Price + BonusRanch
-                    ),
-                    TotalPrice is NewPrice * Amount,
-                    NGold is Gold + TotalPrice,
-                    format('\nYou received %d Gold!\n', [TotalPrice]),
-                    retract(playerStats(_, _, _, _, _, _, _, _, _, Gold)),
-                    asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, NGold))
-                );
+                        format('You have sold %d %s!\n', [Amount, Element]),
+                        item(Category, Element, _),
+                        (
+                            Category = 1 ->
+                            NewPrice is Price + BonusFarm;
+
+                            Category = 3 ->
+                            NewPrice is Price + BonusRanch
+                        ),
+                        TotalPrice is NewPrice * Amount,
+                        NGold is Gold + TotalPrice,
+                        format('You received %d Gold!', [TotalPrice]),
+                        throw(Element, Amount),
+                        retract(playerStats(_, _, _, _, _, _, _, _, _, Gold)),
+                        asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, NGold))
+                    ), nl, nl, marketplace;
+
                 write('You don''t have that many item!\n\n'),
-                sell
+                marketplace
             )
         );
-        Input \== 'exit' ->
         write('Unknown Input, Try Again!\n\n'),
         sell
-    ), !, marketplace.
+    ).
 
 
 buy :-
@@ -146,16 +153,16 @@ buy :-
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     displayMarket(Names, 1), nl,
     write('>>> '),
-    read(Input),
+    read(Input), nl,
     (
         integer(Input), Input > 0, Input =< Len ->
         (
             NInput is Input - 1,
             nth0(NInput, Names, Element),
             item(Category, Element, _),
-            write('\nHow many do you want to buy?\n'),
+            write('How many do you want to buy?\n'),
             write('>>> '),
-            read(Amount),
+            read(Amount), nl,
             (
                 integer(Amount), Amount > 0 ->
                 buyPrice(Element, Price),
@@ -165,9 +172,9 @@ buy :-
                     write('Your inventory is Full!');
 
                     TotalPrice > Gold ->
-                    write('You don''t have enough money!');
+                    write('You don''t have enough gold!');
 
-                    format('You have bought %d %s!', [Amount, Element]),
+                    format('You have bought %d %s!\n', [Amount, Element]),
                     item(Category, Element, _),
                     (
                         Category = 2 ->
@@ -176,19 +183,20 @@ buy :-
                         add(Element, Amount)
                     ),
                     NGold is Gold - TotalPrice,
-                    format('\nYou used %d Gold.', [TotalPrice]),
+                    format('You used %d Gold.', [TotalPrice]),
                     retract(playerStats(_, _, _, _, _, _, _, _, _, Gold)),
                     asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, NGold))
-                );
+                ), retractall(marketList(_)), nl, nl, marketplace;
+
                 write('You don''t have that many item!\n\n'),
                 retractall(marketList(_)),
-                buy
+                marketplace
             )
         );
-        !, Input \== 'exit' ->
+
         write('Unknown Input, Try Again!\n\n'),
         retractall(marketList(_)),
         buy
-    ), retractall(marketList(_)), nl, !, marketplace.
+    ).
 
 

@@ -1,20 +1,19 @@
-
-
 /* Deklarasi Rules */
 houseMenu :-
-    nl, 
-    write('======= Welcome To Your House ======='), nl,
-    write('What do you want to do?'), nl,
-    write('- sleep'), nl,
-    write('- writeDiary'), nl,
-    write('- readDiary'), nl,
-    write('- exit'), nl,
-    write('>>> '),
-    catch(read(Input), error(_,_), errorMessage), (
+    write('======= Welcome To Your House =======\n'),
+    write('What do you want to do?\n'),
+    write('- sleep\n'),
+    write('- writeDiary\n'),
+    write('- readDiary\n'),
+    write('- exit\n\n'),
+    write('HOUSE >>> '),
+    catch(read(Input), error(_,_), errorMessage), nl,
+    (
             Input = 'sleep' -> call(sleep);
             Input = 'writeDiary' -> call(writeDiary);
             Input = 'readDiary' -> call(readDiary);
-            Input \== 'exit' -> write('Unknown input, try again!'), nl, houseMenu
+            Input \== 'exit' -> write('Unknown input, try again!\n\n'), houseMenu;
+            write('You have exited the house. Good Luck!\n\n')
     ).
 
 updateDay :-
@@ -41,13 +40,14 @@ updateDay :-
 writeDiary :-
     date(_, Day, Month, Year),
     diaryID(ID),
-    write('Write your diary for Day '), write(Day), nl,
+    format('======= Write Your Diary For Day %d =======\n', [Day]),
     write('>>> '),
-    read(Input),
+    read(Input), nl,
+    write('You have written a diary.\n\n'),
     assertz(diary(ID, Input, Day, Month, Year)),
-    newID is ID + 1,
     retract(diaryID(_)),
-    asserta(diaryID(newID)).
+    NID is ID + 1,
+    asserta(diaryID(NID)), houseMenu.
 
 displayDiary([]).
 displayDiary([H|T]) :-
@@ -59,18 +59,23 @@ displayDiary([H|T]) :-
   displayDiary(T).
 
 readDiary :-
+    \+ diary(_, _, _, _, _),
+    write('You haven''t write any diary yet!\n\n'), houseMenu;
+
     findall(ID, diary(ID, _, _, _ ,_), IDs),
-    write('Entry Diary: '), nl,
+    write('Entry Diary:\n'),
     displayDiary(IDs),
-    length(IDs, Len),
-    write('Which entry do you want to read?'), nl, nl,
+    length(IDs, Len), nl,
+    write('Which entry do you want to read?\n'),
     write('>>> '),
-    catch(read(Input), error(_,_), errorMessage), (
+    catch(read(Input), error(_,_), errorMessage), nl,
+    (
       integer(Input), Input > 0, Input =< Len ->
-        write('Here is your entry:'),
+        write('Here is your entry:\n'),
         diary(Input, Content, _, _, _),
-        write(Content);
-      write('Unknown input, try again!'), nl, nl, readDiary
+        format('"%s"\n\n', [Content]),
+        houseMenu;
+      write('Unknown input, try again!\n\n'), readDiary
     ).
     
 sleep :-
@@ -79,8 +84,7 @@ sleep :-
     updateDay,
     date(_, Day, Month, Year),
     season(Month, Season),
-    write('======= NEXT DAY ======='), nl,
-    write('Day: '), write(Day), nl,
-    write('Season: '), write(Season), nl,
-    write('Year: '), write(Year), nl.
-
+    write('======= Good Morning For A New Day! =======\n'),
+    format('Day: %d\n', [Day]),
+    format('Season: %s\n', [Season]),
+    format('Year: %d\n', [Year]), nl, houseMenu.

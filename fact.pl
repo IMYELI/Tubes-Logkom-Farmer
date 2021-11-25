@@ -15,7 +15,6 @@
 :- dynamic(hoe/1).
 :- dynamic(rod/1).
 
-
 /* Deklarasi Fakta */
 /* diary(ID, Content, Day, Month, Year) */
 
@@ -132,17 +131,16 @@ production('Chicken', 3).
 production('Sheep', 4).
 
 %animal(ID, Type, Time)
-% animal(1, 'Cow', 4).
-% animal(2, 'Cow', 4).
-% animal(3, 'Chicken', 3).
-% animal(4, 'Sheep', 4).
+animal(1, 'Cow', 4).
+animal(2, 'Cow', 4).
+animal(3, 'Chicken', 3).
+animal(4, 'Sheep', 4).
 
 %animalList(Type)
-% animalList('Cow').
-% animalList('Chicken').
-% animalList('Sheep').
+animalList('Cow').
+animalList('Chicken').
+animalList('Sheep').
 
-%animalMarketList(Names)
 
 %farmLevelPrice(Lvl, Price)
 farmLevelPrice(1, 0).

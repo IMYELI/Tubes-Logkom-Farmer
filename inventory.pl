@@ -85,8 +85,8 @@ displayInventory([H|T]) :-
 inventory :-
   findall(Name, inventoryList(_, Name), Names),
   inventoryTotal(Names, TotalAmount),
-  inventoryCapacity(Capacity), nl,
+  inventoryCapacity(Capacity),
   write('========= Equipment =========\n'),
   displayEquipment,
   format('========= Your Inventory %d/%d =========\n', [TotalAmount, Capacity]),
-  displayInventory(Names).
+  displayInventory(Names), nl.

@@ -2,6 +2,8 @@
 :- include('inventory.pl').
 :- include('rancher.pl').
 :- include('house.pl').
+:- include('marketplace.pl').
+
 
 startFile:-
     title,
@@ -25,10 +27,15 @@ title:-
 
 gameMenu :-
     repeat,
-    write('>>> '),
-    catch(read(Input), error(_,_), errorMessage), (
+    write('COMMAND >>> '),
+    catch(read(Input), error(_,_), errorMessage), nl,
+    (
         Input = 'help' -> call(help);
         Input = 'status' -> call(status);
+        Input = 'market' -> call(marketplace);
+        Input = 'inventory' -> call(inventory);
+        Input = 'ranch' -> call(rancherMenu);
+        Input = 'house' -> call(houseMenu);
         Input = _ -> write('Unknown input, try again!\n\n')
     ), !, gameMenu.
 
@@ -42,7 +49,6 @@ welcome :-
     write('(status.) Menampilkan kondisi pemain\n\n').
 
 help :-
-    nl,
     write('=========== Help Menu ===========\n'),
     write('(help.) Menampilkan segala bantuan dan command\n'),
     write('(status.) Menampilkan kondisi pemain\n\n').
@@ -52,12 +58,10 @@ mainMenu :-
     catch(read(Input), error(_,_), errorMessage), (
         Input = 'start' -> call(start), welcome, gameMenu;
         Input = 'exit' -> write('Thank you for playing the game!');
-        Input = 'exit' -> write('')
         write('Unknown input, try again!\n\n'), !, mainMenu
     ).
 
 status :-
-    nl,
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     levelCap(LvlPlayer, Cap),
     job(ID, Name),
