@@ -1,6 +1,7 @@
 :- dynamic(playerKoord/2).
 :- include('fact.pl').
 :- include('farmer.pl').
+:- include('fishing.pl').
 
 generateMap:- generate(0,0).
 
@@ -136,6 +137,9 @@ isTile(X,Y):-
 
 isWater(X,Y):-
     X=:=10,Y>=2,Y=<6;X=:=9,Y>=3,Y=<5;X=:=11,Y>=3,Y=<5.
+
+isNearWater(X,Y):-
+    X>=8,X=<12,Y>=1,Y=<7.
 
 isHouse(X,Y):-
     houseKoord(HX,HY),
