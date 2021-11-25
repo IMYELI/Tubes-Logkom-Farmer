@@ -14,6 +14,7 @@
 :- dynamic(diaryID/1).
 :- dynamic(hoe/1).
 :- dynamic(rod/1).
+:- dynamic(playerKoord/2).
 
 /* Deklarasi Fakta */
 /* diary(ID, Content, Day, Month, Year) */
