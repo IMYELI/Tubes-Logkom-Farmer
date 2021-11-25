@@ -169,7 +169,7 @@ buy :-
                 TotalPrice is Amount * Price,
                 (
                     Category =\= 2, isInventoryFull(Amount) ->
-                    write('Your inventory is Full!');
+                    write('Broo... that''s too much for you to handle');
 
                     TotalPrice > Gold ->
                     write('You don''t have enough gold!');

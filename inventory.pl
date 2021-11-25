@@ -8,7 +8,7 @@ isInventoryFull(Amount) :-
   findall(Name, inventory(Name, _), Names),
   inventoryCapacity(Capacity),
   inventoryTotal(Names, TotalAmount),
-  Amount + TotalAmount >= Capacity.
+  Amount + TotalAmount > Capacity.
 
 add(Name, IN_Amount) :-
   ( 
