@@ -1,42 +1,17 @@
-:- dynamic(animal/3).
-:- dynamic(animalAmount/2).
-:- dynamic(animalID/1).
-:- dynamic(animalList/1).
-
-:- include('inventory.pl').
-
-/* Deklarasi Fakta */
-%produceType(Type, SmallName, ProdName, ProdString)
-produceType('Cow', milk, produce).
-produceType('Chicken', egg, lay).
-produceType('Sheep', wool, produce).
-
-%production(Type, Production)
-production('Cow', 4).
-production('Chicken', 3).
-production('Sheep', 4).
-
-%animal(ID, Type, Time)
-animal(1, 'Cow', 4).
-animal(2, 'Cow', 4).
-animal(3, 'Chicken', 3).
-animal(4, 'Sheep', 4).
-
-%animalList(Type)
-%animalID(ID)
-animalID(1).
-
 /* Deklarasi Rules */
-addAnimal(Type):-
+addAnimal(_, 0).
+addAnimal(Type, Count) :-
   animalID(ID),
   assertz(animal(ID, Type, 0)),
   NID is ID + 1,
   retract(animalID(_)),
-  assertz(animalID(NID)), 
-  (
-    \+ animalList(Type) ->
-    assertz(animalList(Type)) 
-  ).
+  assertz(animalID(NID)),
+  ( \+ animalList(Type) ->
+    assertz(animalList(Type));
+    true
+  ),
+  NCount is Count - 1,
+  addAnimal(Type, NCount).
 
 displayAnimal([], _).
 displayAnimal([H|T], Index) :-
@@ -61,10 +36,9 @@ resetProd([]).
 resetProd([H|T]) :-
     animal(H, Type, Time),
     production(Type, Production),
-    (
-    Time = Production ->
-    retract(animal(H, _, _)),
-    assertz(animal(H, Type, 0))
+    ( Time = Production ->
+      retract(animal(H, _, _)),
+      assertz(animal(H, Type, 0))
     ),
     resetProd(T).
 
@@ -81,11 +55,12 @@ animalInfo(IDs, Type):-
         write('Your inventory is full!');
         
         item(_, NProdName, ProdName),
+        format('You got %d %s!', [Amount, NProdName]),
         add(NProdName, Amount),
         findall(NID, animal(NID, Type, _), NIDs),
         resetProd(NIDs)
       );
-    format('Your %s haven''t %s any %s\n', [NType, ProdString, ProdName])
+    format('Your %s haven''t %s any %s', [NType, ProdString, ProdName])
   ), nl, rancherMenu.
 
 rancherMenu :-
@@ -106,6 +81,3 @@ rancherMenu :-
     Input \== 'exit' -> write('Unknown input, try again!'), nl, rancherMenu
   ).
 
-errorMessage:-
-    write('[ERROR] Something''s wrong with your input, exiting the program..'),
-    halt.

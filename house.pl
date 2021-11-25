@@ -1,27 +1,9 @@
-:- dynamic(date/4).
-:- dynamic(isWrite/1).
-:- dynamic(diary/5).
-:- dynamic(diaryID/5).
 
-/* Deklarasi Fakta */
-/* diary(ID, Content, Day, Month, Year) */
-
-/* date(Total, Day, Month, Year) */
-date(1, 1, 1, 1).
-
-/* diaryID */
-diaryID(1).
-
-/* season (Month, Season) */
-season(1, 'Spring').
-season(2, 'Summer').
-season(3, 'Fall').
-season(4, 'Winter').
 
 /* Deklarasi Rules */
 houseMenu :-
     nl, 
-    write('======= HOUSE ======='), nl,
+    write('======= Welcome To Your House ======='), nl,
     write('What do you want to do?'), nl,
     write('- sleep'), nl,
     write('- writeDiary'), nl,

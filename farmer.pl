@@ -1,17 +1,21 @@
 :- include('inventory.pl').
 
 plant :-
-    \+ inventory(4, _, _),
+    \+ inventoryList(4, _),
     write('You don''t have any seeds to plant!');
 
     write('You have:\n'),
     findall(Name, inventoryList(4, Name), Names),
-    displayInventory(Names),
+    displayInventoryTwo(Names, 1),
+    length(Names, Len),
     write('What do you want to plant?\n\n'),
     write('>>> '),
     catch(read(Input), error(_,_), errorMessage),(
-      item(4, Name, Input), inventory(_, Name, _) ->
-        format('You planted a %s seed.', [Input]),
+      integer(Input), Input > 0, Input =< Len ->
+        NInput is Input - 1,
+        nth0(NInput, Names, Element),
+        item(_, Element, Plant),
+        format('You planted a %s seed.', [Plant]),
         throw(Name, 1);
     write('Unknown input, try again!\n\n'), plant  
     ).
