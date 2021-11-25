@@ -90,7 +90,3 @@ inventory :-
   displayEquipment,
   format('========= Your Inventory %d/%d =========\n', [TotalAmount, Capacity]),
   displayInventory(Names).
-
-errorMessage:-
-    write('[ERROR] Something''s wrong with your input, exiting the program..'),
-    halt.

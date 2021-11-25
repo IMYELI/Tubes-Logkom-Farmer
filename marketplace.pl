@@ -1,7 +1,3 @@
-:- include('fact.pl').
-:- include('inventory.pl').
-:- include('rancher.pl').
-
 marketSpring :-
     assertz(marketList('Carrot Seeds')),
     assertz(marketList('Potato Seeds')),
@@ -58,9 +54,12 @@ upgrade :-
         Input = 1 ->
             (
                 NHoeLvl =\= 5 ->
-                retract(hoe(_)),
-                assertz(hoe(NHoeLvl));
-                write('Your Hoe is already at max upgrade!\n')
+                (
+                    Price
+                    retract(hoe(_)),
+                    assertz(hoe(NHoeLvl));
+                    write('Your Hoe is already at max upgrade!\n');
+                )
             );
         Input = 2 ->
             (

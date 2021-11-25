@@ -84,5 +84,3 @@ sleep :-
     write('Season: '), write(Season), nl,
     write('Year: '), write(Year), nl.
 
-errorMessage:-
-    write('[ERROR] Something''s wrong with your input, exiting the program..'), halt.
