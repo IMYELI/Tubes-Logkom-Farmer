@@ -36,6 +36,7 @@ gameMenu :-
         Input = 'inventory' -> call(inventory);
         Input = 'ranch' -> call(rancherMenu);
         Input = 'house' -> call(houseMenu);
+        Input = 'throw' -> call(throwItem);
         Input = _ -> write('Unknown input, try again!\n\n')
     ), !, gameMenu.
 
@@ -88,13 +89,13 @@ start :-
     write('>>> '),
     catch(read(Input), error(_,_), errorMessage), (
             Input = 'fisherman' ->
-                asserta(playerStats(1, 1, 1, 56, 1, 76, 1, 56, 0, 0)),
+                asserta(playerStats(1, 1, 1, 56, 1, 76, 1, 56, 0, 10000)),
                 write('Your job is now a Fisherman.'), nl;
             Input = 'farmer' ->
-                asserta(playerStats(2, 1, 1, 76, 1, 56, 1, 56, 0, 0)),
+                asserta(playerStats(2, 1, 1, 76, 1, 56, 1, 56, 0, 10000)),
                 write('Your job is now a Farmer.'), nl;
             Input = 'rancher' ->
-                asserta(playerStats(3, 1, 1, 56, 1, 56, 1, 76, 0, 0)),
+                asserta(playerStats(3, 1, 1, 56, 1, 56, 1, 76, 0, 10000)),
                 write('Your job is now a Rancher.'), nl;
             write('Unknown input, try again!\n'), !, start
     ).

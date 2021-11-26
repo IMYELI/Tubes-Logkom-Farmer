@@ -12,8 +12,7 @@
 :- dynamic(isWrite/1).
 :- dynamic(diary/5).
 :- dynamic(diaryID/1).
-:- dynamic(hoe/1).
-:- dynamic(rod/1).
+:- dynamic(toolLevel/3).
 
 /* Deklarasi Fakta */
 /* diary(ID, Content, Day, Month, Year) */
@@ -31,7 +30,6 @@ season(3, 'Fall').
 season(4, 'Winter').
 
 % playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold) sebagai status player
-playerStats(1, 1, 1, 56, 1, 76, 1, 56, 0, 200000).
 
 % job(ID, Name)
 job(1, 'Fisherman').
@@ -79,7 +77,6 @@ item(4, 'Strawberry Seeds', strawberry).
 % 5 -> tools
 % 6 -> misc
 
-
 % buyPrice(Name, Price)
 buyPrice('Carrot Seeds', 50).
 buyPrice('Potato Seeds', 50).
@@ -107,8 +104,10 @@ buyPrice('Advanced Fishing Rod', 500).
 buyPrice('Iron Fishing Rod', 1000).
 buyPrice('Steel Fishing Rod', 1500).
 
-hoe(1).
-rod(1).
+
+toolLevel(1, 1, 'Hoe').
+toolLevel(2, 1, 'Fishing Rod').
+
 
 toolList(1, 1, 'Hoe').
 toolList(1, 2, 'Copper Hoe').
@@ -140,7 +139,6 @@ animal(4, 'Sheep', 4).
 animalList('Cow').
 animalList('Chicken').
 animalList('Sheep').
-
 
 %farmLevelPrice(Lvl, Price)
 farmLevelPrice(1, 0).

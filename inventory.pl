@@ -32,32 +32,34 @@ displayInventoryTwo([H|T], Index) :-
   displayInventoryTwo(T, NIndex).
 
 throwItem :-
+  \+ inventoryList(_, _), write('There''s no item in your inventory.\n\n'), !;
+
   findall(Name, inventoryList(_, Name), Names),
   length(Names, Len),
   inventoryTotal(Names, TotalAmount),
-  inventoryCapacity(Capacity), nl,
-  format('Your Inventory %d/%d\n', [TotalAmount, Capacity]),
-  displayInventoryTwo(Names, 1),
-  write('\nWhat do you want to throw?\n'),
+  inventoryCapacity(Capacity),
+  format('========= Your Inventory %d/%d =========\n', [TotalAmount, Capacity]),
+  displayInventoryTwo(Names, 1), nl,
+  write('What do you want to throw?\n'),
   write('>>> '),
-  catch(read(Input), error(_,_), _),
+  catch(read(Input), error(_,_), _), nl,
   (
     integer(Input), Input > 0 , Input =< Len -> 
       Index is Input - 1,
       nth0(Index, Names, X),
       inventory(X, Amount),
-      format('\nYou have %d %s. How many do you want to throw?\n', [Amount, X]),
+      format('You have %d %s. How many do you want to throw?\n', [Amount, X]),
       write('>>> '),
-      catch(read(NInput), error(_,_), _),
+      catch(read(NInput), error(_,_), _), nl,
       (
         integer(NInput), NInput > 0, NInput =< Amount ->
-        format('You threw away %d %s', [NInput, X]),
-        throw(X, NInput);
+          format('You threw away %d %s!', [NInput, X]),
+          throw(X, NInput), nl, nl, throwItem;
    
-        format('You don''t have that many %s! try again!\n', [X]), 
-        throwItem
+          format('You don''t have that many %s!\n\n', [X]),
+          throwItem
       );
-    Input \== 'exit' -> write('Unknown input, try again!'), nl, throwItem
+    Input \== 'exit' -> write('Unknown input, try again!\n\n'), throwItem
   ).
 
 throw(Name, IN_Amount) :-
@@ -69,9 +71,9 @@ throw(Name, IN_Amount) :-
   ).
 
 displayEquipment :-
-  hoe(HoeLvl),
+  toolLevel(1, HoeLvl, _),
   toolList(1, HoeLvl, Hoe),
-  rod(RodLvl),
+  toolLevel(2, RodLvl, _),
   toolList(2, RodLvl, Rod),
   format('- %s\n', [Hoe]),
   format('- %s\n', [Rod]).

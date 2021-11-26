@@ -36,7 +36,8 @@ resetProd([]).
 resetProd([H|T]) :-
     animal(H, Type, Time),
     production(Type, Production),
-    ( Time = Production ->
+    (
+      Time >= Production ->
       retract(animal(H, _, _)),
       assertz(animal(H, Type, 0))
     ),
