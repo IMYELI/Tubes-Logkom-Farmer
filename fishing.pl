@@ -7,7 +7,7 @@ rangeSmallFish(3,3).
 rangeMediumFish(56,56).
 rangeBigFish(87,87).
 
-initializeChance(Plus):-
+initializeChanceFishing(Plus):-
     rangeSmallFish(SL,_),
     rangeMediumFish(ML,_),
     rangeBigFish(BL,_),

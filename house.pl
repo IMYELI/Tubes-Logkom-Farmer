@@ -16,6 +16,8 @@ houseMenu :-
             write('You have exited the house. Good Luck!\n\n')
     ).
 
+
+
 updateDay :-
     date(Total, Day, Month, Year),
     NTotal is Total + 1,
@@ -35,7 +37,8 @@ updateDay :-
       NYear is Year
     ),
     retract(date(Total, Day, Month, Year)),
-    asserta(date(NTotal, NDay, NMonth, NYear)).
+    asserta(date(NTotal, NDay, NMonth, NYear)),
+    updateCrop. 
   
 writeDiary :-
     date(_, Day, Month, Year),

@@ -66,6 +66,15 @@ item(4, 'Strawberry Seeds', strawberry).
 %% item(5, 'Iron Fishing Rod', ironrod).
 %% item(5, 'Steel Fishing Rod', steelrod).
 
+crops(carrot, 1, 6).
+crops(potato, 1, 6).
+crops(strawberry, 1, 8).
+crops(corn, 2, 6).
+crops(sunflower, 2, 8).
+crops(eggplant, 3, 6).
+crops(grape, 3, 8).
+
+
 /* inventory(Name, Amount) sebagai info dari inventory */
 /* inventoryList(Category, Name) sebagai list inventory */
 

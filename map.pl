@@ -2,6 +2,7 @@
 :- include('fact.pl').
 :- include('farmer.pl').
 :- include('fishing.pl').
+:- include('house.pl').
 
 generateMap:- generate(0,0).
 
@@ -37,9 +38,17 @@ generate(X,Y) :-
 
 %Generate PLAYER
 generate(X,Y) :-
-    patchDug(X,Y),!,
+    Z is 0,
+    patchDug(_, X,Y,Z,_,_, _),!,
     NewX is X+1,
     write('X'),generate(NewX,Y).
+
+%Generate PLAYER
+generate(X,Y) :-
+    Z is 1,
+    patchDug(_, X,Y,Z,_,_, _),!,
+    NewX is X+1,
+    write('W'),generate(NewX,Y).
 
 generate(X,Y) :-
     isTopPatch(X,Y),!,
@@ -163,26 +172,26 @@ a:-
 
         isTile(X-1,Y) ->
         retract(playerKoord(X,Y)),NewX is X-1,asserta(playerKoord(NewX,Y)),generateMap;
-        write('You can\'t go there!')
+        write('Bruh, even a little kid knows u musn\'t go there.')
     ).
 d:-
     playerKoord(X,Y),
     (
         isTile(X+1,Y) ->
         retract(playerKoord(X,Y)),NewX is X+1,asserta(playerKoord(NewX,Y)),generateMap;
-        write('You can\'t go there!')
+        write('Bruh, even a little kid knows u musn\'t go there.')
     ).
 w:-
     playerKoord(X,Y),
     (
         isTile(X,Y-1) ->
         retract(playerKoord(X,Y)),NewY is Y-1,asserta(playerKoord(X,NewY)),generateMap;
-        write('You can\'t go there!')
+        write('Bruh, even a little kid knows u musn\'t go there.')
     ).
 s:-
     playerKoord(X,Y),
     (
         isTile(X,Y+1) ->
         retract(playerKoord(X,Y)),NewY is Y+1,asserta(playerKoord(X,NewY)),generateMap;
-        write('You can\'t go there!')
+        write('Bruh, even a little kid knows u musn\'t go there.')
     ).
