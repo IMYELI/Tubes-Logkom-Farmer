@@ -12,23 +12,23 @@ addExpPlayer(Exp) :-
 decreaseProduction([]).
 decreaseProduction([H|T]) :-
     production(H, Production),
-    NProduction is Production,
+    NProduction is Production - 1,
     retract(production(H, _)),
     assertz(production(H, NProduction)),
     decreaseProduction(T).
 
 decreaseHarvest([]).
 decreaseHarvest([H|T]) :-
-    production(H, Production),
-    NProduction is Production,
-    retract(production(H, _)),
-    assertz(production(H, NProduction)),
-    decreaseProduction(T).
+    crops(H, Season, HarvestTime),
+    NHarvestTime is HarvestTime - 1,
+    retract(crops(H, _, _)),
+    assertz(crops(H, Season, NHarvestTime)),
+    decreaseHarvest(T).
 
 addExpRanch(Exp) :-
     playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     (
-        Job = 3 -> GainedEXP is Exp + 25;
+        Job = 3 -> GainedEXP is Exp + 3;
         GainedEXP is Exp
     ),
         NExpRanch is ExpRanch + GainedEXP,
@@ -47,7 +47,7 @@ addExpRanch(Exp) :-
 addExpFarm(Exp) :-
     playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     (
-        Job = 2 -> GainedEXP is Exp + 25;
+        Job = 2 -> GainedEXP is Exp + 3;
         GainedEXP is Exp
     ),
         NExpFarm is ExpFarm + GainedEXP,
@@ -55,7 +55,7 @@ addExpFarm(Exp) :-
         LvlFarm =\= 4, professionLvlCap(LvlFarm, Cap), NExpFarm > Cap ->
             NLvlFarm is LvlFarm + 1,
             findall(Crop, crops(Crop, _, _), Crops),
-
+            decreaseHarvest(Crops);
         NLvlFarm is LvlFarm
     ),
     format('You gain %d Farming EXP!', [GainedEXP]),
@@ -66,13 +66,14 @@ addExpFarm(Exp) :-
 addExpFish(Exp) :-
     playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     (
-        Job = 1 -> GainedEXP is Exp + 25;
+        Job = 1 -> GainedEXP is Exp + 3;
         GainedEXP is ExpFish + Exp
     ),
         NExpFish is ExpFish + GainedEXP,
     (
         LvlFish =\= 4, professionLvlCap(LvlFish, Cap), NExpFish > Cap ->
-            NLvlFish is LvlFish + 1;
+            NLvlFish is LvlFish + 1,
+            increaseFishingChance(10);
         NLvlFish is LvlFish
     ),
     format('You gain %d Fishing EXP!', [GainedEXP]),

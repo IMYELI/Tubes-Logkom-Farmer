@@ -23,7 +23,7 @@ updateC([H|T]) :-
   cropList(H, X, Y),
   date(_, _, Month),
   patchDug(X, Y, IsPlant, CropName, Time),
-  crops(CropName, Season, HarvestTime),
+  crops(CropName, Season, _),
   (
     Month =\= Season ->
       retract(patchDug(X, Y, _, _, _));
@@ -219,11 +219,11 @@ harvest :-
             item(1, Crop, CropName),
             add(Crop, 1),
             format('You harvested a/an %s.', [CropName]),
-            addExpFarm(15);
+            addExpFarm(1);
           write('It''s not riped yet!')
         );
       write('What are you trying to harvest?')
-    ), nl, nl.
+    ).
 
 cheatHarvest :-
     playerKoord(X,Y),

@@ -18,18 +18,6 @@ houseMenu :-
             write('You have exited the house. Good Luck!\n\n')
     ).
 
-updateR([]).
-updateR([H|T]) :-
-  animal(ID, Type, Time),
-  NTime is Time + 1,
-  retract(animal(ID, _, _)),
-  assertz(animal(ID, Type, NTime)).
-  updateR(T).
-
-updateRanch :-
-  \+ animal(ID, _, _), !;
-  findall(ID, animal(ID, _, _), IDs),
-  updateR(IDs).
 
 updateDay :-
     date(Total, Day, Month),
@@ -96,10 +84,10 @@ readDiary :-
     ).
 
 failDebt :-
-    write('======= YOUR DEBT IS OVERDUE =======\n'),
+    write('==================== YOUR DEBT IS OVERDUE ======================\n'),
     write('You have worked hard, but in the end result is all that matters.\n'),
     write('May God bless you in the future with kind people!\n'),
-    write('====================================\n'),
+    write('================================================================\n'),
     fail.
 
 sleep :-

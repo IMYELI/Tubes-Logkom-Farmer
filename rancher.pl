@@ -2,10 +2,10 @@
 
 updateR([]).
 updateR([H|T]) :-
-  animal(ID, Type, Time),
+  animal(H, Type, Time),
   NTime is Time + 1,
-  retract(animal(ID, _, _)),
-  assertz(animal(ID, Type, NTime)).
+  retract(animal(H, _, _)),
+  assertz(animal(H, Type, NTime)),
   updateR(T).
 
 updateRanch :-
@@ -71,7 +71,7 @@ animalInfo(IDs, Type):-
         item(_, NProdName, ProdName),
         format('You got %d %s!\n', [Amount, NProdName]),
         add(NProdName, Amount),
-        addExpRanch(15),
+        addExpRanch(1),
         findall(NID, animal(NID, Type, _), NIDs),
         resetProd(NIDs)
       );
