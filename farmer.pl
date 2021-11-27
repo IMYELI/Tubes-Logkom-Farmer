@@ -60,7 +60,7 @@ plantCrop :-
           format('You planted a %s seed.\n\n', [Plant]),
           throw(Name, 1),
           cropID(ID),
-          patchDug(X, Y, _, _, _),
+          playerKoord(X, Y),
           asserta(cropList(ID, X, Y)),
           NID is ID + 1,
           retract(cropID(_)),

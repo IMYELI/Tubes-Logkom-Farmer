@@ -44,13 +44,13 @@ generate(X,Y) :-
     write('X'),generate(NewX,Y).
 
 generate(X,Y) :-
-    patchDug(X, Y, 1, CropName, _), !,
+    patchDug(X, Y, 1, CropName, _),
     NewX is X+1,
     (
-        CropName = carrot -> write('C');
-        CropName = potato -> write('P');
-        CropName = strawberry -> write('S')
-    ), !, generate(NewX,Y).
+        CropName = carrot -> write('C'), !;
+        CropName = potato -> write('P'), !;
+        CropName = strawberry -> write('S'), !
+    ), generate(NewX,Y).
 
 generate(X,Y) :-
     isTopPatch(X,Y),!,
