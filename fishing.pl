@@ -22,9 +22,29 @@ increaseFishingChance(Plus):-
     retract(rangeSmallFish(_,_)),
     retract(rangeMediumFish(_,_)),
     retract(rangeBigFish(_,_)),
-    asserta(rangeSmallFish(SL,SmallUp+SL)),
-    asserta(rangeMediumFish(ML,MedUp+ML)),
-    asserta(rangeBigFish(BL,BigUp+BL)).
+    NewSmallUp is SmallUp + SL,
+    NewMediumUp is MedUp + ML,
+    NewBigUp is BigUp + BL,
+    asserta(rangeSmallFish(SL,NewSmallUp)),
+    asserta(rangeMediumFish(ML,NewMediumUp)),
+    asserta(rangeBigFish(BL,NewBigUp)).
+
+decreaseFishingChance(Min):-
+    rangeSmallFish(SL,US),
+    rangeMediumFish(ML,UM),
+    rangeBigFish(BL,UB),
+    SmallUp is div(Min, 9) * 5,
+    MedUp is div(Min, 9) * 3,
+    BigUp is div(Min,9) * 1,
+    retract(rangeSmallFish(_,_)),
+    retract(rangeMediumFish(_,_)),
+    retract(rangeBigFish(_,_)),
+    NewSmallUp is US - SmallUp + SL,
+    NewMediumUp is UM - MedUp + ML,
+    NewBigUp is UB-BigUp+BL,
+    asserta(rangeSmallFish(SL,NewSmallUp)),
+    asserta(rangeMediumFish(ML,NewMediumUp)),
+    asserta(rangeBigFish(BL,NewBigUp)).
 
 increaseFishingLimit(Plus):-
     fishingLimit(N),
