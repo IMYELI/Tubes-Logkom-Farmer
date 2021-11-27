@@ -52,7 +52,7 @@ displayUpgrade([], _).
 displayUpgrade([H|T], ID) :-
     toolList(ToolType, ToolLvl, H),
     (
-        ToolLvl =\= 4 ->
+        ToolLvl =\= 3 ->
             NToolLvl is ToolLvl + 1,
             toolList(ToolType, NToolLvl, NTool),
             price(NTool, Price),
@@ -64,7 +64,7 @@ displayUpgrade([H|T], ID) :-
     displayUpgrade(T, NID).
 
 upgradeTool(ToolType, ToolLvl, ToolName) :-
-    ToolLvl = 4, format('Your %s is already at max upgrade!\n\n', [ToolName]), !;
+    ToolLvl = 3, format('Your %s is already at max upgrade!\n\n', [ToolName]), !;
 
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     NToolLvl is ToolLvl + 1,
@@ -123,9 +123,10 @@ upgrade :-
 sell :-
     \+ inventoryList(1, _),
     \+ inventoryList(3, _),
+    \+ inventoryList(6, _),
     write('There''s nothing that worth to sell in your inventory.\n\n'), marketplace;
 
-    findall(Name, (inventoryList(1, Name); inventoryList(3, Name)), Names),
+    findall(Name, (inventoryList(1, Name); inventoryList(3, Name); inventoryList(6, Name)), Names),
     length(Names, Len),
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     write('========= Sell Menu =========\n'),
@@ -161,7 +162,7 @@ sell :-
                             Category = 1 ->
                             NewPrice is Price + BonusFarm;
 
-                            Category = ->
+                            Category = 6 ->
                             NewPrice is Price + BonusFish;
 
                             Category = 3 ->

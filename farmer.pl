@@ -43,7 +43,7 @@ updateCrop :-
 plantCrop :-
     write('You have:\n'),
     findall(Name, inventoryList(4, Name), Names),
-    displayInventoryTwo(Names, 1),
+    displayInventory2(Names, 1),
     date(_, _, Month),
     length(Names, Len), nl,
     write('What do you want to plant?\n'),
@@ -239,7 +239,3 @@ cheatHarvest :-
         add(Crop, 1);
       write('Developer ko nda tau tempat yang bisa diharvest.')
     ).
-
-errorMessage:-
-    write('[ERROR] Something''s wrong with your input, exiting the program..'),
-    halt.

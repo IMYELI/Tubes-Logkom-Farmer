@@ -24,7 +24,7 @@ addExpRanch(Exp) :-
     format('You gain %d Ranching EXP!', [GainedEXP]),
     retract(playerStats(Job, _, _, _, _, _, _, _, _, _)),
     assertz(playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, NLvlRanch, NExpRanch, ExpTotal, Gold)),
-    addExpPlayer(Exp).
+    addExpPlayer(GainedEXP).
 
 addExpFarm(Exp) :-
     playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
@@ -41,7 +41,7 @@ addExpFarm(Exp) :-
     format('You gain %d Farming EXP!', [GainedEXP]),
     retract(playerStats(Job, _, _, _, _, _, _, _, _, _)),
     assertz(playerStats(Job, LvlPlayer, NLvlFarm, NExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold)),
-    addExpPlayer(Exp).
+    addExpPlayer(GainedEXP).
 
 addExpFish(Exp) :-
     playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
@@ -58,5 +58,5 @@ addExpFish(Exp) :-
     format('You gain %d Fishing EXP!', [GainedEXP]),
     retract(playerStats(Job, _, _, _, _, _, _, _, _, _)),
     assertz(playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, NLvlFish, NExpFish, LvlRanch, ExpRanch, ExpTotal, Gold)),
-    addExpPlayer(Exp).
+    addExpPlayer(GainedEXP).
 
