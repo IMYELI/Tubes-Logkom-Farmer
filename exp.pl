@@ -73,7 +73,8 @@ addExpFish(Exp) :-
     (
         LvlFish =\= 4, professionLvlCap(LvlFish, Cap), NExpFish > Cap ->
             NLvlFish is LvlFish + 1,
-            increaseFishingChance(10);
+            increaseFishingChance(10),
+            increaseFishingLimit(2);
         NLvlFish is LvlFish
     ),
     format('You gain %d Fishing EXP!', [GainedEXP]),

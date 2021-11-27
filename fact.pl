@@ -122,13 +122,12 @@ item(6, 'Big Fish', bigfish).
 %equip(Category, Name)
 
 toolList(hoe, 1, 'Hoe').
-toolList(hoe, 2, 'Copper Hoe').
-toolList(hoe, 3, 'Iron Hoe').
-toolList(hoe, 4, 'Steel Hoe').
+toolList(hoe, 2, 'Steel Hoe').
+toolList(hoe, 3, 'Gold Hoe').
+
 toolList(rod, 1, 'Fishing Rod').
-toolList(rod, 2, 'Advanced Fishing Rod').
-toolList(rod, 3, 'Iron Fishing Rod').
-toolList(rod, 4, 'Steel Fishing Rod').
+toolList(rod, 2, 'Steel Fishing Rod').
+toolList(rod, 3, 'Gold Fishing Rod').
 
 /* Category item */
 % 1 -> crops
@@ -194,8 +193,11 @@ price('Medium Fish', 30).
 price('Big Fish', 75).
 
 price('Egg', 100).
-price('Milk', 300).
-price('Wool', 500).
+price('Milk', 200).
+price('Wool', 300).
+
+price('Hoe', 200).
+price('Fishing Rod', 200).
 price('Copper Hoe', 300).
 price('Iron Hoe', 500).
 price('Steel Hoe', 1000).
@@ -203,15 +205,16 @@ price('Advanced Fishing Rod', 500).
 price('Iron Fishing Rod', 1000).
 price('Steel Fishing Rod', 1500).
 
-%produceType(Type, SmallName, ProdName, ProdString)
+% produceType(Type, SmallName, ProdName, ProdString)
 produceType('Cow', milk, produce).
 produceType('Chicken', egg, lay).
 produceType('Sheep', wool, produce).
 
-%production(Type, Production)
+% production(Type, Production)
 production('Cow', 4).
 production('Chicken', 3).
 production('Sheep', 4).
+
 
 %animal(ID, Type, Time)
 %% animal(1, 'Cow', 4).

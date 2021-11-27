@@ -197,6 +197,17 @@ buy :-
     assertz(marketList('Chicken')),
     assertz(marketList('Cow')),
     assertz(marketList('Sheep')),
+    (
+        \+ equipment(hoe, _), \+ (inventoryList(5, Tool), toolList(hoe, _, Tool)) ->
+            assertz(marketList('Hoe'));
+        true
+
+    ),
+    (
+        \+ equipment(rod, _), \+ (inventoryList(5, NTool), toolList(rod, _, NTool)) ->
+            assertz(marketList('Fishing Rod'));
+        true
+    ),
     findall(Name, marketList(Name), Names),
     length(Names, Len),
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
@@ -223,6 +234,9 @@ buy :-
                     Category =\= 2, isInventoryFull(Amount) ->
                     write('Broo... that''s too much for you to handle');
 
+                    Category = 5, Amount > 1 ->
+                    write('You can only buy 1 tool at once!');
+
                     TotalPrice > Gold ->
                     write('You don''t have enough gold!');
 
@@ -240,7 +254,7 @@ buy :-
                     asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, NGold))
                 ), retractall(marketList(_)), nl, nl, buy;
 
-                write('You don''t have that many item!\n\n'),
+                write('What are you doing, buying a negative item?\n\n'),
                 retractall(marketList(_)),
                 buy
             )

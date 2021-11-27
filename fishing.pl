@@ -85,7 +85,7 @@ fishGenerator:-
         write('So sad :( you got mysterious floating boots.\nYou decided to throw it back to the water since it is useless.')
     ),
     nl,
-    addExpFish(15),
+    addExpFish(1),
     plusFishingCount.
 
 isSmallFishCaught(X):-

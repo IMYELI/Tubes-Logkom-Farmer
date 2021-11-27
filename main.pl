@@ -50,16 +50,20 @@ gameMenu :-
             playerKoord(X,Y), isHouse(X,Y) -> call(houseMenu);
             write('You are not in the house!\n\n')
         );
-        Input = 'fish' -> call(fish), nl, nl;
+        Input = 'fish' ->
+        (
+            isFishingRod1 -> call(fish);
+            write('You need a Fishing Rod!')
+        ), nl, nl;
         Input = 'inventory' -> call(inventory);
         Input = 'throwItem' -> call(throwItem);
         Input = 'equip' -> call(equip);
         Input = 'unequip' -> call(unequip);
         Input = 'map' -> call(generateMap);
-        Input = 'a' -> call(a);
-        Input = 'w' -> call(w);
-        Input = 's' -> call(s);
-        Input = 'd' -> call(d);
+        Input = 'a' -> call(a), nl, nl;
+        Input = 'w' -> call(w), nl, nl;
+        Input = 's' -> call(s), nl, nl;
+        Input = 'd' -> call(d), nl, nl;
         Input = 'plant' -> call(plant), nl, nl;
         Input = 'harvest' -> call(harvest), nl, nl;
         Input = 'dig' ->
