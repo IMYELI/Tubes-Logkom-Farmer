@@ -2,12 +2,17 @@
 :- dynamic(rangeMediumFish/2).
 :- dynamic(rangeBigFish/2).
 :- dynamic(baseChance/1).
+:- dynamic(fishingLimit/1).
+:- dynamic(fishingCount/1).
+
 baseChance(30).
 rangeSmallFish(3,3).
 rangeMediumFish(56,56).
 rangeBigFish(87,87).
+fishingLimit(10).
+fishingCount(0).
 
-initializeChanceFishing(Plus):-
+increaseFishingChance(Plus):-
     rangeSmallFish(SL,_),
     rangeMediumFish(ML,_),
     rangeBigFish(BL,_),
@@ -20,11 +25,29 @@ initializeChanceFishing(Plus):-
     asserta(rangeSmallFish(SL,SmallUp+SL)),
     asserta(rangeMediumFish(ML,MedUp+ML)),
     asserta(rangeBigFish(BL,BigUp+BL)).
-    
+
+increaseFishingLimit(Plus):-
+    fishingLimit(N),
+    retract(fishingLimit(N)),
+    assertz(fishingLimit(N+Plus)).
+
+
+updateFishingCount:-
+    fishingCount(FC),
+    retract(fishingCount(FC)),
+    assertz(fishingCount(0)).
+
+plusFishingCount:-
+    fishingCount(FC),
+    retract(fishingCount(FC)),
+    assertz(fishingCount(FC+1)).
 
 fish:-
     playerKoord(X,Y),
-    (\+ isNearWater(X,Y) -> write('You are not near water! What do you want to fish huh?');
+    fishingLimit(Max),
+    fishingCount(FC),
+    (   FC>=Max -> write('Hey, that''s enough for today. You must level up if you want to fish more.');
+        \+ isNearWater(X,Y) -> write('You are not near water! What do you want to fish huh?');
         isNearWater(X,Y) -> fishGenerator).
 
 
@@ -34,7 +57,7 @@ fishGenerator:-
         isMediumFishCaught(RAND) -> write('You caught a medium fish.');
         isBigFishCaught(RAND) -> write('CONGRATS, You have finally gotten the big fish.');
         write('So sad :( you got mysterious floating boots. You decided to throw it back to the water since it is useless.')
-    ).
+    ),plusFishingCount.
 
 isSmallFishCaught(X):-
     rangeSmallFish(SL,SU),

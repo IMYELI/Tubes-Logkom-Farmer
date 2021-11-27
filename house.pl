@@ -36,6 +36,7 @@ updateDay :-
       NMonth is Month
     ),
     updateCrop,
+    updateFishingCount,
     retract(date(Total, Day, Month)),
     asserta(date(NTotal, NDay, NMonth)).
   

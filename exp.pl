@@ -59,3 +59,4 @@ addExpFish(Exp) :-
     retract(playerStats(Job, _, _, _, _, _, _, _, _, _)),
     assertz(playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, NLvlFish, NExpFish, LvlRanch, ExpRanch, ExpTotal, Gold)),
     addExpPlayer(Exp).
+

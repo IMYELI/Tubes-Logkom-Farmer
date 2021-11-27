@@ -149,6 +149,7 @@ sell :-
                     price(Element, Price),
                     farmLevelPrice(LvlFarm, BonusFarm),
                     ranchLevelPrice(LvlRanch, BonusRanch),
+                    fishLevelPrice(LvlFish, BonusFish),
                     inventory(Element, InitialAmount),
                     (
                         InitialAmount < Amount ->
@@ -159,6 +160,9 @@ sell :-
                         (
                             Category = 1 ->
                             NewPrice is Price + BonusFarm;
+
+                            Category = ->
+                            NewPrice is Price + BonusFish;
 
                             Category = 3 ->
                             NewPrice is Price + BonusRanch

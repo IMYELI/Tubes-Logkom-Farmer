@@ -14,7 +14,7 @@
 :- dynamic(patchDug/5).
 :- dynamic(equipment/2).
 :- dynamic(upgradeList/1).
-:- dynamic(cropList/2).
+:- dynamic(cropList/3).
 
 /* Deklarasi Fakta */
 /* diary(ID, Content, Day, Month, Year) */
@@ -52,6 +52,12 @@ playerLvlCap(4, 0).
 professionLvlCap(1, 100).
 professionLvlCap(2, 380).
 professionLvlCap(3, 770).
+
+/* fishLevelPrice(Lvl, Price) */
+fishLevelPrice(1, 0).
+fishLevelPrice(2, 50).
+fishLevelPrice(3, 100).
+fishLevelPrice(4, 150).
 
 %farmLevelPrice(Lvl, Price)
 farmLevelPrice(1, 0).

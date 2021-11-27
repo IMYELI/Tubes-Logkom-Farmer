@@ -115,6 +115,14 @@ displayItem(Names) :-
     displayInventory1(Names)
   ).
 
+isHoe :-
+  equipment(ToolType, _),
+  ToolType = hoe.
+
+isFishingRod :-
+  equipment(ToolType, _),
+  ToolType = rod.
+
 displayInventory1([]).
 displayInventory1([H|T]) :-
   inventory(H, Amount),
