@@ -7,12 +7,13 @@
 :- dynamic(animal/3).
 :- dynamic(animalID/1).
 :- dynamic(animalList/1).
-:- dynamic(date/4).
-:- dynamic(diary/5).
+:- dynamic(date/3).
+:- dynamic(diary/4).
 :- dynamic(diaryID/1).
-:- dynamic(toolLevel/3).
 :- dynamic(cropID/1).
 :- dynamic(patchDug/5).
+:- dynamic(equipment/2).
+:- dynamic(upgradeList/1).
 :- dynamic(cropList/2).
 
 /* Deklarasi Fakta */
@@ -21,8 +22,8 @@
 /* cropID(ID) */
 cropID(1).
 
-/* date(Total, Day, Month, Year) */
-date(1, 1, 1, 1).
+/* date(Total, Day, Month) */
+date(1, 1, 3).
 
 /* diaryID(ID) */
 diaryID(1).
@@ -32,6 +33,7 @@ season(1, 'Spring').
 season(2, 'Summer').
 season(3, 'Fall').
 season(4, 'Winter').
+season(5, 'Debt').
 
 % playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold) sebagai status player
 
@@ -51,6 +53,18 @@ professionLvlCap(1, 100).
 professionLvlCap(2, 380).
 professionLvlCap(3, 770).
 
+%farmLevelPrice(Lvl, Price)
+farmLevelPrice(1, 0).
+farmLevelPrice(2, 50).
+farmLevelPrice(3, 100).
+farmLevelPrice(4, 150).
+
+%ranchLevelPrice(Lvl, Price)
+ranchLevelPrice(1, 0).
+ranchLevelPrice(2, 50).
+ranchLevelPrice(3, 100).
+ranchLevelPrice(4, 150).
+
 /* inventoryCapacity (Capacity) sebagai kapasitas inventory */
 inventoryCapacity(100).
 
@@ -58,88 +72,123 @@ inventoryCapacity(100).
 item(1, 'Carrot', carrot).
 item(1, 'Potato', potato).
 item(1, 'Strawberry', strawberry).
+
+item(1, 'Corn', corn).
+item(1, 'Melon', melon).
+item(1, 'Sunflower', sunflower).
+
+item(1, 'Grape', grape).
+item(1, 'Eggplant', eggplant).
+item(1, 'Pumpkin', pumpkin).
+
 item(2, 'Cow', cow).
 item(2, 'Chicken', chicken).
 item(2, 'Sheep', sheep).
 item(3, 'Milk', milk).
 item(3, 'Egg', egg).
 item(3, 'Wool', wool).
+
 item(4, 'Carrot Seeds', carrot).
 item(4, 'Potato Seeds', potato).
 item(4, 'Strawberry Seeds', strawberry).
+
+item(4, 'Corn Seeds', corn).
+item(4, 'Melon Seeds', melon).
+item(4, 'Sunflower Seeds', sunflower).
+
+item(4, 'Eggplant Seeds', eggplant).
+item(4, 'Pumpkin Seeds', pumpkin).
+item(4, 'Grape Starter', grape).
+
 item(5, 'Hoe', hoe).
+item(5, 'Copper Hoe', hoe).
+item(5, 'Iron Hoe', hoe).
+item(5, 'Steel Hoe', hoe).
 item(5, 'Fishing Rod', rod).
-item(5, 'Copper Hoe', copperhoe).
-item(5, 'Iron Hoe', ironhoe).
-item(5, 'Steel Hoe', steelhoe).
-item(5, 'Advanced Fishing Rod', advancedrod).
-item(5, 'Iron Fishing Rod', ironrod).
-item(5, 'Steel Fishing Rod', steelrod).
+item(5, 'Advanced Fishing Rod', rod).
+item(5, 'Iron Fishing Rod', rod).
+item(5, 'Steel Fishing Rod', rod).
 
-% crops(CropName, Season, HarvestTIme)
-crops(carrot, 1, 6).
-crops(potato, 1, 6).
-crops(strawberry, 1, 8).
-crops(corn, 2, 6).
-crops(sunflower, 2, 8).
-crops(eggplant, 3, 6).
-crops(grape, 3, 8).
+%equip(Category, Name)
 
-/* cropList(ID, X, Y) */
+toolList(hoe, 1, 'Hoe').
+toolList(hoe, 2, 'Copper Hoe').
+toolList(hoe, 3, 'Iron Hoe').
+toolList(hoe, 4, 'Steel Hoe').
+toolList(rod, 1, 'Fishing Rod').
+toolList(rod, 2, 'Advanced Fishing Rod').
+toolList(rod, 3, 'Iron Fishing Rod').
+toolList(rod, 4, 'Steel Fishing Rod').
 
-
-/* inventory(Name, Amount) sebagai info dari inventory */
-/* inventoryList(Category, Name) sebagai list inventory */
-
-/* Category yaitu kategori item */
-% 1 -> plants
+/* Category item */
+% 1 -> crops
 % 2 -> animals
 % 3 -> products
 % 4 -> seeds
 % 5 -> tools
 % 6 -> misc
 
-% buyPrice(Name, Price)
-buyPrice('Carrot Seeds', 50).
-buyPrice('Potato Seeds', 50).
-buyPrice('Strawberry Seeds', 75).
-buyPrice('Chicken', 500).
-buyPrice('Cow', 1000).
-buyPrice('Sheep', 1500).
-buyPrice('Copper Hoe', 300).
-buyPrice('Iron Hoe', 500).
-buyPrice('Steel Hoe', 800).
-buyPrice('Advanced Fishing Rod', 250).
-buyPrice('Iron Fishing Rod', 500).
-buyPrice('Steel Fishing Rod', 750).
+% crops(CropName, Season, HarvestTIme)
+crops(carrot, 1, 4).
+crops(potato, 1, 6).
+crops(strawberry, 1, 8).
 
-buyPrice('Carrot', 150).
-buyPrice('Potato', 150).
-buyPrice('Strawberry', 175).
-buyPrice('Egg', 100).
-buyPrice('Milk', 300).
-buyPrice('Wool', 500).
-buyPrice('Copper Hoe', 300).
-buyPrice('Iron Hoe', 500).
-buyPrice('Steel Hoe', 1000).
-buyPrice('Advanced Fishing Rod', 500).
-buyPrice('Iron Fishing Rod', 1000).
-buyPrice('Steel Fishing Rod', 1500).
+crops(corn, 2, 6).
+crops(melon, 2, 12).
+crops(sunflower, 2, 8).
 
+crops(eggplant, 3, 6).
+crops(pumpkin, 3, 13).
+crops(grape, 3, 8).
 
-toolLevel(1, 1, 'Hoe').
-toolLevel(2, 1, 'Fishing Rod').
+/* cropList(ID, X, Y) */
+/* inventory(Name, Amount) sebagai info dari inventory */
+/* inventoryList(Category, Name) sebagai list inventory */
 
+% price(Name, Price)
+price('Carrot Seeds', 20).
+price('Potato Seeds', 50).
+price('Strawberry Seeds', 100).
 
-toolList(1, 1, 'Hoe').
-toolList(1, 2, 'Copper Hoe').
-toolList(1, 3, 'Iron Hoe').
-toolList(1, 4, 'Steel Hoe').
-toolList(2, 1, 'Fishing Rod').
-toolList(2, 2, 'Advanced Fishing Rod').
-toolList(2, 3, 'Iron Fishing Rod').
-toolList(2, 4, 'Steel Fishing Rod').
+price('Corn Seeds', 100).
+price('Melon Seeds', 80).
+price('Sunflower Seeds', 100).
 
+price('Eggplant Seeds', 20).
+price('Pumpkin Seeds', 100).
+price('Grape Starter', 60).
+
+price('Carrot', 70).
+price('Potato', 150).
+price('Strawberry', 240).
+
+price('Corn', 100).
+price('Melon', 80).
+price('Sunflower', 100).
+
+price('Eggplant', 120).
+price('Pumpkin', 640).
+price('Grape', 200).
+
+price('Chicken', 500).
+price('Cow', 1000).
+price('Sheep', 1500).
+price('Copper Hoe', 300).
+price('Iron Hoe', 500).
+price('Steel Hoe', 800).
+price('Advanced Fishing Rod', 250).
+price('Iron Fishing Rod', 500).
+price('Steel Fishing Rod', 750).
+
+price('Egg', 100).
+price('Milk', 300).
+price('Wool', 500).
+price('Copper Hoe', 300).
+price('Iron Hoe', 500).
+price('Steel Hoe', 1000).
+price('Advanced Fishing Rod', 500).
+price('Iron Fishing Rod', 1000).
+price('Steel Fishing Rod', 1500).
 
 %produceType(Type, SmallName, ProdName, ProdString)
 produceType('Cow', milk, produce).
@@ -152,27 +201,15 @@ production('Chicken', 3).
 production('Sheep', 4).
 
 %animal(ID, Type, Time)
-animal(1, 'Cow', 4).
-animal(2, 'Cow', 4).
-animal(3, 'Chicken', 3).
-animal(4, 'Sheep', 4).
+%% animal(1, 'Cow', 4).
+%% animal(2, 'Cow', 4).
+%% animal(3, 'Chicken', 3).
+%% animal(4, 'Sheep', 4).
 
 %animalList(Type)
-animalList('Cow').
-animalList('Chicken').
-animalList('Sheep').
-
-%farmLevelPrice(Lvl, Price)
-farmLevelPrice(1, 0).
-farmLevelPrice(2, 100).
-farmLevelPrice(3, 300).
-farmLevelPrice(4, 500).
-
-%ranchLevelPrice(Lvl, Price)
-ranchLevelPrice(1, 0).
-ranchLevelPrice(2, 100).
-ranchLevelPrice(3, 300).
-ranchLevelPrice(4, 500).
+%% animalList('Cow').
+%% animalList('Chicken').
+%% animalList('Sheep').
 
 %animalID(ID)
 animalID(1).

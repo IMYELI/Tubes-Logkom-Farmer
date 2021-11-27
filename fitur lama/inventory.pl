@@ -23,12 +23,13 @@ add(Name, IN_Amount) :-
     assertz(inventory(Name, IN_Amount))
   ).
 
-displayInventory2([], _).
-displayInventory2([H|T], Index) :-
+
+displayInventoryTwo([], _).
+displayInventoryTwo([H|T], Index) :-
   inventory(H, Amount),
-  format('%d. %s (Amount: %d)\n', [Index, H, Amount]),
+  format('%d. %d %s\n', [Index, Amount, H]),
   NIndex is Index + 1,
-  displayInventory2(T, NIndex).
+  displayInventoryTwo(T, NIndex).
 
 throwItem :-
   \+ inventoryList(_, _), write('There''s no item in your inventory.\n\n'), !;
@@ -38,7 +39,7 @@ throwItem :-
   inventoryTotal(Names, TotalAmount),
   inventoryCapacity(Capacity),
   format('========= Your Inventory %d/%d =========\n', [TotalAmount, Capacity]),
-  displayInventory2(Names, 1), nl,
+  displayInventoryTwo(Names, 1), nl,
   write('What do you want to throw?\n'),
   write('>>> '),
   catch(read(Input), error(_,_), _), nl,
@@ -53,9 +54,10 @@ throwItem :-
       (
         integer(NInput), NInput > 0, NInput =< Amount ->
           format('You threw away %d %s!', [NInput, X]),
-          throw(X, NInput), nl, nl;
+          throw(X, NInput), nl, nl, throwItem;
    
-          format('You don''t have that many %s!\n\n', [X])
+          format('You don''t have that many %s!\n\n', [X]),
+          throwItem
       );
     Input \== 'exit' -> write('Unknown input, try again!\n\n'), throwItem
   ).
@@ -68,64 +70,19 @@ throw(Name, IN_Amount) :-
     retract(inventoryList(_, Name))
   ).
 
-displayInventory3([], _).
-displayInventory3([H|T], Index) :-
-  format('%d. %s\n', [Index, H]),
-  NIndex is Index + 1,
-  displayInventory3(T, NIndex).
+displayEquipment :-
+  toolLevel(1, HoeLvl, _),
+  toolList(1, HoeLvl, Hoe),
+  toolLevel(2, RodLvl, _),
+  toolList(2, RodLvl, Rod),
+  format('- %s\n', [Hoe]),
+  format('- %s\n', [Rod]).
 
-unequip :-
-  \+ equipment(_, _) -> write('You have nothing in your hand!\n\n'), !;
-
-  retract(equipment(_, Tool)),
-  add(Tool, 1),
-  format('You unequip %s.\n\n', [Tool]).
-
-equip :-
-  \+ inventoryList(5, _), write('You don''t have any item worth to equip!\n\n'), !;
-
-  findall(Name, inventoryList(5, Name), Names),
-  length(Names, Len),
-  write('What do you want to equip?\n'),
-  displayInventory3(Names, 1), nl,
-  write('>>> '),
-  read(Input), nl,
-  (
-    integer(Input), Input > 0 , Input =< Len ->
-      Index is Input - 1,
-      nth0(Index, Names, X),
-      item(_, X, Category),
-      (
-        equipment(_, Tool) ->
-          retract(equipment(_, Tool)),
-          add(Tool, 1);
-        true
-      ),
-      throw(X, 1),
-      assertz(equipment(Category, X)),
-      format('You equip %s.\n\n', [X]);
-
-    Input \== 'exit' -> write('Unknown input, try again!\n\n'), equip
-  ).
-
-
-displayItem(Names) :-
-  (
-    \+ inventoryList(_, _) -> write('You don''t have anything.\n');
-    displayInventory1(Names)
-  ).
-
-displayInventory1([]).
-displayInventory1([H|T]) :-
+displayInventory([]).
+displayInventory([H|T]) :-
   inventory(H, Amount),
   format('- %d %s\n', [Amount, H]),
-  displayInventory1(T).
-
-displayEquipment :-
-  (
-    equipment(_, Tool) -> format('- %s', [Tool]);
-    write('You don''t equip anything.')
-  ), nl, nl.
+  displayInventory(T).
 
 inventory :-
   findall(Name, inventoryList(_, Name), Names),
@@ -135,4 +92,4 @@ inventory :-
   write('========= Equipment =========\n'),
   displayEquipment,
   write('============ Item ===========\n'),
-  displayItem(Names), nl.
+  displayInventory(Names), nl.

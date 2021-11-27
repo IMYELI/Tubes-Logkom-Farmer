@@ -3,16 +3,6 @@ marketSpring :-
     assertz(marketList('Potato Seeds')),
     assertz(marketList('Strawberry Seeds')).
 
-marketSummer :-
-    assertz(marketList('Melon Seeds')),
-    assertz(marketList('Corn Seeds')),
-    assertz(marketList('Sunflower Seeds')).
-
-marketFall :-
-    assertz(marketList('Pumpkin Seeds')),
-    assertz(marketList('Eggplant Seeds')),
-    assertz(marketList('Grape Starter')).
-
 marketplace :-
     write('========== Welcome To The Market ==========\n'),
     write('What do you want to do?\n'),
@@ -43,80 +33,61 @@ displayMarket2([H|T], Index) :-
 
 displayMarket([], _).
 displayMarket([H|T], Index) :-
-    price(H, Gold),
+    buyPrice(H, Gold),
     format('%d. %s (%d Gold)\n', [Index, H, Gold]),
     NIndex is Index + 1,
     displayMarket(T, NIndex).
 
-displayUpgrade([], _).
-displayUpgrade([H|T], ID) :-
-    toolList(ToolType, ToolLvl, H),
+displayUpgrade(Category, Tool, ToolLvl) :-
     (
-        ToolLvl =\= 4 ->
-            NToolLvl is ToolLvl + 1,
-            toolList(ToolType, NToolLvl, NTool),
-            price(NTool, Price),
-            format('%d. %s -> %s (%d Gold)', [ID, H, NTool, Price]);
-        format('%d. %s (MAX)', [ID, H])
-    ),
-    nl,
-    NID is ID + 1,
-    displayUpgrade(T, NID).
+        ToolLvl =\= 5 ->
+        toolList(Category, ToolLvl, NTool),
+        buyPrice(NTool, Price),
+        format('%d. %s -> %s (%d Gold)', [Category, Tool, NTool, Price]);
+        format('%d. %s (MAX)', [Category, Tool])
+    ), nl.
 
-upgradeTool(ToolType, ToolLvl, ToolName) :-
-    ToolLvl = 4, format('Your %s is already at max upgrade!\n\n', [ToolName]), !;
+upgradeTool(Category, ToolLvl, Type) :-
+    ToolLvl = 5, format('Your %s is already at max upgrade!\n\n', [Type]), upgrade, !;
 
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
-    NToolLvl is ToolLvl + 1,
-    toolList(ToolType, NToolLvl, NToolName),
-    price(NToolName, Price),
+    toolList(Category, ToolLvl, ToolName),
+    buyPrice(ToolName, Price),
     (
         Gold < Price ->
-        format('You don''t have enough money to buy a %s upgrade!\n\n', [NToolName]);
+        format('You don''t have enough money to buy a %s upgrade!\n\n', [Type]), upgrade;
 
         NGold is Gold - Price,
         retract(playerStats(_, _, _, _, _, _, _, _, _, _)),
         assertz(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, NGold)),
-        throw(ToolName, 1),
-        add(NToolName, 1),
-        format('You successfully upgrade your %s into %s\n\n', [ToolName, NToolName])
-    ).
-
-checkTool(ToolType) :-
-    (
-        inventoryList(5, Tool), toolList(ToolType, _, Tool) ->
-            assertz(upgradeList(Tool));
-        true
+        retract(toolLevel(Category, _, Type)),
+        assertz(toolLevel(Category, ToolLvl, Type)),
+        format('You successfully upgrade your %s into %s\n\n', [Type, ToolName]), upgrade
     ).
 
 upgrade :-
-    checkTool(hoe),
-    checkTool(rod),
+    toolLevel(1, HoeLvl, Type1),
+    toolList(1, HoeLvl, Hoe),
+    toolLevel(2, RodLvl, Type2),
+    toolList(2, RodLvl, Rod),
+    NHoeLvl is HoeLvl + 1,
+    NRodLvl is RodLvl + 1,
     playerStats(_, _, _, _, _, _, _, _, _, Gold),
+    write('========== Upgrade Menu ==========\n'),
+    format('Your Gold: %d\n', [Gold]),
+    write('What do you want to upgrade?\n'),
+    displayUpgrade(1, Hoe, NHoeLvl),
+    displayUpgrade(2, Rod, NRodLvl), nl,
+    write('>>> '),
+    read(Input), nl,
     (
-        \+ upgradeList(_) ->
-        write('You don''t have any tools to upgrade, you need to unequip your tool to upgrade\n\n'), marketplace;
-
-        write('========== Upgrade Menu ==========\n'),
-        format('Your Gold: %d\n', [Gold]),
-        write('What do you want to upgrade?\n'),
-        findall(Tool, upgradeList(Tool), Tools),
-        length(Tools, Len),
-        displayUpgrade(Tools, 1), nl,
-        write('>>> '),
-        read(Input), nl,
-        (
-            integer(Input), Input > 0, Input =< Len ->
-                Index is Input - 1,
-                nth0(Index, Tools, X),
-                toolList(ToolType, ToolLvl, X),
-                upgradeTool(ToolType, ToolLvl, X),
-                retractall(upgradeList(_)),
-                upgrade;
-            Input \== 'exit' -> write('Unknown Input, Try Again!\n\n'),
-                retractall(upgradeList(_)), upgrade;
-            retractall(upgradeList(_)), marketplace
-        )
+        Input = 1 ->
+            upgradeTool(1, NHoeLvl, Type1);
+        Input = 2 ->
+            upgradeTool(2, NRodLvl, Type2);
+        Input \== exit ->
+            write('Unknown Input, Try Again!\n\n'), upgrade;
+        marketplace
     ).
 
 
@@ -146,7 +117,7 @@ sell :-
             read(Amount), nl,
             (
                 integer(Amount), Amount > 0 ->
-                    price(Element, Price),
+                    buyPrice(Element, Price),
                     farmLevelPrice(LvlFarm, BonusFarm),
                     ranchLevelPrice(LvlRanch, BonusRanch),
                     inventory(Element, InitialAmount),
@@ -182,12 +153,12 @@ sell :-
 
 
 buy :-
-    date(_, _, Month),
+    date(_, _, Month, _),
     (
         Month = 1 -> call(marketSpring);
         Month = 2 -> call(marketSummer);
         Month = 3 -> call(marketFall);
-        true
+        Month = 4 -> call(marketWinter)
     ),
     assertz(marketList('Chicken')),
     assertz(marketList('Cow')),
@@ -212,7 +183,7 @@ buy :-
             read(Amount), nl,
             (
                 integer(Amount), Amount > 0 ->
-                price(Element, Price),
+                buyPrice(Element, Price),
                 TotalPrice is Amount * Price,
                 (
                     Category =\= 2, isInventoryFull(Amount) ->

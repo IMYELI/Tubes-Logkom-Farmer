@@ -55,8 +55,9 @@ animalInfo(IDs, Type):-
         write('Your inventory is full!');
         
         item(_, NProdName, ProdName),
-        format('You got %d %s!', [Amount, NProdName]),
+        format('You got %d %s!\n', [Amount, NProdName]),
         add(NProdName, Amount),
+        addExpRanch(15),
         findall(NID, animal(NID, Type, _), NIDs),
         resetProd(NIDs)
       );

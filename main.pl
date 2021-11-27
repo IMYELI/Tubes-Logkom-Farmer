@@ -3,7 +3,8 @@
 :- include('rancher.pl').
 :- include('house.pl').
 :- include('marketplace.pl').
-
+:- include('farmer.pl').
+:- include('exp.pl').
 
 startFile:-
     title,
@@ -37,7 +38,9 @@ gameMenu :-
         Input = 'ranch' -> call(rancherMenu);
         Input = 'house' -> call(houseMenu);
         Input = 'throwItem' -> call(throwItem);
-        Input = _ -> write('Unknown input, try again!\n\n')
+        Input = 'equip' -> call(equip);
+        Input = 'unequip' -> call(unequip);
+        write('Unknown input, try again!\n\n')
     ), !, gameMenu.
 
 welcome :-
@@ -49,7 +52,7 @@ welcome :-
     write('(help.) Menampilkan segala bantuan dan command\n'),
     write('(status.) Menampilkan kondisi pemain\n'),
     write('(inventory.) Menampilkan menu inventory\n'),
-    write('(throwItem.) Membuang item dari inventory\n')
+    write('(throwItem.) Membuang item dari inventory\n'),
     write('(market.) Menampilkan menu marketplace (harus berada pada marketplace)\n'),
     write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
     write('(house.) Menampilkan menu house (harus berada pada house)\n\n').
@@ -59,17 +62,21 @@ help :-
     write('(help.) Menampilkan segala bantuan dan command\n'),
     write('(status.) Menampilkan kondisi pemain\n'),
     write('(inventory.) Menampilkan menu inventory\n'),
-    write('(throwItem.) Membuang item dari inventory\n')
+    write('(throwItem.) Membuang item dari inventory\n'),
     write('(market.) Menampilkan menu marketplace (harus berada pada marketplace)\n'),
     write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
     write('(house.) Menampilkan menu house (harus berada pada house)\n\n').
 
+init :-
+    welcome,
+    gameMenu.
+
 mainMenu :-
     write('>>> '),
     catch(read(Input), error(_,_), errorMessage), (
-        Input = 'start' -> call(start), welcome, gameMenu;
+        Input = 'start' -> call(start), init;
         Input = 'exit' -> write('Thank you for playing the game!');
-        write('Unknown input, try again!\n\n'), !, mainMenu
+        write('Unknown input, try again!\n\n'), mainMenu
     ).
 
 status :-
@@ -101,18 +108,29 @@ start :-
     write('- Rancher'), nl,
     write('Example: ">>> fisherman."'), nl, nl,
     write('>>> '),
-    catch(read(Input), error(_,_), errorMessage), (
-            Input = 'fisherman' ->
-                asserta(playerStats(1, 1, 1, 56, 1, 76, 1, 56, 0, 10000)),
-                write('Your job is now a Fisherman.'), nl;
-            Input = 'farmer' ->
-                asserta(playerStats(2, 1, 1, 76, 1, 56, 1, 56, 0, 10000)),
-                write('Your job is now a Farmer.'), nl;
-            Input = 'rancher' ->
-                asserta(playerStats(3, 1, 1, 56, 1, 56, 1, 76, 0, 10000)),
-                write('Your job is now a Rancher.'), nl;
-            write('Unknown input, try again!\n'), !, start
+    catch(read(Input), error(_,_), errorJob), nl,
+    (
+        Input = 'fisherman' ->
+            asserta(playerStats(1, 1, 1, 0, 1, 0, 1, 0, 0, 10000)),
+            add('Fishing Rod', 1),
+            write('You choose Fisherman!\n');
+
+        Input = 'farmer' ->
+            asserta(playerStats(2, 1, 1, 0, 1, 0, 1, 0, 0, 10000)),
+            add('Hoe', 1),
+            write('You choose Farmer!\n');
+        Input = 'rancher' ->
+            asserta(playerStats(3, 1, 1, 0, 1, 0, 1, 0, 0, 10000)),
+            addAnimal('Cow', 1),
+            addAnimal('Sheep', 1),
+            addAnimal('Chicken', 1),
+            write('You choose Rancher!\n');
+        write('Unknown input, try again!\n'), start
     ).
 
 errorMessage:-
     write('[ERROR] Your input broke the game, exiting the game...'), halt.
+
+errorJob :-
+    write('\nCmon don''t break the game please!\n'),
+    start.

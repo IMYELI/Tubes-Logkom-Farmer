@@ -1,3 +1,4 @@
+:- dynamic(cropList/2).
 
 plant :-
   playerKoord(X,Y),
@@ -20,7 +21,7 @@ plant :-
 update([]).
 update([H|T]) :-
   cropList(H, X, Y),
-  date(_, _, Month, _),
+  date(_, _, Month),
   patchDug(X, Y, IsPlant, CropName, Time),
   crops(CropName, Season, HarvestTime),
   (
@@ -35,6 +36,7 @@ update([H|T]) :-
   update(T).
 
 updateCrop :-
+  \+ cropList(_, _, _), !;
   findall(ID, cropList(ID, _, _), IDs),
   update(IDs).
 
@@ -42,7 +44,7 @@ plantCrop :-
     write('You have:\n'),
     findall(Name, inventoryList(4, Name), Names),
     displayInventoryTwo(Names, 1),
-    date(_, _, Month, _),
+    date(_, _, Month),
     length(Names, Len), nl,
     write('What do you want to plant?\n'),
     write('>>> '),

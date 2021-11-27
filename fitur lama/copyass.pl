@@ -27,18 +27,6 @@ displayMarket([H|T], Index) :-
     NIndex is Index + 1,
     displayMarket(T, NIndex).
 
-upgrade :-
-    (
-        levelHoe(LvlHoe), LvlHoe =\= 4 ->
-        hoeList(LvlHoe, Name),
-        assertz(marketList(Name))
-    ),
-    (
-        levelRod(LvlRod), LvlRod =\= 4 ->
-        rodList(LvlRod, Name2),
-        assertz(marketList(Name2))
-    ).
-
 buy :-
     date(_, _, Month, _),
     (
