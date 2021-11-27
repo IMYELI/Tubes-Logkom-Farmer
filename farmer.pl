@@ -18,8 +18,8 @@ plant :-
     write('Dig it first leh, why so lazy.')
   ).
 
-update([]).
-update([H|T]) :-
+updateC([]).
+updateC([H|T]) :-
   cropList(H, X, Y),
   date(_, _, Month),
   patchDug(X, Y, IsPlant, CropName, Time),
@@ -27,13 +27,11 @@ update([H|T]) :-
   (
     Month =\= Season ->
       retract(patchDug(X, Y, _, _, _));
-    Time < HarvestTime ->
-      NTime is Time + 1,
-      retract(patchDug(X, Y, _, _, _)),
-      asserta(patchDug(X, Y, IsPlant, CropName, NTime));
-    true
+    NTime is Time + 1,
+    retract(patchDug(X, Y, _, _, _)),
+    asserta(patchDug(X, Y, IsPlant, CropName, NTime))
   ),
-  update(T).
+  updateC(T).
 
 updateCrop :-
   \+ cropList(_, _, _), !;
@@ -43,7 +41,7 @@ updateCrop :-
 plantCrop :-
     write('You have:\n'),
     findall(Name, inventoryList(4, Name), Names),
-    displayInventoryTwo(Names, 1),
+    displayInventory2(Names, 1),
     date(_, _, Month),
     length(Names, Len), nl,
     write('What do you want to plant?\n'),
@@ -239,7 +237,3 @@ cheatHarvest :-
         add(Crop, 1);
       write('Developer ko nda tau tempat yang bisa diharvest.')
     ).
-
-errorMessage:-
-    write('[ERROR] Something''s wrong with your input, exiting the program..'),
-    halt.

@@ -73,11 +73,20 @@ fish:-
 
 fishGenerator:-
     random(0,100,RAND),(
-        isSmallFishCaught(RAND) -> write('You caught a small fish.');
-        isMediumFishCaught(RAND) -> write('You caught a medium fish.');
-        isBigFishCaught(RAND) -> write('CONGRATS, You have finally gotten the big fish.');
-        write('So sad :( you got mysterious floating boots. You decided to throw it back to the water since it is useless.')
-    ),plusFishingCount.
+        isSmallFishCaught(RAND) ->
+            write('You caught a small fish.'),
+            add('Small Fish', 1);
+        isMediumFishCaught(RAND) ->
+            write('You caught a medium fish.'),
+            add('Medium Fish', 1);
+        isBigFishCaught(RAND) ->
+            write('CONGRATS, You have finally gotten the big fish.'),
+            add('Big Fish', 1);
+        write('So sad :( you got mysterious floating boots.\nYou decided to throw it back to the water since it is useless.')
+    ),
+    nl,
+    addExpFish(15),
+    plusFishingCount.
 
 isSmallFishCaught(X):-
     rangeSmallFish(SL,SU),

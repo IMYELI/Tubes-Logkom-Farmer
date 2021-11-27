@@ -115,13 +115,35 @@ displayItem(Names) :-
     displayInventory1(Names)
   ).
 
-isHoe :-
-  equipment(ToolType, _),
-  ToolType = hoe.
+isHoe1 :-
+  equipment(hoe, ToolName),
+  toolList(hoe, ToolLvl, ToolName),
+  ToolLvl >= 1.
 
-isFishingRod :-
-  equipment(ToolType, _),
-  ToolType = rod.
+isHoe2 :-
+  equipment(hoe, ToolName),
+  toolList(hoe, ToolLvl, ToolName),
+  ToolLvl >= 2.
+
+isHoe3 :-
+  equipment(hoe, ToolName),
+  toolList(hoe, ToolLvl, ToolName),
+  ToolLvl =:= 3.
+
+isFishingRod1 :-
+  equipment(rod, ToolName),
+  toolList(rod, ToolLvl, ToolName),
+  ToolLvl >= 1.
+
+isFishingRod2 :-
+  equipment(rod, ToolName),
+  toolList(rod, ToolLvl, ToolName),
+  ToolLvl >= 2.
+
+isFishingRod3 :-
+  equipment(rod, ToolName),
+  toolList(rod, ToolLvl, ToolName),
+  ToolLvl =:= 3.
 
 displayInventory1([]).
 displayInventory1([H|T]) :-

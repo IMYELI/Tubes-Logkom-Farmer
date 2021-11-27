@@ -18,6 +18,19 @@ houseMenu :-
             write('You have exited the house. Good Luck!\n\n')
     ).
 
+updateR([]).
+updateR([H|T]) :-
+  animal(ID, Type, Time),
+  NTime is Time + 1,
+  retract(animal(ID, _, _)),
+  assertz(animal(ID, Type, NTime)).
+  updateR(T).
+
+updateRanch :-
+  \+ animal(ID, _, _), !;
+  findall(ID, animal(ID, _, _), IDs),
+  updateR(IDs).
+
 updateDay :-
     date(Total, Day, Month),
     NTotal is Total + 1,
@@ -36,6 +49,7 @@ updateDay :-
       NMonth is Month
     ),
     updateCrop,
+    updateRanch,
     updateFishingCount,
     retract(date(Total, Day, Month)),
     asserta(date(NTotal, NDay, NMonth)).

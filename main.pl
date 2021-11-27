@@ -5,6 +5,8 @@
 :- include('marketplace.pl').
 :- include('farmer.pl').
 :- include('exp.pl').
+:- include('map.pl').
+:- include('fishing.pl').
 
 startFile:-
     title,
@@ -29,19 +31,84 @@ title:-
 gameMenu :-
     repeat,
     write('COMMAND >>> '),
-    catch(read(Input), error(_,_), errorMessage), nl,
+    read(Input), nl,
     (
         Input = 'help' -> call(help);
         Input = 'status' -> call(status);
-        Input = 'market' -> call(marketplace);
+        Input = 'market' ->
+        (
+            playerKoord(X,Y), isMarket(X, Y) -> call(marketplace);
+            write('You are not in the market!\n\n')
+        );
+        Input = 'ranch' ->
+        (
+            playerKoord(X,Y), isRanch(X,Y) -> call(rancherMenu);
+            write('You are not in the ranch!\n\n')
+        );
+        Input = 'house' ->
+        (
+            playerKoord(X,Y), isHouse(X,Y) -> call(houseMenu);
+            write('You are not in the house!\n\n')
+        );
+        Input = 'fish' -> call(fish), nl, nl;
         Input = 'inventory' -> call(inventory);
-        Input = 'ranch' -> call(rancherMenu);
-        Input = 'house' -> call(houseMenu);
         Input = 'throwItem' -> call(throwItem);
         Input = 'equip' -> call(equip);
         Input = 'unequip' -> call(unequip);
+        Input = 'map' -> call(generateMap);
+        Input = 'a' -> call(a);
+        Input = 'w' -> call(w);
+        Input = 's' -> call(s);
+        Input = 'd' -> call(d);
+        Input = 'plant' -> call(plant), nl, nl;
+        Input = 'harvest' -> call(harvest), nl, nl;
+        Input = 'dig' ->
+        (
+            isHoe1 -> call(dig);
+            write('You need to equip a Hoe!\n\n')
+        );
+        Input = 'digR' ->
+        (
+            isHoe2 -> call(digR);
+            write('You need to equip a Steel Hoe!\n\n')
+        );
+        Input = 'digL' ->
+        (
+            isHoe2 -> call(digL);
+            write('You need to equip a Steel Hoe!\n\n')
+        );
+        Input = 'digB' ->
+        (
+            isHoe2 -> call(digB);
+            write('You need to equip a Steel Hoe!\n\n')
+        );
+        Input = 'digT' ->
+        (
+            isHoe2 -> call(digT);
+            write('You need to equip a Steel Hoe!\n\n')
+        );
+        Input = 'digUR' ->
+        (
+            isHoe3 -> call(digUR);
+            write('You need to equip a Gold Hoe!\n\n')
+        );
+        Input = 'digUL' ->
+        (
+            isHoe3 -> call(digUL);
+            write('You need to equip a Gold Hoe!\n\n')
+        );
+        Input = 'digUB' ->
+        (
+            isHoe3 -> call(digUB);
+            write('You need to equip a Gold Hoe!\n\n')
+        );
+        Input = 'digUT' ->
+        (
+            isHoe3 -> call(digUT);
+            write('You need to equip a Gold Hoe!\n\n')
+        );
         write('Unknown input, try again!\n\n')
-    ), !, gameMenu.
+    ), gameMenu.
 
 welcome :-
     nl,

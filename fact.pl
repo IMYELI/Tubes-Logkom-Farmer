@@ -15,6 +15,7 @@
 :- dynamic(equipment/2).
 :- dynamic(upgradeList/1).
 :- dynamic(cropList/3).
+:- dynamic(playerKoord/2).
 
 /* Deklarasi Fakta */
 /* diary(ID, Content, Day, Month, Year) */
@@ -23,7 +24,7 @@
 cropID(1).
 
 /* date(Total, Day, Month) */
-date(1, 1, 3).
+date(1, 1, 1).
 
 /* diaryID(ID) */
 diaryID(1).
@@ -107,13 +108,16 @@ item(4, 'Pumpkin Seeds', pumpkin).
 item(4, 'Grape Starter', grape).
 
 item(5, 'Hoe', hoe).
-item(5, 'Copper Hoe', hoe).
-item(5, 'Iron Hoe', hoe).
 item(5, 'Steel Hoe', hoe).
+item(5, 'Gold Hoe', hoe).
+
 item(5, 'Fishing Rod', rod).
-item(5, 'Advanced Fishing Rod', rod).
-item(5, 'Iron Fishing Rod', rod).
 item(5, 'Steel Fishing Rod', rod).
+item(5, 'Gold Fishing Rod', rod).
+
+item(6, 'Small Fish', smallfish).
+item(6, 'Medium Fish', mediumfish).
+item(6, 'Big Fish', bigfish).
 
 %equip(Category, Name)
 
@@ -132,7 +136,7 @@ toolList(rod, 4, 'Steel Fishing Rod').
 % 3 -> products
 % 4 -> seeds
 % 5 -> tools
-% 6 -> misc
+% 6 -> fish
 
 % crops(CropName, Season, HarvestTIme)
 crops(carrot, 1, 4).
@@ -179,12 +183,15 @@ price('Grape', 200).
 price('Chicken', 500).
 price('Cow', 1000).
 price('Sheep', 1500).
-price('Copper Hoe', 300).
-price('Iron Hoe', 500).
+
+price('Gold Hoe', 1000).
 price('Steel Hoe', 800).
-price('Advanced Fishing Rod', 250).
-price('Iron Fishing Rod', 500).
-price('Steel Fishing Rod', 750).
+price('Gold Fishing Rod', 1200).
+price('Steel Fishing Rod', 900).
+
+price('Small Fish', 10).
+price('Medium Fish', 30).
+price('Big Fish', 75).
 
 price('Egg', 100).
 price('Milk', 300).

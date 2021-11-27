@@ -1,10 +1,3 @@
-:- dynamic(playerKoord/2).
-:- include('fact.pl').
-:- include('farmer.pl').
-:- include('fishing.pl').
-:- include('house.pl').
-:- include('inventory.pl').
-
 generateMap:- generate(0,0).
 
 %Generate RIGHT BORDER
