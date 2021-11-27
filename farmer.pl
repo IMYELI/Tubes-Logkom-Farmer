@@ -60,7 +60,7 @@ plantCrop :-
             write('You want your plant to die eh? Now is not the season for it.\n\n');
 
           format('You planted a %s seed.\n\n', [Plant]),
-          throw(Name, 1),
+          throw(Element, 1),
           cropID(ID),
           playerKoord(X, Y),
           asserta(cropList(ID, X, Y)),
@@ -139,42 +139,106 @@ digB :-
           generateMap;
       write('You can not do that here!')
     ).
+  
+digUB :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> 
+        asserta(patchDug(X,Y,0,'',0)),
+        NewY is Y+1,
+          (
+            isPatch(X,NewY)->
+            asserta(patchDug(X,NewY,0,'',0)),NewY2 is NewY + 1
+          ),
+              (
+                isPatch(X,NewY2) -> asserta(patchDug(X,NewY2,0,'',0))
+              ),
+          generateMap;
+      write('You can not do that here!')
+    ).
 
+digUT :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> 
+        asserta(patchDug(X,Y,0,'',0)),
+        NewY is Y-1,
+          (
+            isPatch(X,NewY)->
+            asserta(patchDug(X,NewY,0,'',0)),NewY2 is NewY - 1
+          ),
+              (
+                isPatch(X,NewY2) -> asserta(patchDug(X,NewY2,0,'',0))
+              ),
+          generateMap;
+      write('You can not do that here!')
+    ).
 
+digUR :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> 
+        asserta(patchDug(X,Y,0,'',0)),
+        NewX is X+1,
+          (
+            isPatch(NewX,Y)->
+            asserta(patchDug(NewX,Y,0,'',0)),NewX2 is NewX + 1
+          ),
+              (
+                isPatch(NewX2,Y) -> asserta(patchDug(NewX2,Y,0,'',0))
+              ),
+          generateMap;
+      write('You can not do that here!')
+    ).
 
+digUL :-
+    playerKoord(X,Y),
+    (
+      isPatch(X,Y) -> 
+        asserta(patchDug(X,Y,0,'',0)),
+        NewX is X-1,
+          (
+            isPatch(NewX,Y)->
+            asserta(patchDug(NewX,Y,0,'',0)),NewX2 is NewX - 1
+          ),
+              (
+                isPatch(NewX2,Y) -> asserta(patchDug(NewX2,Y,0,'',0))
+              ),
+          generateMap;
+      write('You can not do that here!')
+    ).
 
-plantB :- 
-  playerKoord(X,Y),
-  (\+isPatch(X,Y) -> write('Oi, you have plot north to your house.');
-    patchDug(X,Y,_,_,_)->retract(patchDug(X,Y,_,_,_)),asserta(patchDug(X,Y,1,'Carrot',0)),NewY is Y+1,(
-        patchDug(X, NewY,_ ,_ ,_)->retract(patchDug(X,NewY,_,_,_)),asserta(patchDug(X, NewY, 1, 'Carrot', 0)),generateMap;
-        generateMap);
-    write('Dig it first leh, why so lazy.')).
+harvest :-
+    playerKoord(X,Y),
+    (
+      patchDug(X, Y, 1, CropName, Time) ->
+        crops(CropName, _, HarvestTime),
+        (
+          Time >= HarvestTime ->
+            retract(cropList(_, X, Y)),
+            retract(patchDug(X, Y, _, _, _)),
+            assertz(patchDug(X,Y,0,'',0)),
+            item(1, Crop, CropName),
+            add(Crop, 1),
+            format('You harvested a/an %s.', [CropName]),
+            addExpFarm(15);
+          write('It''s not riped yet!')
+        );
+      write('What are you trying to harvest?')
+    ), nl, nl.
 
-plantT :- 
-  playerKoord(X,Y),
-  (\+isPatch(X,Y) -> write('Oi, you have plot north to your house.');
-    patchDug(X,Y,_,_,_)->retract(patchDug(X,Y,_,_,_)),asserta(patchDug(X,Y,1,'Carrot',0)),NewY is Y-1,(
-        patchDug(X,NewY,_,_,_)->retract(patchDug(X,NewY,_,_,_)),asserta(patchDug(X, NewY, 1, 'Carrot', 0)),generateMap;
-        generateMap);
-    write('Dig it first leh, why so lazy.')).
-
-plantR :- 
-  playerKoord(X,Y),
-  (\+isPatch(X,Y) -> write('Oi, you have plot north to your house.');
-    patchDug(X,Y,_,_,_)->retract(patchDug(X,Y,_,_,_)),asserta(patchDug(X,Y,1,'Carrot',0)),NewX is X+1,(
-        patchDug(NewX,Y,_,_,_)->retract(patchDug(NewX,Y,_,_,_)),asserta(patchDug(NewX, Y, 1, 'Carrot', 0)),generateMap;
-        generateMap);
-    write('Dig it first leh, why so lazy.')).
-
-plantL :- 
-  playerKoord(X,Y),
-  (\+isPatch(X,Y) -> write('Oi, you have plot north to your house.');
-    patchDug(X,Y,_,_,_)->retract(patchDug(X,Y,_,_,_)),asserta(patchDug(X,Y,1,'Carrot',0)),NewX is X-1,(
-        patchDug(NewX,Y,_,_,_)->retract(patchDug(NewX,Y,_,_,_)),asserta(patchDug(NewX, Y, 1, 'Carrot', 0)),generateMap;
-        generateMap);
-    write('Dig it first leh, why so lazy.')).
-
+cheatHarvest :-
+    playerKoord(X,Y),
+    patchDug(X,Y,_,Name,_),
+    (crops(Name,_,_) -> 
+        retract(cropList(_, X, Y)),
+        retract(patchDug(X, Y, _, _, _)),
+        assertz(patchDug(X,Y,0,'',0)),
+        item(1, Crop, Name),
+        addExpFarm(15),
+        add(Crop, 1);
+      write('Developer ko nda tau tempat yang bisa diharvest.')
+    ).
 
 errorMessage:-
     write('[ERROR] Something''s wrong with your input, exiting the program..'),

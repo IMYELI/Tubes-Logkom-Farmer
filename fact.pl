@@ -14,7 +14,7 @@
 :- dynamic(patchDug/5).
 :- dynamic(equipment/2).
 :- dynamic(upgradeList/1).
-:- dynamic(cropList/2).
+:- dynamic(cropList/3).
 
 /* Deklarasi Fakta */
 /* diary(ID, Content, Day, Month, Year) */
