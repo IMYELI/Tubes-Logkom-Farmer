@@ -1,4 +1,18 @@
 /* Deklarasi Rules */
+
+updateR([]).
+updateR([H|T]) :-
+  animal(ID, Type, Time),
+  NTime is Time + 1,
+  retract(animal(ID, _, _)),
+  assertz(animal(ID, Type, NTime)).
+  updateR(T).
+
+updateRanch :-
+  \+ animal(ID, _, _), !;
+  findall(ID, animal(ID, _, _), IDs),
+  updateR(IDs).
+
 addAnimal(_, 0).
 addAnimal(Type, Count) :-
   animalID(ID),

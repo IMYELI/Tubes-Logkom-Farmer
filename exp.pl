@@ -9,6 +9,22 @@ addExpPlayer(Exp) :-
     retract(playerStats(Job, _, _, _, _, _, _, _, _, _)),
     assertz(playerStats(Job, NLvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, NExpTotal, Gold)).
 
+decreaseProduction([]).
+decreaseProduction([H|T]) :-
+    production(H, Production),
+    NProduction is Production,
+    retract(production(H, _)),
+    assertz(production(H, NProduction)),
+    decreaseProduction(T).
+
+decreaseHarvest([]).
+decreaseHarvest([H|T]) :-
+    production(H, Production),
+    NProduction is Production,
+    retract(production(H, _)),
+    assertz(production(H, NProduction)),
+    decreaseProduction(T).
+
 addExpRanch(Exp) :-
     playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     (
@@ -18,7 +34,9 @@ addExpRanch(Exp) :-
         NExpRanch is ExpRanch + GainedEXP,
     (
         LvlRanch =\= 4, professionLvlCap(LvlRanch, Cap), NExpRanch > Cap ->
-            NLvlRanch is LvlRanch + 1;
+            NLvlRanch is LvlRanch + 1,
+            findall(AnimalType, production(AnimalType, _), AnimalTypes),
+            decreaseProduction(AnimalTypes);
         NLvlRanch is LvlRanch
     ),
     format('You gain %d Ranching EXP!', [GainedEXP]),
@@ -35,7 +53,9 @@ addExpFarm(Exp) :-
         NExpFarm is ExpFarm + GainedEXP,
     (
         LvlFarm =\= 4, professionLvlCap(LvlFarm, Cap), NExpFarm > Cap ->
-            NLvlFarm is LvlFarm + 1;
+            NLvlFarm is LvlFarm + 1,
+            findall(Crop, crops(Crop, _, _), Crops),
+
         NLvlFarm is LvlFarm
     ),
     format('You gain %d Farming EXP!', [GainedEXP]),

@@ -31,7 +31,7 @@ title:-
 gameMenu :-
     repeat,
     write('COMMAND >>> '),
-    catch(read(Input), error(_,_), errorMessage), nl,
+    read(Input), nl,
     (
         Input = 'help' -> call(help);
         Input = 'status' -> call(status);

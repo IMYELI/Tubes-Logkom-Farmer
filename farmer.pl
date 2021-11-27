@@ -18,8 +18,8 @@ plant :-
     write('Dig it first leh, why so lazy.')
   ).
 
-update([]).
-update([H|T]) :-
+updateC([]).
+updateC([H|T]) :-
   cropList(H, X, Y),
   date(_, _, Month),
   patchDug(X, Y, IsPlant, CropName, Time),
@@ -27,13 +27,11 @@ update([H|T]) :-
   (
     Month =\= Season ->
       retract(patchDug(X, Y, _, _, _));
-    Time < HarvestTime ->
-      NTime is Time + 1,
-      retract(patchDug(X, Y, _, _, _)),
-      asserta(patchDug(X, Y, IsPlant, CropName, NTime));
-    true
+    NTime is Time + 1,
+    retract(patchDug(X, Y, _, _, _)),
+    asserta(patchDug(X, Y, IsPlant, CropName, NTime))
   ),
-  update(T).
+  updateC(T).
 
 updateCrop :-
   \+ cropList(_, _, _), !;
