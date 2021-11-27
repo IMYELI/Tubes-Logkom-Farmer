@@ -3,6 +3,7 @@
 :- include('farmer.pl').
 :- include('fishing.pl').
 :- include('house.pl').
+:- include('inventory.pl').
 
 generateMap:- generate(0,0).
 
@@ -38,17 +39,18 @@ generate(X,Y) :-
 
 %Generate PLAYER
 generate(X,Y) :-
-    Z is 0,
-    patchDug(_, X,Y,Z,_,_, _),!,
+    patchDug(X, Y, 0, _, _), !,
     NewX is X+1,
     write('X'),generate(NewX,Y).
 
-%Generate PLAYER
 generate(X,Y) :-
-    Z is 1,
-    patchDug(_, X,Y,Z,_,_, _),!,
+    patchDug(X, Y, 1, CropName, _), !,
     NewX is X+1,
-    write('W'),generate(NewX,Y).
+    (
+        CropName = carrot -> write('C');
+        CropName = potato -> write('P');
+        CropName = strawberry -> write('S')
+    ), !, generate(NewX,Y).
 
 generate(X,Y) :-
     isTopPatch(X,Y),!,

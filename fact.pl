@@ -5,22 +5,26 @@
 :- dynamic(playerStats/10).
 :- dynamic(marketList/1).
 :- dynamic(animal/3).
-:- dynamic(animalAmount/2).
 :- dynamic(animalID/1).
 :- dynamic(animalList/1).
 :- dynamic(date/4).
-:- dynamic(isWrite/1).
 :- dynamic(diary/5).
 :- dynamic(diaryID/1).
 :- dynamic(toolLevel/3).
+:- dynamic(cropID/1).
+:- dynamic(patchDug/5).
+:- dynamic(cropList/2).
 
 /* Deklarasi Fakta */
 /* diary(ID, Content, Day, Month, Year) */
 
+/* cropID(ID) */
+cropID(1).
+
 /* date(Total, Day, Month, Year) */
 date(1, 1, 1, 1).
 
-/* diaryID */
+/* diaryID(ID) */
 diaryID(1).
 
 /* season (Month, Season) */
@@ -36,12 +40,18 @@ job(1, 'Fisherman').
 job(2, 'Farmer').
 job(3, 'Rancher').
 
-% levelCap(Level, Cap)
-levelCap(1, 300).
-levelCap(2, 500).
-levelCap(3, 1000).
+% playerLvlCap(Level, Cap)
+playerLvlCap(1, 300).
+playerLvlCap(2, 500).
+playerLvlCap(3, 1000).
+playerLvlCap(4, 0).
 
-/* inventoryCapacity(Capacity) sebagai kapasitas inventory */
+/* professionLvlCap(Lvl, Cap) */
+professionLvlCap(1, 100).
+professionLvlCap(2, 380).
+professionLvlCap(3, 770).
+
+/* inventoryCapacity (Capacity) sebagai kapasitas inventory */
 inventoryCapacity(100).
 
 /* item(Category, Name, Othername) */
@@ -57,15 +67,16 @@ item(3, 'Wool', wool).
 item(4, 'Carrot Seeds', carrot).
 item(4, 'Potato Seeds', potato).
 item(4, 'Strawberry Seeds', strawberry).
-%% item(5, 'Hoe', hoe).
-%% item(5, 'Fishing Rod', rod).
-%% item(5, 'Copper Hoe', copperhoe).
-%% item(5, 'Iron Hoe', ironhoe).
-%% item(5, 'Steel Hoe', steelhoe).
-%% item(5, 'Advanced Fishing Rod', advancedrod).
-%% item(5, 'Iron Fishing Rod', ironrod).
-%% item(5, 'Steel Fishing Rod', steelrod).
+item(5, 'Hoe', hoe).
+item(5, 'Fishing Rod', rod).
+item(5, 'Copper Hoe', copperhoe).
+item(5, 'Iron Hoe', ironhoe).
+item(5, 'Steel Hoe', steelhoe).
+item(5, 'Advanced Fishing Rod', advancedrod).
+item(5, 'Iron Fishing Rod', ironrod).
+item(5, 'Steel Fishing Rod', steelrod).
 
+% crops(CropName, Season, HarvestTIme)
 crops(carrot, 1, 6).
 crops(potato, 1, 6).
 crops(strawberry, 1, 8).
@@ -73,6 +84,8 @@ crops(corn, 2, 6).
 crops(sunflower, 2, 8).
 crops(eggplant, 3, 6).
 crops(grape, 3, 8).
+
+/* cropList(ID, X, Y) */
 
 
 /* inventory(Name, Amount) sebagai info dari inventory */

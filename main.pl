@@ -36,7 +36,7 @@ gameMenu :-
         Input = 'inventory' -> call(inventory);
         Input = 'ranch' -> call(rancherMenu);
         Input = 'house' -> call(houseMenu);
-        Input = 'throw' -> call(throwItem);
+        Input = 'throwItem' -> call(throwItem);
         Input = _ -> write('Unknown input, try again!\n\n')
     ), !, gameMenu.
 
@@ -47,12 +47,22 @@ welcome :-
     write('The deadline for your debts is 3 years from now, good luck!\n\n'),
     write('=========== Commands ===========\n'),
     write('(help.) Menampilkan segala bantuan dan command\n'),
-    write('(status.) Menampilkan kondisi pemain\n\n').
+    write('(status.) Menampilkan kondisi pemain\n'),
+    write('(inventory.) Menampilkan menu inventory\n'),
+    write('(throwItem.) Membuang item dari inventory\n')
+    write('(market.) Menampilkan menu marketplace (harus berada pada marketplace)\n'),
+    write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
+    write('(house.) Menampilkan menu house (harus berada pada house)\n\n').
 
 help :-
     write('=========== Help Menu ===========\n'),
     write('(help.) Menampilkan segala bantuan dan command\n'),
-    write('(status.) Menampilkan kondisi pemain\n\n').
+    write('(status.) Menampilkan kondisi pemain\n'),
+    write('(inventory.) Menampilkan menu inventory\n'),
+    write('(throwItem.) Membuang item dari inventory\n')
+    write('(market.) Menampilkan menu marketplace (harus berada pada marketplace)\n'),
+    write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
+    write('(house.) Menampilkan menu house (harus berada pada house)\n\n').
 
 mainMenu :-
     write('>>> '),
@@ -64,13 +74,17 @@ mainMenu :-
 
 status :-
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
-    levelCap(LvlPlayer, Cap),
+    playerLvlCap(LvlPlayer, Cap),
     job(ID, Name),
     write('=========== Player Status ===========\n'),
     format('Job: %s\n', [Name]),
     format('Gold: %d / 2000\n', [Gold]),
     format('Player Level: %d\n', [LvlPlayer]),
-    format('[PLAYER EXP] %d/%d\n', [ExpTotal, Cap]),
+    (
+        LvlPlayer =:= 4 ->
+            format('[PLAYER EXP] %d\n', [ExpTotal]);
+        format('[PLAYER EXP] %d/%d\n', [ExpTotal, Cap])
+    ),
     write('============  Profession  ===========\n'),
     format('Fishing Level: %d\n', [LvlFish]),
     format('[EXP] %d\n', [ExpFish]),

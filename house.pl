@@ -36,9 +36,9 @@ updateDay :-
       NMonth is Month,
       NYear is Year
     ),
+    updateCrop,
     retract(date(Total, Day, Month, Year)),
-    asserta(date(NTotal, NDay, NMonth, NYear)),
-    updateCrop. 
+    asserta(date(NTotal, NDay, NMonth, NYear)).
   
 writeDiary :-
     date(_, Day, Month, Year),

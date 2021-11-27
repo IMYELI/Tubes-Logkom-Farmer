@@ -88,7 +88,8 @@ inventory :-
   findall(Name, inventoryList(_, Name), Names),
   inventoryTotal(Names, TotalAmount),
   inventoryCapacity(Capacity),
+  format('========= Your Inventory %d/%d =========\n', [TotalAmount, Capacity]),
   write('========= Equipment =========\n'),
   displayEquipment,
-  format('========= Your Inventory %d/%d =========\n', [TotalAmount, Capacity]),
+  write('============ Item ===========\n'),
   displayInventory(Names), nl.
