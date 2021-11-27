@@ -41,36 +41,36 @@ generate(X,Y) :-
 generate(X,Y) :-
     patchDug(X, Y, 0, _, _), !,
     NewX is X+1,
-    write('X'),generate(NewX,Y).
+    write('='),generate(NewX,Y).
 
 generate(X,Y) :-
     patchDug(X, Y, 1, CropName, _),
     NewX is X+1,
     (
-        CropName = carrot -> write('C'), !;
-        CropName = potato -> write('P'), !;
-        CropName = strawberry -> write('S'), !
+        CropName = carrot -> write('c'), !;
+        CropName = potato -> write('p'), !;
+        CropName = strawberry -> write('s'), !
     ), generate(NewX,Y).
 
 generate(X,Y) :-
     isTopPatch(X,Y),!,
     NewX is X+1,
-    write('='),generate(NewX,Y).
+    write('+'),generate(NewX,Y).
 
 generate(X,Y) :-
     isRightPatch(X,Y),!,
     NewX is X+1,
-    write('|'),generate(NewX,Y).
+    write('+'),generate(NewX,Y).
 
 generate(X,Y) :-
     isLeftPatch(X,Y),!,
     NewX is X+1,
-    write('|'),generate(NewX,Y).
+    write('+'),generate(NewX,Y).
 
 generate(X,Y) :-
     isBotPatch(X,Y),!,
     NewX is X+1,
-    write('='),generate(NewX,Y).
+    write('+'),generate(NewX,Y).
 
 
 %Generate air
@@ -140,7 +140,7 @@ isLeftPatch(X,Y):-
     X=:=1,Y>=11,Y=<13.
 
 isPatch(X,Y):-
-    X>=2,X=<13,Y>=11,Y=<13.
+    X>=2,X=<13,Y>=11,Y=<13,\+ patchDug(X,Y,1,_,_).
 
 isTile(X,Y):-
     mapSize(H,W),
