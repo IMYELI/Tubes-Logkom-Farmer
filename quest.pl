@@ -1,46 +1,60 @@
 % Not Yet a
-:- use_module(library(random)).
 :- dynamic(getQuest/0).
 :- dynamic(goalQuest/2).
-:- dynamic(isQuestActive/1).
+:- dynamic(isQuestActive/2).
+:- dynamic(isQuestCompleted/1).
 
-isQuestActive(false).
+isQuestActive(false,none).
+isQuestCompleted(false).
 goalQuest(harvest, 0).
 goalQuest(fish, 0).
 goalQuest(ranch, 0).
-getQuestreward(0,0).
 
+
+
+questMenu :-
+    write('**********************************************************\n'),
+    write('|                         QUEST                          |\n'),
+    write('| What brings you here today lad?                        |\n'),
+    write('| 1. Quest                                               |\n'),
+    write('| 2. Where''s my reward?                                  |\n'),
+    write('| 3. Cancel                                              |\n'),
+    write('**********************************************************\n'),
+    write('\nQUEST >>> '),
+    read(Option), nl,
+    (
+        Option = 1 -> startQuest;
+        Option = 2 -> collectReward;
+        Option \== 3 -> write('Wrong Input!, try again\n\n'), questMenu;
+        write('Don''t forget to check your quest!\n\n')
+    ).
 
 startQuest :- 
-    isQuestActive(Check),
+    isQuestActive(Check,_),
     (Check = true -> 
-        write('-----------------------------------------------------\n'),
+        write('*****************************************************\n'),
         write('| Bruh, u have another job. Please, more diciplined.|\n'),
         write('| Finish your current job first                     |\n'), 
-        write('| /--------------------------------------------------\n'),
-        write('|/ '),
-        exitQuest;
+        write('| /**************************************************\n'),
+        write('|/ '), nl, nl,
+        exitQuest,
+        questMenu;
      Check = false->
-        retract(goalQuest(harvest,_)),
-        retract(goalQuest(fish,_)),
-        retract(goalQuest(ranch,_)),
 
-        write('----------------------------------------------------------\n'),
+        write('**********************************************************\n'),
         write('|                         QUEST                          |\n'),
         write('| You will receive a quest to collect some               |\n'),
         write('| harvest items, fish, and ranching items                |\n'),
         write('| 1. Accept challange                                    |\n'),
         write('| 2. Cancel                                              |\n'),
-        write('| /-------------------------------------------------------\n'),
+        write('| /*******************************************************\n'),
         write('|/\n'),
         write('(accept./cancel.) >>> '),
         read(Response),
         nl,
-        (Response = accept -> generateQuest;
-         Response = cancel -> exitQuest),
-        quest_status,
-        retract(isQuestActive(_)),
-        asserta(isQuestActive(true))
+        (Response = accept -> generateQuest,  quest_status;
+         \+ (Response = cancel) -> write('Command does not exist...\n\n'),startQuest)
+       
     ).
 
 generateQuest :-
@@ -54,48 +68,66 @@ generateQuest :-
     read(DifficultyQuest),
     nl,
     (
-        DifficultyQuest = easy -> generateEzQuest;
-        DifficultyQuest = medium -> generateMedQuest;
-        DifficultyQuest = hard -> generateHardQuest;
-        DifficultyQuest = asian -> generateAsianQuest
+        DifficultyQuest = 1 -> generateEzQuest;
+        DifficultyQuest = 2 -> generateMedQuest;
+        DifficultyQuest = 3 -> generateHardQuest;
+        DifficultyQuest = 4 -> generateAsianQuest;
+        write('Wrong Input! try again!\n\n'), generateQuest
     ).
 
+
 generateEzQuest :-
-    retract(isQuestActive(_)),
-    asserta(isQuestActive(yes)),
-    random_between(1,3,RndmEzHarvest),
-    random_between(1,3,RndmEzFish),
-    random_between(1,3,RndmEzRanch),
+    retract(goalQuest(harvest,_)),
+    retract(goalQuest(fish,_)),
+    retract(goalQuest(ranch,_)),
+
+    retract(isQuestActive(_,_)),
+    asserta(isQuestActive(true,easy)),
+    random(1,3,RndmEzHarvest),
+    random(1,3,RndmEzFish),
+    random(1,3,RndmEzRanch),
     asserta(goalQuest(harvest,RndmEzHarvest)),
     asserta(goalQuest(fish,RndmEzFish)),
     asserta(goalQuest(ranch,RndmEzRanch)).
 
 generateMedQuest :-
-    retract(isQuestActive(_)),
-    asserta(isQuestActive(yes)),
-    random_between(3,6,RndmMedHarvest),
-    random_between(3,6,RndmMedFish),
-    random_between(3,6,RndmMedRanch),
+    retract(goalQuest(harvest,_)),
+    retract(goalQuest(fish,_)),
+    retract(goalQuest(ranch,_)),
+
+    retract(isQuestActive(_,_)),
+    asserta(isQuestActive(true,medium)),
+    random(3,6,RndmMedHarvest),
+    random(3,6,RndmMedFish),
+    random(3,6,RndmMedRanch),
     asserta(goalQuest(harvest,RndmMedHarvest)),
     asserta(goalQuest(fish,RndmMedFish)),
     asserta(goalQuest(ranch,RndmMedRanch)).
 
 generateHardQuest :-
-    retract(isQuestActive(_)),
-    asserta(isQuestActive(yes)),
-    random_between(6,11,RndmHardHarvest),
-    random_between(6,11,RndmHardFish),
-    random_between(6,11,RndmHardRanch),
+    retract(goalQuest(harvest,_)),
+    retract(goalQuest(fish,_)),
+    retract(goalQuest(ranch,_)),
+
+    retract(isQuestActive(_,_)),
+    asserta(isQuestActive(true,hard)),
+    random(6,11,RndmHardHarvest),
+    random(6,11,RndmHardFish),
+    random(6,11,RndmHardRanch),
     asserta(goalQuest(harvest,RndmHardHarvest)),
     asserta(goalQuest(fish,RndmHardFish)),
     asserta(goalQuest(ranch,RndmHardRanch)).
 
 generateAsianQuest :-
-    retract(isQuestActive(_)),
-    asserta(isQuestActive(yes)),
-    random_between(11,50,RndmAsianHarvest),
-    random_between(11,50,RndmAsianFish),
-    random_between(11,50,RndmAsianRanch),
+    retract(goalQuest(harvest,_)),
+    retract(goalQuest(fish,_)),
+    retract(goalQuest(ranch,_)),
+
+    retract(isQuestActive(_,_)),
+    asserta(isQuestActive(true,asian)),
+    random(11,50,RndmAsianHarvest),
+    random(11,50,RndmAsianFish),
+    random(11,50,RndmAsianRanch),
     asserta(goalQuest(harvest,RndmAsianHarvest)),
     asserta(goalQuest(fish,RndmAsianFish)),
     asserta(goalQuest(ranch,RndmAsianRanch)).
@@ -111,8 +143,55 @@ quest_status :-
     write(' - '), write(X), write(' harvest item\n'),
     write(' - '), write(Y), write(' fish\n'),
     write(' - '), write(Z), write(' ranch item\n'),
-    write('------------------------------\n').
+    write('\n'),
+    write('Back to this place, \n'),
+    write('if u finish all the quest\n'),
+    write('------------------------------\n\n').
 
 exitQuest :-
-    write('Okey, you got warning from that nigga...\n'),
-    write('Ganbatte kudasai').
+    write('That old man seems mad because you are trying to be greedy...\n'),
+    write('Ganbatte kudasai\n\n').
+
+collectReward :-
+    isQuestActive(Check,Diff),
+    goalQuest(harvest, X),
+    goalQuest(fish, Y),
+    goalQuest(ranch, Z),
+    (
+        Check = true ->
+            (
+                (X = 0),(Y = 0),(Z = 0) ->
+                    playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, GoldTotal),
+                    (
+                        Diff = easy -> 
+                            NewEXP is ExpTotal + 10,
+                            NewGold is GoldTotal + 10;
+                        Diff = medium -> 
+                            NewEXP is ExpTotal + 25,
+                            NewGold is GoldTotal + 50;
+                        Diff = hard -> 
+                            NewEXP is ExpTotal + 50,
+                            NewGold is GoldTotal + 100;
+                        Diff = asian -> 
+                            NewEXP is ExpTotal + 500,
+                            NewGold is GoldTotal + 1000
+                    ), 
+                    write('Well done! here''s yer money.'),
+                    retract(playerStats(_, _, _, _, _, _, _, _, _, _)),
+                    asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, NewEXP, NewGold)),
+                    retract(isQuestActive(_,_)),
+                    asserta(isQuestActive(false,none));
+    
+                ((X =\= 0);(Y =\= 0);(Z =\= 0)) ->
+                    write('You still haven\'t finished your quest\n'),
+                    write('Finish the current quest to collect your reward')
+            );
+        Check = false ->
+            write('You don\'t deserve the reward because you don\'t even have a task')
+    ), nl, nl.
+
+autoCompleteQuest:-
+    retractall(goalQuest),
+    asserta(goalQuest(harvest, 0)),
+    asserta(goalQuest(fish, 0)),
+    asserta(goalQuest(ranch, 0)).
