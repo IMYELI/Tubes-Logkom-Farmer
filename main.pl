@@ -7,6 +7,7 @@
 :- include('exp.pl').
 :- include('map.pl').
 :- include('fishing.pl').
+:- include('quest.pl').
 
 startFile:-
     title,
@@ -50,6 +51,7 @@ gameMenu :-
             playerKoord(X,Y), isHouse(X,Y) -> call(houseMenu);
             write('You are not in the house!\n\n')
         );
+        Input = 'quest' -> questMenu;
         Input = 'fish' ->
         (
             isFishingRod -> call(fish);
@@ -116,6 +118,7 @@ gameMenu :-
         Input = 'cheatMoney' -> addGold(18999),
             write('cheatMoney activated.\n\n');
         Input = 'cheatHarvest' -> call(cheatHarvest);
+        Input = 'autoCompleteQuest' -> call(autoCompleteQuest);
         write('Unknown input, try again!\n\n')
     ), gameMenu.
 
