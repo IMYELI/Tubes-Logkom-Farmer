@@ -207,15 +207,8 @@ production('Chicken', 3).
 production('Sheep', 4).
 
 /* animal(ID, AnimalType, Time) */
-%% animal(1, 'Cow', 4).
-%% animal(2, 'Cow', 4).
-%% animal(3, 'Chicken', 3).
-%% animal(4, 'Sheep', 4).
 
 /* animalList(AnimalType) */
-%% animalList('Cow').
-%% animalList('Chicken').
-%% animalList('Sheep').
 
 /* koordinat benda di Map(X,Y) */
 mapSize(15,15).

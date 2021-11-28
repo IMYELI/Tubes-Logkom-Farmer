@@ -99,7 +99,7 @@ sleep :-
     season(Month, Season),
     fairyChanceGenerator,
     (
-        Month = 15 -> failDebt;
+        Month = 26 -> failDebt;
 
         write('======= Good Morning For A New Day! =======\n'),
         format('Day: %d\n', [Day]),
