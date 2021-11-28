@@ -123,10 +123,15 @@ upgrade :-
 addGold(Price) :-
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     NGold is Gold + Price,
+    date(TotalDay, Day, Month),
+    season(Month, Season),
     (
         NGold >= 20000, nl, nl,
             write('==================== CONGRATULATION  =====================\n'),
             write('Congratulations! You have finally collected 20000 golds!\n'),
+            format('Day: %d\n', [Day]),
+            format('Season: %s\n', [Season]),
+            format('Total Day: %d\n', [TotalDay]),
             write('==========================================================\n\n'),
             write('Input anything to exit to the Main Menu: '),
             catch(read(_), error(_,_), errorMessage), nl,

@@ -231,10 +231,14 @@ mainMenu :-
 status :-
     playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     playerLvlCap(LvlPlayer, Cap),
+    date(_, Day, Month),
+    season(Month, Season),
     job(ID, Name),
     write('=========== Player Status ===========\n'),
     format('Job: %s\n', [Name]),
     format('Gold: %d / 20000\n', [Gold]),
+    format('Day: %d\n', [Day]),
+    format('Season: %s\n', [Season]),
     format('Player Level: %d\n', [LvlPlayer]),
     (
         LvlPlayer =:= 4 ->
