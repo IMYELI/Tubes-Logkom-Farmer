@@ -213,7 +213,7 @@ help :-
     write('(house.) Menampilkan menu house (harus berada pada house)\n'),
     write('(quest.) Menampilkan menu quest (harus berada pada quest)\n'),
     write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
-    write('(harvest.) Memanen tanaman yang sudah tumbuh sempurna\n').
+    write('(harvest.) Memanen tanaman yang sudah tumbuh sempurna\n\n').
 
 init :-
     welcome,
