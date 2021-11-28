@@ -8,6 +8,7 @@
 :- include('map.pl').
 :- include('fishing.pl').
 :- include('quest.pl').
+:- include('fairy.pl').
 
 startFile:-
     title,
@@ -125,6 +126,7 @@ gameMenu :-
         Input = 'cheatHarvest' -> call(cheatHarvest);
         Input = 'autoCompleteQuest' -> call(autoCompleteQuest);
         Input = 'cheatQuest' -> call(questMenu);
+        Input = 'fairy' -> call(fairyChanceGeneratorCheat);
         write('Unknown input, try again!\n\n')
     ), gameMenu.
 
