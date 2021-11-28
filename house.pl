@@ -46,6 +46,8 @@ writeDiary :-
     date(_, Day, Month),
     diaryID(ID),
     format('======= Write Your Diary For Day %d =======\n', [Day]),
+    write('Note: use \'\' to write a diary!\n'),
+    write('Example: ">>> \'Hello World!\'."\n\n'),
     write('>>> '),
     catch(read(Input), error(_,_), errorMessage), nl,
     write('You have written a diary.\n\n'),
