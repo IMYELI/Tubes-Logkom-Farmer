@@ -1,11 +1,8 @@
 % Not Yet a
-:- dynamic(getQuest/0).
 :- dynamic(goalQuest/2).
 :- dynamic(isQuestActive/2).
-:- dynamic(isQuestCompleted/1).
 
 isQuestActive(false,none).
-isQuestCompleted(false).
 goalQuest(harvest, 0).
 goalQuest(fish, 0).
 goalQuest(ranch, 0).
