@@ -265,9 +265,9 @@ harvest :-
                 true
             ),
             addExpFarm(1);
-          write('It''s not riped yet!\n')
+          write('It''s not riped yet!')
         );
-      write('What are you trying to harvest?\n')
+      write('What are you trying to harvest?')
     ).
 
 cheatHarvest :-

@@ -166,7 +166,7 @@ gameMenu :-
 
         /* cheat code */
         Input = 'cheatMoney' -> addGold(18999);
-        Input = 'cheatHarvest' -> call(cheatHarvest);
+        Input = 'cheatHarvest' -> call(cheatHarvest), nl, nl;
         Input = 'autoCompleteQuest' -> call(autoCompleteQuest);
         Input = 'cheatQuest' -> call(questMenu);
         Input = 'fairy' -> call(fairyChanceGeneratorCheat);
