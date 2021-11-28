@@ -5,7 +5,7 @@ teleportY(0).
 
 fairyChanceGenerator :-
     random(0,100,RAND),
-    (isFairyEncountered(RAND)->fairyEncounter)
+    (isFairyEncountered(RAND)->fairyEncounter).
 
 isFairyEncountered(RAND):-
     RAND>13,RAND=<20;RAND>57,RAND=<60;RAND>90,RAND=<95.
@@ -27,13 +27,13 @@ fairyEncounter :-
 readTeleX :-
     write('Where do you want to go peko?(in X coordinate) >> '),
     read(InputX),(
-        isTile(InputX) -> retract(teleportX(_)),asserta(teleportX(InputX));
+        (InputX>0,InputX<15) -> retract(teleportX(_)),asserta(teleportX(InputX));
         write('HEY! don''t go out from your small little world peko. it is dyanjarasu peko. there are monsters out there peko.'),readTeleX       
-    )
+    ).
 
 readTeleY :-
     write('Where do you want to go peko?(in Y coordinate) >> '),
     read(InputY),(
-        isTile(InputY) -> retract(teleportY(_)),asserta(teleportY(InputY));
+        (InputY>0,InputY<15) -> retract(teleportY(_)),asserta(teleportY(InputY));
         write('HEY! don''t go out from your small little world peko. it is dyanjarasu peko. there are monsters out there peko.'),readTeleY       
-    )
+    ).
