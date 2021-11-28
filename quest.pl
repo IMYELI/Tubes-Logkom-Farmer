@@ -42,7 +42,7 @@ startQuest :-
         write('|                         QUEST                          |\n'),
         write('| You will receive a quest to collect some               |\n'),
         write('| harvest items, fish, and ranching items                |\n'),
-        write('| 1. Accept challange                                    |\n'),
+        write('| 1. Accept challenge                                    |\n'),
         write('| 2. Cancel                                              |\n'),
         write('| /*******************************************************\n'),
         write('|/\n'),

@@ -188,7 +188,7 @@ helpTool :-
 
 welcome :-
     nl,
-    write('Welcome To Harvest Rune!\n'),
+    write('Welcome To Pekoland!\n'),
     write('Your goal is to pay your 20000 gold debts.\n'),
     write('You have one year to pay your debts, good luck!\n\n'),
     write('=========== Commands ===========\n'),
