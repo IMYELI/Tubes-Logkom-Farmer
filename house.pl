@@ -56,15 +56,13 @@ writeDiary :-
 
 displayDiary([]).
 displayDiary([H|T]) :-
-  diary(H, _, Day, Month, Year),
+  diary(H, _, Day, Month),
   season(Month, Season),
-  write(H),
-  write('.  Day '), write(Day), write(', '), 
-  write(Season), write(', Year '), write(Year), nl,
+  format('%d. Day %d %s\n', [H, Day, Season]),
   displayDiary(T).
 
 readDiary :-
-    \+ diary(_, _, _, _, _),
+    \+ diary(_, _, _, _),
     write('You haven''t write any diary yet!\n\n'), houseMenu;
 
     findall(ID, diary(ID, _, _, _), IDs),
@@ -98,7 +96,7 @@ sleep :-
     date(_, Day, Month),
     season(Month, Season),
     (
-        Month = 5 -> failDebt;
+        Month = 15 -> failDebt;
 
         write('======= Good Morning For A New Day! =======\n'),
         format('Day: %d\n', [Day]),

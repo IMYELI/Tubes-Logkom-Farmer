@@ -36,7 +36,7 @@ updateC([H|T]) :-
 updateCrop :-
   \+ cropList(_, _, _), !;
   findall(ID, cropList(ID, _, _), IDs),
-  update(IDs).
+  updateC(IDs).
 
 plantCrop :-
     write('You have:\n'),
