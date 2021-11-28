@@ -98,7 +98,7 @@ equip :-
   write('What do you want to equip?\n'),
   displayInventory3(Names, 1), nl,
   write('>>> '),
-  read(Input), nl,
+  catch(read(Input), error(_,_), errorMessage), nl,
   (
     integer(Input), Input > 0 , Input =< Len ->
       Index is Input - 1,

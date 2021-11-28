@@ -31,7 +31,7 @@ title:-
 gameMenu :-
     repeat,
     write('COMMAND >>> '),
-    read(Input), nl,
+    catch(read(Input), error(_,_), errorMessage), nl,
     (
         Input = 'help' -> call(help);
         Input = 'status' -> call(status);
@@ -113,9 +113,9 @@ gameMenu :-
         );
 
         /* cheat code */
-        Input = 'moneyCheat' -> addGold(18999),
-            write('moneyCheat activated.\n\n');
-
+        Input = 'cheatMoney' -> addGold(18999),
+            write('cheatMoney activated.\n\n');
+        Input = 'cheatHarvest' -> call(cheatHarvest);
         write('Unknown input, try again!\n\n')
     ), gameMenu.
 
@@ -149,7 +149,8 @@ init :-
 
 mainMenu :-
     write('>>> '),
-    catch(read(Input), error(_,_), errorMessage), (
+    catch(read(Input), error(_,_), errorMessage), nl,
+    (
         Input = 'start' -> call(start), init;
         Input = 'exit' -> write('Thank you for playing the game!');
         write('Unknown input, try again!\n\n'), mainMenu
@@ -179,22 +180,22 @@ status :-
 start :-
     nl, 
     write('======= Choose Your Job ======='), nl,
-    write('- Fisherman'), nl,
-    write('- Farmer'), nl,
-    write('- Rancher'), nl,
-    write('Example: ">>> fisherman."'), nl, nl,
+    write('1. Fisherman'), nl,
+    write('2. Farmer'), nl,
+    write('3. Rancher'), nl,
+    write('Example: ">>> 1."'), nl, nl,
     write('>>> '),
-    catch(read(Input), error(_,_), errorJob), nl,
+    catch(read(Input), error(_,_), errorMessage), nl,
     (
-        Input = 'fisherman' ->
+        Input = 1 ->
             asserta(playerStats(1, 1, 1, 0, 1, 0, 1, 0, 0, 1000)),
             add('Fishing Rod', 1),
             write('You choose Fisherman!\n');
-        Input = 'farmer' ->
+        Input = 2 ->
             asserta(playerStats(2, 1, 1, 0, 1, 0, 1, 0, 0, 1000)),
             add('Hoe', 1),
             write('You choose Farmer!\n');
-        Input = 'rancher' ->
+        Input = 3 ->
             asserta(playerStats(3, 1, 1, 0, 1, 0, 1, 0, 0, 1000)),
             addAnimal('Cow', 1),
             addAnimal('Sheep', 1),
@@ -203,9 +204,10 @@ start :-
         write('Unknown input, try again!\n'), start
     ).
 
+
 errorMessage:-
     write('[ERROR] Your input broke the game, exiting the game...'), halt.
 
 errorJob :-
-    write('\nCmon don''t break the game please!\n'),
-    start.
+    write('\nCmon don''t break the game please!\n'), !,
+    start, !.
