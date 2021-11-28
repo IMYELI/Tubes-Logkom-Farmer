@@ -176,6 +176,7 @@ collectReward :-
                             NewEXP is ExpTotal + 500,
                             NewGold is GoldTotal + 1000
                     ), 
+                    write('Well done! here''s yer money.'),
                     retract(playerStats(_, _, _, _, _, _, _, _, _, _)),
                     asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, NewEXP, NewGold)),
                     retract(isQuestActive(_,_)),
