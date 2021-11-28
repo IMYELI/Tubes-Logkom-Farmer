@@ -52,13 +52,13 @@ gameMenu :-
         );
         Input = 'fish' ->
         (
-            isFishingRod1 -> call(fish);
+            isFishingRod -> call(fish);
             write('You need a Fishing Rod!')
         ), nl, nl;
         Input = 'inventory' -> call(inventory);
         Input = 'throwItem' -> call(throwItem);
         Input = 'equip' -> call(equip);
-        Input = 'unequip' -> call(unequip);
+        Input = 'unequip' -> call(unequip), nl;
         Input = 'map' -> call(generateMap);
         Input = 'a' -> call(a), nl, nl;
         Input = 'w' -> call(w), nl, nl;
@@ -74,51 +74,56 @@ gameMenu :-
         Input = 'digR' ->
         (
             isHoe2 -> call(digR);
-            write('You need to equip a Steel Hoe!\n\n')
+            write('You need to equip a Steel Hoe to use this skill!\n\n')
         );
         Input = 'digL' ->
         (
             isHoe2 -> call(digL);
-            write('You need to equip a Steel Hoe!\n\n')
+            write('You need to equip a Steel Hoe to use this skill!\n\n')
         );
         Input = 'digB' ->
         (
             isHoe2 -> call(digB);
-            write('You need to equip a Steel Hoe!\n\n')
+            write('You need to equip a Steel Hoe to use this skill!\n\n')
         );
         Input = 'digT' ->
         (
             isHoe2 -> call(digT);
-            write('You need to equip a Steel Hoe!\n\n')
+            write('You need to equip a Steel Hoe to use this skill!\n\n')
         );
         Input = 'digUR' ->
         (
             isHoe3 -> call(digUR);
-            write('You need to equip a Gold Hoe!\n\n')
+            write('You need to equip a Gold Hoe to use this skill!\n\n')
         );
         Input = 'digUL' ->
         (
             isHoe3 -> call(digUL);
-            write('You need to equip a Gold Hoe!\n\n')
+            write('You need to equip a Gold Hoe to use this skill!\n\n')
         );
         Input = 'digUB' ->
         (
             isHoe3 -> call(digUB);
-            write('You need to equip a Gold Hoe!\n\n')
+            write('You need to equip a Gold Hoe to use this skill!\n\n')
         );
         Input = 'digUT' ->
         (
             isHoe3 -> call(digUT);
-            write('You need to equip a Gold Hoe!\n\n')
+            write('You need to equip a Gold Hoe to use this skill!\n\n')
         );
+
+        /* cheat code */
+        Input = 'moneyCheat' -> addGold(18999),
+            write('moneyCheat activated.\n\n');
+
         write('Unknown input, try again!\n\n')
     ), gameMenu.
 
 welcome :-
     nl,
     write('Welcome To Harvest Rune!\n'),
-    write('Your goal is to pay your 2000 gold debts.\n'),
-    write('The deadline for your debts is 3 years from now, good luck!\n\n'),
+    write('Your goal is to pay your 20000 gold debts.\n'),
+    write('You have one year to pay your debts, good luck!\n\n'),
     write('=========== Commands ===========\n'),
     write('(help.) Menampilkan segala bantuan dan command\n'),
     write('(status.) Menampilkan kondisi pemain\n'),
@@ -156,7 +161,7 @@ status :-
     job(ID, Name),
     write('=========== Player Status ===========\n'),
     format('Job: %s\n', [Name]),
-    format('Gold: %d / 2000\n', [Gold]),
+    format('Gold: %d / 20000\n', [Gold]),
     format('Player Level: %d\n', [LvlPlayer]),
     (
         LvlPlayer =:= 4 ->
@@ -182,16 +187,15 @@ start :-
     catch(read(Input), error(_,_), errorJob), nl,
     (
         Input = 'fisherman' ->
-            asserta(playerStats(1, 1, 1, 0, 1, 0, 1, 0, 0, 10000)),
+            asserta(playerStats(1, 1, 1, 0, 1, 0, 1, 0, 0, 1000)),
             add('Fishing Rod', 1),
             write('You choose Fisherman!\n');
-
         Input = 'farmer' ->
-            asserta(playerStats(2, 1, 1, 0, 1, 0, 1, 0, 0, 10000)),
+            asserta(playerStats(2, 1, 1, 0, 1, 0, 1, 0, 0, 1000)),
             add('Hoe', 1),
             write('You choose Farmer!\n');
         Input = 'rancher' ->
-            asserta(playerStats(3, 1, 1, 0, 1, 0, 1, 0, 0, 10000)),
+            asserta(playerStats(3, 1, 1, 0, 1, 0, 1, 0, 0, 1000)),
             addAnimal('Cow', 1),
             addAnimal('Sheep', 1),
             addAnimal('Chicken', 1),

@@ -24,7 +24,7 @@ updateDay :-
     NTotal is Total + 1,
     TempDay is Day + 1,
     (
-      TempDay = 29 ->
+      TempDay = 4 ->
       NDay is 1,
       (
         Month = 1 -> NMonth is 2;
@@ -88,7 +88,8 @@ failDebt :-
     write('You have worked hard, but in the end result is all that matters.\n'),
     write('May God bless you in the future with kind people!\n'),
     write('================================================================\n'),
-    fail.
+    write('Input anything to go back to the Main Menu: '), read(_), nl,
+    startGame.
 
 sleep :-
     write('You sleep on the bed, waiting for the next day.'), nl,

@@ -75,11 +75,20 @@ displayInventory3([H|T], Index) :-
   displayInventory3(T, NIndex).
 
 unequip :-
-  \+ equipment(_, _) -> write('You have nothing in your hand!\n\n'), !;
+  \+ equipment(_, _) -> write('You have nothing in your hand!\n'), !;
 
   retract(equipment(_, Tool)),
   add(Tool, 1),
-  format('You unequip %s.\n\n', [Tool]).
+  (
+    toolList(rod, ToolLvl, Tool) ->
+    (
+      ToolLvl = 2 -> decreaseFishingChance(7);
+      ToolLvl = 3 -> decreaseFishingChance(10);
+      true
+    );
+    true
+  ),
+  format('You unequip %s.\n', [Tool]).
 
 equip :-
   \+ inventoryList(5, _), write('You don''t have any item worth to equip!\n\n'), !;
@@ -96,13 +105,21 @@ equip :-
       nth0(Index, Names, X),
       item(_, X, Category),
       (
-        equipment(_, Tool) ->
-          retract(equipment(_, Tool)),
-          add(Tool, 1);
+        equipment(_, _) ->
+          unequip;
         true
       ),
       throw(X, 1),
       assertz(equipment(Category, X)),
+      (
+        toolList(rod, ToolLvl, X) ->
+          (
+            ToolLvl = 2 -> increaseFishingChance(7);
+            ToolLvl = 3 -> increaseFishingChance(10);
+            true
+          );
+        true
+      ),
       format('You equip %s.\n\n', [X]);
 
     Input \== 'exit' -> write('Unknown input, try again!\n\n'), equip
@@ -130,20 +147,10 @@ isHoe3 :-
   toolList(hoe, ToolLvl, ToolName),
   ToolLvl =:= 3.
 
-isFishingRod1 :-
+isFishingRod :-
   equipment(rod, ToolName),
   toolList(rod, ToolLvl, ToolName),
   ToolLvl >= 1.
-
-isFishingRod2 :-
-  equipment(rod, ToolName),
-  toolList(rod, ToolLvl, ToolName),
-  ToolLvl >= 2.
-
-isFishingRod3 :-
-  equipment(rod, ToolName),
-  toolList(rod, ToolLvl, ToolName),
-  ToolLvl =:= 3.
 
 displayInventory1([]).
 displayInventory1([H|T]) :-

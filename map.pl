@@ -42,7 +42,10 @@ generate(X,Y) :-
     (
         CropName = carrot -> write('c'), !;
         CropName = potato -> write('p'), !;
-        CropName = strawberry -> write('s'), !
+        CropName = strawberry -> write('s'), !;
+        CropName = melon -> write('m'), !;
+        CropName = corn - write('c'), !;
+        CropName = sunflower -> write('s'), !
     ), generate(NewX,Y).
 
 generate(X,Y) :-

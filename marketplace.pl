@@ -119,6 +119,20 @@ upgrade :-
         )
     ).
 
+addGold(Price) :-
+    playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
+    NGold is Gold + Price,
+    (
+        NGold >= 20000, nl, nl,
+            write('==================== CONGRATULATION  =====================\n'),
+            write('Congratulations! You have finally collected 20000 golds!\n'),
+            write('==========================================================\n\n'),
+            write('Input anything to go back to the Main Menu: '),
+            read(_), nl,
+            startGame;
+        retract(playerStats(_, _, _, _, _, _, _, _, _, Gold)),
+        asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, NGold))
+    ).
 
 sell :-
     \+ inventoryList(1, _),
@@ -128,7 +142,7 @@ sell :-
 
     findall(Name, (inventoryList(1, Name); inventoryList(3, Name); inventoryList(6, Name)), Names),
     length(Names, Len),
-    playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
+    playerStats(_, _, LvlFarm, _, LvlFish, _, LvlRanch, _, _, Gold),
     write('========= Sell Menu =========\n'),
     format('Your Gold: %d\n', [Gold]),
     write('Here are the items in your inventory:\n'),
@@ -169,11 +183,9 @@ sell :-
                             NewPrice is Price + BonusRanch
                         ),
                         TotalPrice is NewPrice * Amount,
-                        NGold is Gold + TotalPrice,
                         format('You received %d Gold!', [TotalPrice]),
                         throw(Element, Amount),
-                        retract(playerStats(_, _, _, _, _, _, _, _, _, Gold)),
-                        asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, NGold))
+                        addGold(TotalPrice)
                     ), nl, nl, sell;
 
                 write('You don''t have that many item!\n\n'),
