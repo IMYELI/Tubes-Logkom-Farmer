@@ -77,7 +77,7 @@ dig :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
-        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_))),
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_));true),
         asserta(patchDug(X,Y,0,'',0)),
         generateMap;
       write('You can not do that here!\n\n')
@@ -87,11 +87,14 @@ digL :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_));true),
         asserta(patchDug(X,Y,0,'',0)),
         NewX is X-1,
         (
           isPatch(NewX,Y)->
-          asserta(patchDug(NewX,Y,0,'',0))
+          (patchDug(NewX,Y,_,_,_)-> retract(patchDug(NewX,Y,_,_,_));true),
+          asserta(patchDug(NewX,Y,0,'',0));
+          true
         ),
         generateMap;
       write('You can not do that here!\n\n')
@@ -101,11 +104,14 @@ digR :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_));true),
         asserta(patchDug(X,Y,0,'',0)),
         NewX is X+1,
         (
           isPatch(NewX,Y)->
-          asserta(patchDug(NewX,Y,0,'',0))
+          (patchDug(NewX,Y,_,_,_)-> retract(patchDug(NewX,Y,_,_,_));true),
+          asserta(patchDug(NewX,Y,0,'',0));
+          true
         ),
         generateMap;
       write('You can not do that here!\n\n')
@@ -115,11 +121,14 @@ digT :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_));true),
         asserta(patchDug(X,Y,0,'',0)),
         NewY is Y-1,
         (
           isPatch(X,NewY)->
-          asserta(patchDug(X,NewY,0,'',0))
+          (patchDug(X,NewY,_,_,_)-> retract(patchDug(X,NewY,_,_,_));true),
+          asserta(patchDug(X,NewY,0,'',0));
+          true
         ),
         generateMap;
       write('You can not do that here!\n\n')
@@ -129,11 +138,14 @@ digB :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_));true),
         asserta(patchDug(X,Y,0,'',0)),
         NewY is Y+1,
           (
             isPatch(X,NewY)->
-            asserta(patchDug(X,NewY,0,'',0))
+            (patchDug(X,NewY,_,_,_)-> retract(patchDug(X,NewY,_,_,_));true),
+            asserta(patchDug(X,NewY,0,'',0));
+            true
           ),
           generateMap;
       write('You can not do that here!\n\n')
@@ -143,14 +155,20 @@ digUB :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_));true),
         asserta(patchDug(X,Y,0,'',0)),
         NewY is Y+1,
           (
             isPatch(X,NewY)->
-            asserta(patchDug(X,NewY,0,'',0)),NewY2 is NewY + 1
+            (patchDug(X,NewY,_,_,_)-> retract(patchDug(X,NewY,_,_,_));true),
+            asserta(patchDug(X,NewY,0,'',0)),NewY2 is NewY + 1;
+            true
           ),
               (
-                isPatch(X,NewY2) -> asserta(patchDug(X,NewY2,0,'',0))
+                isPatch(X,NewY2) -> 
+                (patchDug(X,NewY2,_,_,_)-> retract(patchDug(X,NewY2,_,_,_));true),
+                asserta(patchDug(X,NewY2,0,'',0));
+                true
               ),
           generateMap;
       write('You can not do that here!\n\n')
@@ -160,15 +178,19 @@ digUT :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_));true),
         asserta(patchDug(X,Y,0,'',0)),
         NewY is Y-1,
           (
             isPatch(X,NewY)->
+            (patchDug(X,NewY,_,_,_)-> retract(patchDug(X,NewY,_,_,_));true),
             asserta(patchDug(X,NewY,0,'',0)),NewY2 is NewY - 1;
             true
           ),
               (
-                isPatch(X,NewY2) -> asserta(patchDug(X,NewY2,0,'',0));
+                isPatch(X,NewY2) -> 
+                (patchDug(X,NewY2,_,_,_)-> retract(patchDug(X,NewY2,_,_,_));true),
+                asserta(patchDug(X,NewY2,0,'',0));
                 true
               ),
           generateMap;
@@ -179,14 +201,20 @@ digUR :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_));true),
         asserta(patchDug(X,Y,0,'',0)),
         NewX is X+1,
           (
             isPatch(NewX,Y)->
-            asserta(patchDug(NewX,Y,0,'',0)),NewX2 is NewX + 1
+            (patchDug(NewX,Y,_,_,_)-> retract(patchDug(NewX,Y,_,_,_));true),
+            asserta(patchDug(NewX,Y,0,'',0)),NewX2 is NewX + 1;
+            true
           ),
               (
-                isPatch(NewX2,Y) -> asserta(patchDug(NewX2,Y,0,'',0))
+                isPatch(NewX2,Y) -> 
+                (patchDug(NewX2,Y,_,_,_)-> retract(patchDug(NewX2,Y,_,_,_));true),
+                asserta(patchDug(NewX2,Y,0,'',0));
+                true
               ),
           generateMap;
       write('You can not do that here!\n\n')
@@ -196,14 +224,20 @@ digUL :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_));true),
         asserta(patchDug(X,Y,0,'',0)),
         NewX is X-1,
           (
             isPatch(NewX,Y)->
-            asserta(patchDug(NewX,Y,0,'',0)),NewX2 is NewX - 1
+            (patchDug(NewX,Y,_,_,_)-> retract(patchDug(NewX,Y,_,_,_));true),
+            asserta(patchDug(NewX,Y,0,'',0)),NewX2 is NewX - 1;
+            true
           ),
               (
-                isPatch(NewX2,Y) -> asserta(patchDug(NewX2,Y,0,'',0))
+                isPatch(NewX2,Y) -> 
+                (patchDug(NewX2,Y,_,_,_)-> retract(patchDug(NewX2,Y,_,_,_));true),
+                asserta(patchDug(NewX2,Y,0,'',0));
+                true
               ),
           generateMap;
       write('You can not do that here!\n\n')
