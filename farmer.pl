@@ -162,10 +162,11 @@ digUB :-
           (
             isPatch(X,NewY)->
             (patchDug(X,NewY,_,_,_)-> retract(patchDug(X,NewY,_,_,_));true),
-            asserta(patchDug(X,NewY,0,'',0)),NewY2 is NewY + 1;
+            asserta(patchDug(X,NewY,0,'',0));
             true
           ),
               (
+                NewY2 is NewY + 1,
                 isPatch(X,NewY2) -> 
                 (patchDug(X,NewY2,_,_,_)-> retract(patchDug(X,NewY2,_,_,_));true),
                 asserta(patchDug(X,NewY2,0,'',0));
@@ -189,6 +190,7 @@ digUT :-
             true
           ),
               (
+                NewY2 is NewY - 1,
                 isPatch(X,NewY2) -> 
                 (patchDug(X,NewY2,_,_,_)-> retract(patchDug(X,NewY2,_,_,_));true),
                 asserta(patchDug(X,NewY2,0,'',0));
@@ -212,6 +214,7 @@ digUR :-
             true
           ),
               (
+                NewX2 is NewX + 1,
                 isPatch(NewX2,Y) -> 
                 (patchDug(NewX2,Y,_,_,_)-> retract(patchDug(NewX2,Y,_,_,_));true),
                 asserta(patchDug(NewX2,Y,0,'',0));
@@ -235,6 +238,7 @@ digUL :-
             true
           ),
               (
+                NewX2 is NewX - 1,
                 isPatch(NewX2,Y) -> 
                 (patchDug(NewX2,Y,_,_,_)-> retract(patchDug(NewX2,Y,_,_,_));true),
                 asserta(patchDug(NewX2,Y,0,'',0));

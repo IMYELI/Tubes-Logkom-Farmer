@@ -22,10 +22,10 @@ addAnimal(AnimalType, Count) :-
   assertz(animalID(NID)),
   ( \+ animalList(AnimalType) ->
     assertz(animalList(AnimalType));
-
-    NCount is Count - 1,
-    addAnimal(AnimalType, NCount)
-  ).
+    true
+  ), 
+  NCount is Count - 1,
+  addAnimal(AnimalType, NCount).
 
 displayAnimal([], _).
 displayAnimal([H|T], Index) :-

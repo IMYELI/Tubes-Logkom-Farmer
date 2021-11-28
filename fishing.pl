@@ -66,8 +66,8 @@ fish:-
     playerKoord(X,Y),
     fishingLimit(Max),
     fishingCount(FC),
-    (   FC>=Max -> write('Hey, that''s enough for today. You must level up if you want to fish more.');
-        \+ isNearWater(X,Y) -> write('You are not near water! What do you want to fish huh?');
+    (   \+ isNearWater(X,Y) -> write('You are not near water! What do you want to fish huh?\n\n');
+        FC>=Max -> write('Hey, that''s enough for today. You must level up if you want to fish more.\n\n');
         isNearWater(X,Y) -> fishGenerator).
 
 

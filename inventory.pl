@@ -82,8 +82,9 @@ unequip :-
   (
     toolList(rod, ToolLvl, Tool) ->
     (
-      ToolLvl = 2 -> decreaseFishingChance(7);
-      ToolLvl = 3 -> decreaseFishingChance(10);
+      ToolLvl = 1 -> decreaseFishingChance(30);
+      ToolLvl = 2 -> decreaseFishingChance(37);
+      ToolLvl = 3 -> decreaseFishingChance(40);
       true
     );
     true
@@ -114,8 +115,9 @@ equip :-
       (
         toolList(rod, ToolLvl, X) ->
           (
-            ToolLvl = 2 -> increaseFishingChance(7);
-            ToolLvl = 3 -> increaseFishingChance(10);
+            ToolLvl = 1 -> increaseFishingChance(30);
+            ToolLvl = 2 -> increaseFishingChance(37);
+            ToolLvl = 3 -> increaseFishingChance(40);
             true
           );
         true
