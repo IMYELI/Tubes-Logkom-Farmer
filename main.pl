@@ -75,8 +75,8 @@ title2:-
 
 gameMenu :-
     repeat,
-    write('COMMAND >>> '),
     addExpPlayer(0),
+    write('COMMAND >>> '),
     catch(read(Input), error(_,_), errorMessage), nl,
     (
         Input = 'help' -> call(help);
@@ -105,8 +105,8 @@ gameMenu :-
         Input = 'fish' ->
         (
             isFishingRod -> call(fish);
-            write('You need a Fishing Rod!')
-        ), nl, nl;
+            write('You need a Fishing Rod!\n\n')
+        );
         Input = 'inventory' -> call(inventory);
         Input = 'throwItem' -> call(throwItem);
         Input = 'equip' -> call(equip);
@@ -117,7 +117,7 @@ gameMenu :-
         Input = 's' -> call(s), nl, nl;
         Input = 'd' -> call(d), nl, nl;
         Input = 'plant' -> call(plant), nl, nl;
-        Input = 'harvest' -> call(harvest), nl, nl;
+        Input = 'harvest' -> call(harvest);
         Input = 'dig' ->
         (
             isHoe1 -> call(dig);

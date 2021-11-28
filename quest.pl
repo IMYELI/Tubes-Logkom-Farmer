@@ -158,6 +158,7 @@ collectReward :-
         Check = true ->
             (
                 (X = 0),(Y = 0),(Z = 0) ->
+                    write('Well done! here''s yer money and EXP.\n'),
                     (
                         Diff = easy ->
                             addExpPlayer(10),
@@ -172,7 +173,6 @@ collectReward :-
                             addExpPlayer(500),
                             addGold(1000)
                     ), 
-                    write('Well done! here''s yer money and EXP.'),
                     retract(isQuestActive(_,_)),
                     asserta(isQuestActive(false,none));
     
