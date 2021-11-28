@@ -36,6 +36,7 @@ gameMenu :-
     catch(read(Input), error(_,_), errorMessage), nl,
     (
         Input = 'help' -> call(help);
+        Input = 'helpTool' -> call(helpTool);
         Input = 'status' -> call(status);
         Input = 'market' ->
         (
@@ -52,7 +53,11 @@ gameMenu :-
             playerKoord(X,Y), isHouse(X,Y) -> call(houseMenu);
             write('You are not in the house!\n\n')
         );
-        Input = 'quest' -> questMenu;
+        Input = 'quest' ->
+        (
+            playerKoord(X,Y), isQuest(X,Y) -> call(questMenu);
+            write('You are not in the quest place!\n\n')
+        );
         Input = 'fish' ->
         (
             isFishingRod -> call(fish);
@@ -109,18 +114,32 @@ gameMenu :-
             isHoe3 -> call(digUB);
             write('You need to equip a Gold Hoe to use this skill!\n\n')
         );
-        Input = 'digUT' -> digUT;
-        %% (
-        %%     isHoe3 -> call(digUT);
-        %%     write('You need to equip a Gold Hoe to use this skill!\n\n')
-        %% );
+        Input = 'digUT' ->
+        (
+            isHoe3 -> call(digUT);
+            write('You need to equip a Gold Hoe to use this skill!\n\n')
+        );
 
         /* cheat code */
         Input = 'cheatMoney' -> addGold(18999);
         Input = 'cheatHarvest' -> call(cheatHarvest);
         Input = 'autoCompleteQuest' -> call(autoCompleteQuest);
+        Input = 'cheatQuest' -> call(questMenu);
         write('Unknown input, try again!\n\n')
     ), gameMenu.
+
+helpTool :-
+    write('=========== Help Tool Menu ===========\n'),
+    write('(dig.)   Melakukan aksi menggali di plot yang diinjak oleh player \n'),
+    write('(digR.)  Melakukan aksi menggali di plot yang diinjak oleh player dan 1 plot di kanan player\n'),
+    write('(digL.)  Melakukan aksi menggali di plot yang diinjak oleh player dan 1 plot di kiri player\n'),
+    write('(digT.)  Melakukan aksi menggali di plot yang diinjak oleh player dan 1 plot di atas player\n'),
+    write('(digB.)  Melakukan aksi menggali di plot yang diinjak oleh player dan 1 plot di bawah player\n'),
+    write('(digUR.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di kanan player (harus berada pada marketplace)\n'),
+    write('(digUL.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di kiri player\n'),
+    write('(digUT.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di atas player\n'),
+    write('(digUB.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di bawah player\n'),
+    write('(fish.)  Menampilkan menu ranch (harus berada pada ranch)\n\n').
 
 welcome :-
     nl,
@@ -128,17 +147,22 @@ welcome :-
     write('Your goal is to pay your 20000 gold debts.\n'),
     write('You have one year to pay your debts, good luck!\n\n'),
     write('=========== Commands ===========\n'),
-    write('(help.) Menampilkan segala bantuan dan command\n').
+    write('(help.) Menampilkan segala bantuan dan command\n'),
+    write('(helpTool.) Menampilkan segala ability tool\n\n').
 
 help :-
     write('=========== Help Menu ===========\n'),
     write('(help.) Menampilkan segala bantuan dan command\n'),
+    write('(helpTool.) Menampilkan segala ability tool\n'),
     write('(status.) Menampilkan kondisi pemain\n'),
     write('(inventory.) Menampilkan menu inventory\n'),
     write('(throwItem.) Membuang item dari inventory\n'),
     write('(market.) Menampilkan menu marketplace (harus berada pada marketplace)\n'),
     write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
-    write('(house.) Menampilkan menu house (harus berada pada house)\n\n').
+    write('(house.) Menampilkan menu house (harus berada pada house)\n'),
+    write('(quest.) Menampilkan menu quest (harus berada pada quest)\n'),
+    write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
+    write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n').
 
 init :-
     welcome,
