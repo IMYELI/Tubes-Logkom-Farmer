@@ -100,6 +100,7 @@ upgrade :-
         write('========== Upgrade Menu ==========\n'),
         format('Your Gold: %d\n', [Gold]),
         write('What do you want to upgrade?\n'),
+        write('0. Exit\n'),
         findall(Tool, upgradeList(Tool), Tools),
         length(Tools, Len),
         displayUpgrade(Tools, 1), nl,
@@ -113,7 +114,7 @@ upgrade :-
                 upgradeTool(ToolType, ToolLvl, X),
                 retractall(upgradeList(_)),
                 upgrade;
-            Input \== 'exit' -> write('Unknown Input, Try Again!\n\n'),
+            Input \== 0 -> write('Unknown Input, Try Again!\n\n'),
                 retractall(upgradeList(_)), upgrade;
             retractall(upgradeList(_)), marketplace
         )
@@ -127,7 +128,7 @@ addGold(Price) :-
             write('==================== CONGRATULATION  =====================\n'),
             write('Congratulations! You have finally collected 20000 golds!\n'),
             write('==========================================================\n\n'),
-            write('Input anything to go back to the Main Menu: '),
+            write('Input anything to exit to the Main Menu: '),
             catch(read(_), error(_,_), errorMessage), nl,
             startGame;
         retract(playerStats(_, _, _, _, _, _, _, _, _, Gold)),
@@ -146,6 +147,7 @@ sell :-
     write('========= Sell Menu =========\n'),
     format('Your Gold: %d\n', [Gold]),
     write('Here are the items in your inventory:\n'),
+    write('0. Exit\n'),
     displayMarket2(Names, 1), nl,
     write('What do you want to sell?\n'),
     write('>>> '),
@@ -193,7 +195,7 @@ sell :-
             )
         );
 
-        Input \== 'exit' -> write('Unknown Input, Try Again!\n\n'), sell;
+        Input \== 0 -> write('Unknown Input, Try Again!\n\n'), sell;
         marketplace
     ).
 
@@ -226,6 +228,7 @@ buy :-
     write('========= Buy Menu =========\n'),
     format('Your Gold: %d\n', [Gold]),
     write('What do you want to buy?\n'),
+    write('0. Exit\n'),
     displayMarket(Names, 1), nl,
     write('>>> '),
     catch(read(Input), error(_,_), errorMessage), nl,
@@ -271,7 +274,7 @@ buy :-
                 buy
             )
         );
-        Input \== 'exit' -> write('Unknown Input, Try Again!\n\n'), retractall(marketList(_)), buy;
+        Input \== 0 -> write('Unknown Input, Try Again!\n\n'), retractall(marketList(_)), buy;
         retractall(marketList(_)), marketplace
     ).
 
