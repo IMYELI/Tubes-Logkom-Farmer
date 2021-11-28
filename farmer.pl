@@ -77,9 +77,10 @@ dig :-
     playerKoord(X,Y),
     (
       isPatch(X,Y) -> 
+        (patchDug(X,Y,_,_,_)-> retract(patchDug(X,Y,_,_,_))),
         asserta(patchDug(X,Y,0,'',0)),
         generateMap;
-      write('You can not do that here!')
+      write('You can not do that here!\n\n')
     ).
 
 digL :-
@@ -93,7 +94,7 @@ digL :-
           asserta(patchDug(NewX,Y,0,'',0))
         ),
         generateMap;
-      write('You can not do that here!')
+      write('You can not do that here!\n\n')
     ).
 
 digR :-
@@ -107,7 +108,7 @@ digR :-
           asserta(patchDug(NewX,Y,0,'',0))
         ),
         generateMap;
-      write('You can not do that here!')
+      write('You can not do that here!\n\n')
     ).
 
 digT :-
@@ -121,7 +122,7 @@ digT :-
           asserta(patchDug(X,NewY,0,'',0))
         ),
         generateMap;
-      write('You can not do that here!')
+      write('You can not do that here!\n\n')
     ).
 
 digB :-
@@ -135,7 +136,7 @@ digB :-
             asserta(patchDug(X,NewY,0,'',0))
           ),
           generateMap;
-      write('You can not do that here!')
+      write('You can not do that here!\n\n')
     ).
   
 digUB :-
@@ -152,7 +153,7 @@ digUB :-
                 isPatch(X,NewY2) -> asserta(patchDug(X,NewY2,0,'',0))
               ),
           generateMap;
-      write('You can not do that here!')
+      write('You can not do that here!\n\n')
     ).
 
 digUT :-
@@ -163,13 +164,15 @@ digUT :-
         NewY is Y-1,
           (
             isPatch(X,NewY)->
-            asserta(patchDug(X,NewY,0,'',0)),NewY2 is NewY - 1
+            asserta(patchDug(X,NewY,0,'',0)),NewY2 is NewY - 1;
+            true
           ),
               (
-                isPatch(X,NewY2) -> asserta(patchDug(X,NewY2,0,'',0))
+                isPatch(X,NewY2) -> asserta(patchDug(X,NewY2,0,'',0));
+                true
               ),
           generateMap;
-      write('You can not do that here!')
+      write('You can not do that here!\n\n')
     ).
 
 digUR :-
@@ -186,7 +189,7 @@ digUR :-
                 isPatch(NewX2,Y) -> asserta(patchDug(NewX2,Y,0,'',0))
               ),
           generateMap;
-      write('You can not do that here!')
+      write('You can not do that here!\n\n')
     ).
 
 digUL :-
@@ -203,7 +206,7 @@ digUL :-
                 isPatch(NewX2,Y) -> asserta(patchDug(NewX2,Y,0,'',0))
               ),
           generateMap;
-      write('You can not do that here!')
+      write('You can not do that here!\n\n')
     ).
 
 harvest :-
@@ -219,6 +222,13 @@ harvest :-
             item(1, Crop, CropName),
             add(Crop, 1),
             format('You harvested a/an %s.', [CropName]),
+            (
+              goalQuest(harvest, Quest), Quest > 0 ->
+                NQuest is Quest - 1,
+                retract(goalQuest(harvest, _)),
+                assertz(goalQuest(harvest, NQuest));
+                true
+            ),
             addExpFarm(1);
           write('It''s not riped yet!')
         );

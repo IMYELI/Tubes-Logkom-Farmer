@@ -72,6 +72,13 @@ animalInfo(IDs, AnimalType):-
         format('You got %d %s!\n', [Amount, NProdName]),
         add(NProdName, Amount),
         addExpRanch(1),
+        (
+          goalQuest(ranch, Quest), Quest > 0 ->
+            NQuest is Quest - 1,
+            retract(goalQuest(ranch, _)),
+            assertz(goalQuest(ranch, NQuest));
+          true
+        ),
         findall(NID, animal(NID, AnimalType, _), NIDs),
         resetProd(NIDs)
       );

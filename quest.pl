@@ -161,24 +161,21 @@ collectReward :-
         Check = true ->
             (
                 (X = 0),(Y = 0),(Z = 0) ->
-                    playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, GoldTotal),
                     (
-                        Diff = easy -> 
-                            NewEXP is ExpTotal + 10,
-                            NewGold is GoldTotal + 10;
+                        Diff = easy ->
+                            addExpPlayer(10),
+                            addGold(10);
                         Diff = medium -> 
-                            NewEXP is ExpTotal + 25,
-                            NewGold is GoldTotal + 50;
+                            addExpPlayer(25),
+                            addGold(50);
                         Diff = hard -> 
-                            NewEXP is ExpTotal + 50,
-                            NewGold is GoldTotal + 100;
+                            addExpPlayer(50),
+                            addGold(100);
                         Diff = asian -> 
-                            NewEXP is ExpTotal + 500,
-                            NewGold is GoldTotal + 1000
+                            addExpPlayer(500),
+                            addGold(1000)
                     ), 
-                    write('Well done! here''s yer money.'),
-                    retract(playerStats(_, _, _, _, _, _, _, _, _, _)),
-                    asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, NewEXP, NewGold)),
+                    write('Well done! here''s yer money and EXP.'),
                     retract(isQuestActive(_,_)),
                     asserta(isQuestActive(false,none));
     

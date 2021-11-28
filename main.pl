@@ -32,6 +32,7 @@ title:-
 gameMenu :-
     repeat,
     write('COMMAND >>> '),
+    addExpPlayer(0),
     catch(read(Input), error(_,_), errorMessage), nl,
     (
         Input = 'help' -> call(help);
@@ -108,15 +109,14 @@ gameMenu :-
             isHoe3 -> call(digUB);
             write('You need to equip a Gold Hoe to use this skill!\n\n')
         );
-        Input = 'digUT' ->
-        (
-            isHoe3 -> call(digUT);
-            write('You need to equip a Gold Hoe to use this skill!\n\n')
-        );
+        Input = 'digUT' -> digUT;
+        %% (
+        %%     isHoe3 -> call(digUT);
+        %%     write('You need to equip a Gold Hoe to use this skill!\n\n')
+        %% );
 
         /* cheat code */
-        Input = 'cheatMoney' -> addGold(18999),
-            write('cheatMoney activated.\n\n');
+        Input = 'cheatMoney' -> addGold(18999);
         Input = 'cheatHarvest' -> call(cheatHarvest);
         Input = 'autoCompleteQuest' -> call(autoCompleteQuest);
         write('Unknown input, try again!\n\n')
@@ -128,13 +128,7 @@ welcome :-
     write('Your goal is to pay your 20000 gold debts.\n'),
     write('You have one year to pay your debts, good luck!\n\n'),
     write('=========== Commands ===========\n'),
-    write('(help.) Menampilkan segala bantuan dan command\n'),
-    write('(status.) Menampilkan kondisi pemain\n'),
-    write('(inventory.) Menampilkan menu inventory\n'),
-    write('(throwItem.) Membuang item dari inventory\n'),
-    write('(market.) Menampilkan menu marketplace (harus berada pada marketplace)\n'),
-    write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
-    write('(house.) Menampilkan menu house (harus berada pada house)\n\n').
+    write('(help.) Menampilkan segala bantuan dan command\n').
 
 help :-
     write('=========== Help Menu ===========\n'),
@@ -181,7 +175,6 @@ status :-
     format('[EXP] %d\n\n', [ExpRanch]).
 
 start :-
-    nl, 
     write('======= Choose Your Job ======='), nl,
     write('1. Fisherman'), nl,
     write('2. Farmer'), nl,
@@ -204,7 +197,7 @@ start :-
             addAnimal('Sheep', 1),
             addAnimal('Chicken', 1),
             write('You choose Rancher!\n');
-        write('Unknown input, try again!\n'), start
+        write('Unknown input, try again!\n\n'), start
     ).
 
 

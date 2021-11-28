@@ -139,7 +139,7 @@ isLeftPatch(X,Y):-
     X=:=1,Y>=11,Y=<13.
 
 isPatch(X,Y):-
-    X>=2,X=<13,Y>=11,Y=<13,\+ patchDug(X,Y,1,_,_).
+    X>=2,X=<13,Y>=11,Y=<13, \+ patchDug(X,Y,1,_,_).
 
 isTile(X,Y):-
     mapSize(H,W),

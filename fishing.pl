@@ -85,7 +85,13 @@ fishGenerator:-
         write('So sad :( you got mysterious floating boots.\nYou decided to throw it back to the water since it is useless.')
     ),
     nl,
-    addExpFish(1),
+    addExpFish(1), (
+        goalQuest(fish, Quest), Quest > 0 ->
+            NQuest is Quest - 1,
+            retract(goalQuest(fish, _)),
+            assertz(goalQuest(fish, NQuest));
+        true
+    ),
     plusFishingCount.
 
 isSmallFishCaught(X):-

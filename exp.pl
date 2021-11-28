@@ -2,7 +2,7 @@ addExpPlayer(Exp) :-
     playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     NExpTotal is ExpTotal + Exp,
     (
-        LvlPlayer =\= 4, playerLvlCap(LvlPlayer, Cap), NExpTotal > Cap ->
+        LvlPlayer =\= 4, playerLvlCap(LvlPlayer, Cap), NExpTotal >= Cap ->
             NLvlPlayer is LvlPlayer + 1,
             increaseFishingChance(1);
         NLvlPlayer is LvlPlayer
