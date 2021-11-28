@@ -38,10 +38,10 @@ displayAnimal([H|T], Index) :-
 infoDetail([], 0).
 infoDetail([H|T], Amount) :-
   animal(H, AnimalType, Time),
-  production(AnimalType, Production),
+  production(AnimalType, ProductionTime),
   infoDetail(T, NAmount),
   (
-    Time = Production ->
+    Time >= ProductionTime ->
       Amount is NAmount + 1;
     Amount is NAmount + 0
   ).
@@ -49,9 +49,9 @@ infoDetail([H|T], Amount) :-
 resetProd([]).
 resetProd([H|T]) :-
     animal(H, AnimalType, Time),
-    production(AnimalType, Production),
+    production(AnimalType, ProductionTime),
     (
-      Time >= Production ->
+      Time >= ProductionTime ->
       retract(animal(H, _, _)),
       assertz(animal(H, AnimalType, 0))
     ),
@@ -83,8 +83,9 @@ rancherMenu :-
   write('You don''t have any animal in the ranch.\n\n');
 
   write('======= Welcome To The Ranch =======\n'),
-  write('Choose the animals you want to check, use "exit." to go back.\n'),
+  write('Choose the animals you want to check:\n'),
   write('Your Animals:\n'),
+  write('0. Exit\n'),
   findall(AnimalType, animalList(AnimalType), AnimalTypes),
   length(AnimalTypes, Len),
   displayAnimal(AnimalTypes, 1), nl,
@@ -96,7 +97,7 @@ rancherMenu :-
       nth0(Index, AnimalTypes, X),
       findall(ID, animal(ID, X, _), IDs),
       animalInfo(IDs, X);
-    Input \== 'exit' -> write('Unknown input, try again!\n\n'), rancherMenu;
+    Input \== 0 -> write('Unknown input, try again!\n\n'), rancherMenu;
     write('You exited the Ranch, come back later!\n\n')
   ).
 

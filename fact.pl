@@ -24,6 +24,8 @@
 
 /* diary(ID, Content, Day, Month, Year) */
 
+/* patchDug(X, Y, IsPlant, CropName, Time) */
+
 /* cropList(ID, X, Y) */
 
 /* animalID(ID) */
