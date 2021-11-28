@@ -166,7 +166,7 @@ gameMenu :-
 
         /* cheat code */
         Input = 'cheatMoney' -> addGold(18999);
-        Input = 'cheatHarvest' -> call(cheatHarvest);
+        Input = 'cheatHarvest' -> call(cheatHarvest), nl, nl;
         Input = 'autoCompleteQuest' -> call(autoCompleteQuest);
         Input = 'cheatQuest' -> call(questMenu);
         Input = 'fairy' -> call(fairyChanceGeneratorCheat);
@@ -184,7 +184,7 @@ helpTool :-
     write('(digUL.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di kiri player\n'),
     write('(digUT.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di atas player\n'),
     write('(digUB.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di bawah player\n'),
-    write('(fish.)  Menampilkan menu ranch (harus berada pada ranch)\n\n').
+    write('(fish.)  Melakukan aksi memancing (harus berada dekat air)\n\n').
 
 welcome :-
     nl,
