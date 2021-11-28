@@ -26,7 +26,8 @@ updateC([H|T]) :-
   crops(CropName, Season, _),
   (
     Month =\= Season ->
-      retract(patchDug(X, Y, _, _, _));
+      retract(patchDug(X, Y, _, _, _)),
+      retract(cropList(_, X, Y));
     NTime is Time + 1,
     retract(patchDug(X, Y, _, _, _)),
     asserta(patchDug(X, Y, IsPlant, CropName, NTime))

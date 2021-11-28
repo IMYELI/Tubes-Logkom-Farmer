@@ -40,16 +40,31 @@ generate(X,Y) :-
     patchDug(X, Y, 1, CropName, _),
     NewX is X+1,
     (
-        CropName = carrot -> write('c'), !;
-        CropName = potato -> write('p'), !;
-        CropName = strawberry -> write('s'), !;
-        CropName = melon -> write('m'), !;
-        CropName = corn - write('c'), !;
-        CropName = sunflower -> write('s'), !;
-        CropName = eggplant -> write('e'), !;
-        CropName = pumpkin -> write('p'), !;
-        CropName = grape -> write('g')
-    ), generate(NewX,Y).
+        isRipe(X,Y) -> 
+            (
+                CropName = carrot -> write('C'), !;
+                CropName = potato -> write('P'), !;
+                CropName = strawberry -> write('S'), !;
+                CropName = melon -> write('M'), !;
+                CropName = corn - write('C'), !;
+                CropName = sunflower -> write('S'), !;
+                CropName = eggplant -> write('E'), !;
+                CropName = pumpkin -> write('P'), !;
+                CropName = grape -> write('G')
+            );
+        (
+            CropName = carrot -> write('c'), !;
+            CropName = potato -> write('p'), !;
+            CropName = strawberry -> write('s'), !;
+            CropName = melon -> write('m'), !;
+            CropName = corn - write('c'), !;
+            CropName = sunflower -> write('s'), !;
+            CropName = eggplant -> write('e'), !;
+            CropName = pumpkin -> write('p'), !;
+            CropName = grape -> write('g')
+        )
+    ),
+    generate(NewX,Y).
 
 generate(X,Y) :-
     isTopPatch(X,Y),!,
@@ -109,6 +124,10 @@ generate(X,Y) :-
     NewX is X+1,
     write(-),generate(NewX,Y).
 
+isRipe(X,Y) :-
+    patchDug(X, Y, 1, CropName, Time),
+    crops(CropName, _, HarvestTime), 
+    Time >= HarvestTime.
 
 isLeftBorder(X,Y):- 
     mapSize(H,_),
