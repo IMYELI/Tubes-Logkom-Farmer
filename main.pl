@@ -180,7 +180,7 @@ helpTool :-
     write('(digL.)  Melakukan aksi menggali di plot yang diinjak oleh player dan 1 plot di kiri player\n'),
     write('(digT.)  Melakukan aksi menggali di plot yang diinjak oleh player dan 1 plot di atas player\n'),
     write('(digB.)  Melakukan aksi menggali di plot yang diinjak oleh player dan 1 plot di bawah player\n'),
-    write('(digUR.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di kanan player (harus berada pada marketplace)\n'),
+    write('(digUR.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di kanan player\n'),
     write('(digUL.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di kiri player\n'),
     write('(digUT.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di atas player\n'),
     write('(digUB.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di bawah player\n'),
@@ -212,7 +212,8 @@ help :-
     write('(market.) Menampilkan menu marketplace (harus berada pada marketplace)\n'),
     write('(house.) Menampilkan menu house (harus berada pada house)\n'),
     write('(quest.) Menampilkan menu quest (harus berada pada quest)\n'),
-    write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n').
+    write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
+    write('(harvest.) Memanen tanaman yang sudah tumbuh sempurna\n').
 
 init :-
     welcome,
