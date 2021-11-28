@@ -14,7 +14,7 @@ startQuest :-
     write('Hei bro, u want some challange?'),nl,
     isQuestActive(Check),
     (Check = true -> 
-        write('Bruh, u have another job. Please be more diciplined. Finish your current job first\n')),
+        write('Bruh, u have another job. Please be more diciplined. Finish your current job first\n'),
         exitQuest;
      Check = false->
         retract(goalQuest(harvest,_)),
@@ -33,6 +33,7 @@ startQuest :-
         nl,
         (Response = accept -> generateQuest;
          Response = cancel -> exitQuest)
+    )
 
 generateQuest :-
     write('There are 4 difficulty of quests that you can accept.\n'),
