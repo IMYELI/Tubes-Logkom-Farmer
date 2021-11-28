@@ -8,7 +8,8 @@ fairyChanceGeneratorCheat :-
 
 fairyChanceGenerator :-
     random(0,100,RAND),
-    (isFairyEncountered(RAND)->fairyEncounter).
+    (isFairyEncountered(RAND)->fairyEncounter,!,fail;
+    true).
 
 isFairyEncountered(RAND):-
     RAND>13,RAND=<20;RAND>57,RAND=<60;RAND>90,RAND=<95.
@@ -60,14 +61,14 @@ fairyEncounter :-
     write('/   -:::::`           `://-:s/--------/.          ./syyyyyyyyso/-.``````````````.:/+o++ohyyysssssso:----/::::------+o   :`                      .::`  '),nl,
     write(':.  -::::::          `:://-:o/--------/.     `.----/+ossssoooossso++/:-..`.-:/+oo++++++sysooooooooo++///+::-:::---:o/  `:                       `..`  '),nl,
     write('`:  .:--:---         --::/::++--------/` `.---....-/++ooooooooooy+++++ooooooo+++++ooo+oso+ooooooo+:.....:::--::---:o.  .-                             '),nl,
-    write('""KONPEKO KONPEKO KONPEKO HORORAIBU SAN KISE--. oh no peko, wrong channel.""\n'),
-    write('""OH MY GOD IT''S YOU, CAN I HAVE A PHOTO WITH YOU PLS?""\n'),
-    write('""No peko, I''m only here to give you a free teleport everywhere in this world peko""\n'),
-    write('""PLS PLS PLS""\n'),
-    write('""where do you want to go peko""\n'),
-    write('""PLS""\n'),
-    write('""WHERE do you want to go peko""\n'),
-    write('""sheesh, ok then""\n'),
+    write('"KONPEKO KONPEKO KONPEKO HORORAIBU SAN KISE--. oh no peko, wrong channel."\n'),
+    write('"OH MY GOD IT''S YOU, CAN I HAVE A PHOTO WITH YOU PLS?"\n'),
+    write('"No peko, I''m only here to give you a free teleport everywhere in this world peko"\n'),
+    write('"PLS PLS PLS"\n'),
+    write('"where do you want to go peko"\n'),
+    write('"PLS"\n'),
+    write('"WHERE do you want to go peko"\n'),
+    write('"sheesh, ok then"\n'),
     readTeleX,readTeleY,teleportX(X),teleportY(Y),retract(playerKoord(_,_)),asserta(playerKoord(X,Y)).
 
 readTeleX :-

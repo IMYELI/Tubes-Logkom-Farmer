@@ -95,6 +95,7 @@ sleep :-
     updateDay,
     date(_, Day, Month),
     season(Month, Season),
+    fairyChanceGenerator,
     (
         Month = 15 -> failDebt;
 
