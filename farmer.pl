@@ -256,7 +256,7 @@ harvest :-
             assertz(patchDug(X,Y,0,'',0)),
             item(1, Crop, CropName),
             add(Crop, 1),
-            format('You harvested a/an %s.', [CropName]),
+            format('You harvested a/an %s.\n', [CropName]),
             (
               goalQuest(harvest, Quest), Quest > 0 ->
                 NQuest is Quest - 1,
@@ -265,9 +265,9 @@ harvest :-
                 true
             ),
             addExpFarm(1);
-          write('It''s not riped yet!')
+          write('It''s not riped yet!\n')
         );
-      write('What are you trying to harvest?')
+      write('What are you trying to harvest?\n')
     ).
 
 cheatHarvest :-

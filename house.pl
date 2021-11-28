@@ -24,7 +24,7 @@ updateDay :-
     NTotal is Total + 1,
     TempDay is Day + 1,
     (
-      TempDay = 4 ->
+      TempDay = 25 ->
       NDay is 1,
       (
         Month = 1 -> NMonth is 2;
@@ -99,7 +99,7 @@ sleep :-
     season(Month, Season),
     fairyChanceGenerator,
     (
-        Month = 26 -> failDebt;
+        Month = 5 -> failDebt;
 
         write('======= Good Morning For A New Day! =======\n'),
         format('Day: %d\n', [Day]),
