@@ -3,7 +3,8 @@ addExpPlayer(Exp) :-
     NExpTotal is ExpTotal + Exp,
     (
         LvlPlayer =\= 4, playerLvlCap(LvlPlayer, Cap), NExpTotal > Cap ->
-            NLvlPlayer is LvlPlayer + 1;
+            NLvlPlayer is LvlPlayer + 1,
+            increaseFishingChance(1);
         NLvlPlayer is LvlPlayer
     ),
     retract(playerStats(Job, _, _, _, _, _, _, _, _, _)),

@@ -21,7 +21,7 @@ marketplace :-
     write('- sell\n'),
     write('- exit\n\n'),
     write('MARKETPLACE >>> '),
-    read(Input), nl,
+    catch(read(Input), error(_,_), errorMessage), nl,
     (
         Input = 'upgrade' -> call(upgrade);
         Input = 'buy' -> call(buy);
@@ -104,7 +104,7 @@ upgrade :-
         length(Tools, Len),
         displayUpgrade(Tools, 1), nl,
         write('>>> '),
-        read(Input), nl,
+        catch(read(Input), error(_,_), errorMessage), nl,
         (
             integer(Input), Input > 0, Input =< Len ->
                 Index is Input - 1,
@@ -128,7 +128,7 @@ addGold(Price) :-
             write('Congratulations! You have finally collected 20000 golds!\n'),
             write('==========================================================\n\n'),
             write('Input anything to go back to the Main Menu: '),
-            read(_), nl,
+            catch(read(_), error(_,_), errorMessage), nl,
             startGame;
         retract(playerStats(_, _, _, _, _, _, _, _, _, Gold)),
         asserta(playerStats(ID, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, NGold))
@@ -149,7 +149,7 @@ sell :-
     displayMarket2(Names, 1), nl,
     write('What do you want to sell?\n'),
     write('>>> '),
-    read(Input), nl,
+    catch(read(Input), error(_,_), errorMessage), nl,
     (
         integer(Input), Input > 0, Input =< Len ->
         (
@@ -158,7 +158,7 @@ sell :-
             inventoryList(Category, Element),
             write('How many do you want to sell?\n'),
             write('>>> '),
-            read(Amount), nl,
+            catch(read(Amount), error(_,_), errorMessage), nl,
             (
                 integer(Amount), Amount > 0 ->
                     price(Element, Price),
@@ -228,7 +228,7 @@ buy :-
     write('What do you want to buy?\n'),
     displayMarket(Names, 1), nl,
     write('>>> '),
-    read(Input), nl,
+    catch(read(Input), error(_,_), errorMessage), nl,
     (
         integer(Input), Input > 0, Input =< Len ->
         (
@@ -237,7 +237,7 @@ buy :-
             item(Category, Element, _),
             write('How many do you want to buy?\n'),
             write('>>> '),
-            read(Amount), nl,
+            catch(read(Amount), error(_,_), errorMessage), nl,
             (
                 integer(Amount), Amount > 0 ->
                 price(Element, Price),
