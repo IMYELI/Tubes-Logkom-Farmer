@@ -201,12 +201,17 @@ help :-
     write('(helpTool.) Menampilkan segala ability tool\n'),
     write('(status.) Menampilkan kondisi pemain\n'),
     write('(inventory.) Menampilkan menu inventory\n'),
+    write('(equip.) Menampilkan alat yang bisa di equip dan menggunakannya sesuai input\n'),
+    write('(unequip.) Menampilkan alat yang bisa di unequip dan melepaskan alat sesuai input\n'),
     write('(throwItem.) Membuang item dari inventory\n'),
+    write('(map.) Menampilkan peta serta lokasi player\n'),
+    write('(w.) Bergerak ke arah atas\n'),
+    write('(a.) Bergerak ke arah kiri\n'),
+    write('(s.) Bergerak ke arah bawah\n'),
+    write('(d.) Bergerak ke arah kanan\n'),
     write('(market.) Menampilkan menu marketplace (harus berada pada marketplace)\n'),
-    write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
     write('(house.) Menampilkan menu house (harus berada pada house)\n'),
     write('(quest.) Menampilkan menu quest (harus berada pada quest)\n'),
-    write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n'),
     write('(ranch.) Menampilkan menu ranch (harus berada pada ranch)\n').
 
 init :-
