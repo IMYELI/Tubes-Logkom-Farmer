@@ -184,7 +184,7 @@ helpTool :-
     write('(digUL.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di kiri player\n'),
     write('(digUT.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di atas player\n'),
     write('(digUB.) Melakukan aksi menggali di plot yang diinjak oleh player dan 2 plot di bawah player\n'),
-    write('(fish.)  Menampilkan menu ranch (harus berada pada ranch)\n\n').
+    write('(fish.)  Melakukan aksi memancing (harus berada dekat air)\n\n').
 
 welcome :-
     nl,
