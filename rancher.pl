@@ -2,10 +2,10 @@
 
 updateR([]).
 updateR([H|T]) :-
-  animal(H, Type, Time),
+  animal(H, AnimalType, Time),
   NTime is Time + 1,
   retract(animal(H, _, _)),
-  assertz(animal(H, Type, NTime)),
+  assertz(animal(H, AnimalType, NTime)),
   updateR(T).
 
 updateRanch :-
@@ -14,17 +14,17 @@ updateRanch :-
   updateR(IDs).
 
 addAnimal(_, 0).
-addAnimal(Type, Count) :-
+addAnimal(AnimalType, Count) :-
   animalID(ID),
-  assertz(animal(ID, Type, 0)),
+  assertz(animal(ID, AnimalType, 0)),
   NID is ID + 1,
   retract(animalID(_)),
   assertz(animalID(NID)),
-  ( \+ animalList(Type) ->
-    assertz(animalList(Type));
+  ( \+ animalList(AnimalType) ->
+    assertz(animalList(AnimalType));
 
     NCount is Count - 1,
-    addAnimal(Type, NCount)
+    addAnimal(AnimalType, NCount)
   ).
 
 displayAnimal([], _).
@@ -37,8 +37,8 @@ displayAnimal([H|T], Index) :-
 
 infoDetail([], 0).
 infoDetail([H|T], Amount) :-
-  animal(H, Type, Time),
-  production(Type, Production),
+  animal(H, AnimalType, Time),
+  production(AnimalType, Production),
   infoDetail(T, NAmount),
   (
     Time = Production ->
@@ -48,22 +48,22 @@ infoDetail([H|T], Amount) :-
 
 resetProd([]).
 resetProd([H|T]) :-
-    animal(H, Type, Time),
-    production(Type, Production),
+    animal(H, AnimalType, Time),
+    production(AnimalType, Production),
     (
       Time >= Production ->
       retract(animal(H, _, _)),
-      assertz(animal(H, Type, 0))
+      assertz(animal(H, AnimalType, 0))
     ),
     resetProd(T).
 
-animalInfo(IDs, Type):-
+animalInfo(IDs, AnimalType):-
   infoDetail(IDs, Amount),
-  produceType(Type, ProdName, ProdString),
-  item(_, Type, NType),
+  produceType(AnimalType, ProdName, ProdString),
+  item(_, AnimalType, NAnimalType),
   (
     Amount > 0 ->
-      format('Your %s %s %d %s\n', [NType, ProdString, Amount, ProdName]),
+      format('Your %s %s %d %s\n', [NAnimalType, ProdString, Amount, ProdName]),
       (
         isInventoryFull(Amount) ->
         write('Your inventory is full!');
@@ -72,10 +72,10 @@ animalInfo(IDs, Type):-
         format('You got %d %s!\n', [Amount, NProdName]),
         add(NProdName, Amount),
         addExpRanch(1),
-        findall(NID, animal(NID, Type, _), NIDs),
+        findall(NID, animal(NID, AnimalType, _), NIDs),
         resetProd(NIDs)
       );
-    format('Your %s haven''t %s any %s', [NType, ProdString, ProdName])
+    format('Your %s haven''t %s any %s', [NAnimalType, ProdString, ProdName])
   ), nl, nl, rancherMenu.
 
 rancherMenu :-
@@ -85,15 +85,15 @@ rancherMenu :-
   write('======= Welcome To The Ranch =======\n'),
   write('Choose the animals you want to check, use "exit." to go back.\n'),
   write('Your Animals:\n'),
-  findall(Type, animalList(Type), Types),
-  length(Types, Len),
-  displayAnimal(Types, 1), nl,
+  findall(AnimalType, animalList(AnimalType), AnimalTypes),
+  length(AnimalTypes, Len),
+  displayAnimal(AnimalTypes, 1), nl,
   write('>>> '),
   catch(read(Input), error(_,_), errorMessage), nl,
   (
     integer(Input), Input > 0, Input =< Len ->
       Index is Input - 1,
-      nth0(Index, Types, X),
+      nth0(Index, AnimalTypes, X),
       findall(ID, animal(ID, X, _), IDs),
       animalInfo(IDs, X);
     Input \== 'exit' -> write('Unknown input, try again!\n\n'), rancherMenu;

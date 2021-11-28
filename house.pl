@@ -47,7 +47,7 @@ writeDiary :-
     diaryID(ID),
     format('======= Write Your Diary For Day %d =======\n', [Day]),
     write('>>> '),
-    read(Input), nl,
+    catch(read(Input), error(_,_), errorMessage), nl,
     write('You have written a diary.\n\n'),
     assertz(diary(ID, Input, Day, Month)),
     retract(diaryID(_)),
