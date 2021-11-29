@@ -118,6 +118,13 @@ gameMenu :-
         Input = 'd' -> call(d), nl, nl;
         Input = 'plant' -> call(plant), nl, nl;
         Input = 'harvest' -> call(harvest);
+        Input = 'questStatus' -> 
+                (
+                    isQuestActive(Stat,_), 
+                    Stat = true->
+                        quest_status;
+                    write('You haven''t take any quest!\n\n')
+                );
         Input = 'dig' ->
         (
             isHoe1 -> call(dig);
@@ -200,6 +207,7 @@ help :-
     write('(help.) Menampilkan segala bantuan dan command\n'),
     write('(helpTool.) Menampilkan segala ability tool\n'),
     write('(status.) Menampilkan kondisi pemain\n'),
+    write('(questStatus.) Menampilkan progress quest\n'),
     write('(inventory.) Menampilkan menu inventory\n'),
     write('(equip.) Menampilkan alat yang bisa di equip dan menggunakannya sesuai input\n'),
     write('(unequip.) Menampilkan alat yang bisa di unequip dan melepaskan alat sesuai input\n'),

@@ -84,7 +84,7 @@ addExpFish(Exp) :-
     playerStats(Job, LvlPlayer, LvlFarm, ExpFarm, LvlFish, ExpFish, LvlRanch, ExpRanch, ExpTotal, Gold),
     (
         Job = 1 -> GainedEXP is Exp + 3;
-        GainedEXP is ExpFish + Exp
+        GainedEXP is Exp
     ),
         format('You gain %d Fishing EXP!\n\n', [GainedEXP]),
         NExpFish is ExpFish + GainedEXP,
