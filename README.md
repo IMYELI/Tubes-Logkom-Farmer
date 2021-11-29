@@ -14,7 +14,9 @@ mimpi siapa saja yang datang dan berusaha.
 * (optional) Linux distro
 
 ## How to Run
-Jika menggunakan wsl/cmd, pindahkan directory ke folder driver.pl.
+Jika menggunakan wsl/windows terminal, pindahkan directory ke folder driver.pl.
+![image](https://user-images.githubusercontent.com/74661051/143811694-a00cb4b2-7bae-4aa6-9247-256d8b6f4b1b.png)
+![image](https://user-images.githubusercontent.com/74661051/143811753-bf292044-f8c0-426d-a28f-13e3e3361722.png)
 Jika menggunakan windows bisa langsung klik 2x file driver.pl.
 1. Untuk memulai game gunakan command ```startGame.```
 2. Setelah muncul title menu gunakan command ```start.```
