@@ -289,7 +289,7 @@ start :-
 
 
 errorMessage:-
-    write('[ERROR] Your input broke the game, exiting the game...'), halt.
+    write('[ERROR] Your input broke the game, exiting the game...\n\n'), halt.
 
 errorJob :-
     write('\nCmon don''t break the game please!\n'), !,
