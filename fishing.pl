@@ -87,9 +87,12 @@ fishGenerator:-
     nl,
     addExpFish(1), (
         goalQuest(fish, Quest), Quest > 0 ->
-            NQuest is Quest - 1,
-            retract(goalQuest(fish, _)),
-            assertz(goalQuest(fish, NQuest));
+            (\+ isBoots(RAND) -> 
+                    NQuest is Quest - 1,
+                    retract(goalQuest(fish, _)),
+                    assertz(goalQuest(fish, NQuest));
+                    true
+            );
         true
     ),
     plusFishingCount.
@@ -105,3 +108,6 @@ isMediumFishCaught(X):-
 isBigFishCaught(X):-
     rangeBigFish(BL,BU),
     X>=BL,X=<BU.
+
+isBoots(X):-
+    \+ isSmallFishCaught(X), \+isMediumFishCaught(X) , \+ isBigFishCaught(X).
