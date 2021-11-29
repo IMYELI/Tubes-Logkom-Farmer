@@ -42,11 +42,11 @@ title:-
     write('y//.`.:oo/.``````./shhhhh+ss+s/::::::-/...................-...............------++y:::--:o:-++o/:::                 THIS IS THE PERFECT LAND FOR YOU TO GET YOUR MONEY BACK IN NO TIME'),nl,
     write('y:++:-osso+.```````./shhhohhso+:::::/:/...................-/:......--......-----+os:::--/o/:/++////                                   ==============================='),nl,
     write('y:++++sssss/.````````./shohhhoo////:/:+--..................--/--:::--......----:ooo:::::/sso+o::://                                          START GAME (start.)     '),nl,
-    write('y/++++ssssss:...........:+yhhso///////os/--------------------------------------ssoo/::::/yysyoo++++                                   ==============================='),nl,
-    write('y/o+++oysssoo+//:-.......:/oyys///////ohhy+:---------------------------------/ssoos/::::+yyysssssso                           Dont''t forget to end your commands with a dot! '),nl,
-    write('y/ooooossooooooooo+/:-...-/.-ss+++++++odddyss+/:--------------------------:/oyssoos/////ohyssoossss                                         Example: ">>> start.'),nl,
-    write('y+ssooossssssssssssyso/---+--+y+++++++odddyyyyyso+/::-----::-::--::-::::+osyyssssss/////oysssssso/:                                         GOOD LUCK! HAVE FUN!'),nl,
-    write('y+yyssssssssssssssyyyyso/:/:-:h+++++++odddhyyyyyyyyso+/::::::::::::////:+syysssssss+++++syssssssss/ '),nl,
+    write('y/++++ssssss:...........:+yhhso///////os/--------------------------------------ssoo/::::/yysyoo++++                                           EXIT GAME (exit.)      '),nl,
+    write('y/o+++oysssoo+//:-.......:/oyys///////ohhy+:---------------------------------/ssoos/::::+yyysssssso                                   ==============================='),nl,
+    write('y/ooooossooooooooo+/:-...-/.-ss+++++++odddyss+/:--------------------------:/oyssoos/////ohyssoossss                           Dont''t forget to end your commands with a dot! '),nl,
+    write('y+ssooossssssssssssyso/---+--+y+++++++odddyyyyyso+/::-----::-::--::-::::+osyyssssss/////oysssssso/:                                         Example: ">>> start.'),nl,
+    write('y+yyssssssssssssssyyyyso/:/:-:h+++++++odddhyyyyyyyyso+/::::::::::::////:+syysssssss+++++syssssssss/                                         GOOD LUCK! HAVE FUN!'),nl,
     write('y+ssssssssssssssyyyyssssssooo+ho++++++ohddhyyyyyyyyyyyyysso+///+osyyo//:::+ossssssy+++++sysysssssss`'),nl,
     write('y-/ossssssssssyyysssssssyyoo++ssooooooohyhhhyyhyyyyyyyyyyyhhyyyhyyyso+++++///ossssy+++++yysyyssssss`'),nl,
     write('y-::ssssssssssssssssssssso/++/osoooooooyyyyyyyhhhhhhhhhhhydhhhyy++++//////+++//ossyo+++ohyyyyssssss`'),nl,
@@ -55,23 +55,6 @@ title:-
     write('y-://:/oyyyyyyyyyhhy++++++++/++oooooooyo////////////////////+o+////////////+++++ooooooooysyyyyyyyys`'),nl,
     write('y-//////+syyyyyhhhso++++++++//++ooooooyo////////////////////////+++///////+++++ooosooooo++++osyyyys`'),nl,
     write('y.----------::::::---------------------------------------------------------------------------------.\n\n'),nl.
-
-
-title2:-
-    write('$$\\   $$\\                                                     $$\\           $$$$$$$\\                                '), nl,
-    write('$$ |  $$ |                                                    $$ |          $$  __$$\\                               '), nl,
-    write('$$ |  $$ | $$$$$$\\   $$$$$$\\ $$\\    $$\\  $$$$$$\\   $$$$$$$\\ $$$$$$\\         $$ |  $$ |$$\\   $$\\ $$$$$$$\\   $$$$$$\\  '), nl,
-    write('$$$$$$$$ | \\____$$\\ $$  __$$\\\\$$\\  $$  |$$  __$$\\ $$  _____|\\_$$  _|        $$$$$$$  |$$ |  $$ |$$  __$$\\ $$  __$$\\ '), nl,
-    write('$$  __$$ | $$$$$$$ |$$ |  \\__|\\$$\\$$  / $$$$$$$$ |\\$$$$$$\\    $$ |          $$  __$$< $$ |  $$ |$$ |  $$ |$$$$$$$$ |'), nl,
-    write('$$ |  $$ |$$  __$$ |$$ |       \\$$$  /  $$   ____| \\____$$\\   $$ |$$\\       $$ |  $$ |$$ |  $$ |$$ |  $$ |$$   ____|'), nl,
-    write('$$ |  $$ |\\$$$$$$$ |$$ |        \\$  /   \\$$$$$$$\\ $$$$$$$  |  \\$$$$  |      $$ |  $$ |\\$$$$$$  |$$ |  $$ |\\$$$$$$$\\ '), nl,
-    write('\\__|  \\__| \\_______|\\__|         \\_/     \\_______|\\_______/    \\____/       \\__|  \\__| \\______/ \\__|  \\__| \\_______|'), nl, nl,
-        write('"A Farmer''s Life is Not That Bad, I Think"'), nl, nl,
-        write('==============================='), nl,
-        write('       START GAME (start.)     '), nl,
-        write('==============================='), nl,
-        write('Dont''t forget to end your commands with a dot! '), nl, 
-        write('Example: ">>> start."'), nl, nl.
 
 gameMenu :-
     repeat,
@@ -118,6 +101,8 @@ gameMenu :-
         Input = 'd' -> call(d), nl, nl;
         Input = 'plant' -> call(plant), nl, nl;
         Input = 'harvest' -> call(harvest);
+        Inpit = 'exit' ->
+            write('Thank you for playing the game!\n\n'), halt;
         Input = 'questStatus' -> 
                 (
                     isQuestActive(Stat,_), 
@@ -206,6 +191,7 @@ help :-
     write('=========== Help Menu ===========\n'),
     write('(help.) Menampilkan segala bantuan dan command\n'),
     write('(helpTool.) Menampilkan segala ability tool\n'),
+    write('(exit.) Keluar dari permainan\n'),
     write('(status.) Menampilkan kondisi pemain\n'),
     write('(questStatus.) Menampilkan progress quest\n'),
     write('(inventory.) Menampilkan menu inventory\n'),
