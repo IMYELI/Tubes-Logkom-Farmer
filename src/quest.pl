@@ -18,7 +18,7 @@ questMenu :-
     write('| 3. Cancel                                              |\n'),
     write('**********************************************************\n'),
     write('\nQUEST >>> '),
-    read(Option), nl,
+    catch(read(Option), error(_,_), errorMessage), nl,
     (
         Option = 1 -> startQuest;
         Option = 2 -> collectReward;
@@ -47,7 +47,7 @@ startQuest :-
         write('| /*******************************************************\n'),
         write('|/\n'),
         write('(accept./cancel.) >>> '),
-        read(Response),
+        catch(read(Response), error(_,_), errorMessage),
         nl,
         (Response = accept -> generateQuest,  quest_status;
          \+ (Response = cancel) -> write('Command does not exist...\n\n'),startQuest)
@@ -62,7 +62,7 @@ generateQuest :-
     write('3. hard\n'),
     write('4. asian\n'),
     write('Which difficulty u want? '),
-    read(DifficultyQuest),
+    catch(read(DifficultyQuest), error(_,_), errorMessage),
     nl,
     (
         DifficultyQuest = 1 -> generateEzQuest;

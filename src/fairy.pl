@@ -73,14 +73,14 @@ fairyEncounter :-
 
 readTeleX :-
     write('Where do you want to go peko?(in X coordinate) >> '),
-    read(InputX),(
+    catch(read(InputX), error(_,_), errorMessage),(
         (InputX>0,InputX<15) -> retract(teleportX(_)),asserta(teleportX(InputX));
         write('HEY! don''t go out from your small little world peko. it is dyanjarasu peko. there are monsters out there peko.'),readTeleX       
     ).
 
 readTeleY :-
     write('Where do you want to go peko?(in Y coordinate) >> '),
-    read(InputY),(
+    catch(read(InputY), error(_,_), errorMessage),(
         (InputY>0,InputY<15) -> retract(teleportY(_)),asserta(teleportY(InputY));
         write('HEY! don''t go out from your small little world peko. it is dyanjarasu peko. there are monsters out there peko.'),readTeleY       
     ).
