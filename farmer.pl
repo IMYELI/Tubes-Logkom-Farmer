@@ -39,6 +39,10 @@ updateCrop :-
   findall(ID, cropList(ID, _, _), IDs),
   updateC(IDs).
 
+updatePatchDug :-
+  \+ patchDug(_, _, 0, _, _), !;
+  retractall(patchDug(_, _, 0, _, _)).
+
 plantCrop :-
     write('You have:\n'),
     findall(Name, inventoryList(4, Name), Names),

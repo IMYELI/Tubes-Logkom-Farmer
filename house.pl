@@ -39,6 +39,7 @@ updateDay :-
     updateCrop,
     updateRanch,
     updateFishingCount,
+    updatePatchDug,
     retract(date(Total, Day, Month)),
     asserta(date(NTotal, NDay, NMonth)).
   
