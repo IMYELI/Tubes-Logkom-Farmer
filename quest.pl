@@ -137,9 +137,18 @@ quest_status :-
     write('            QUEST             \n'),
     write('                              \n'),
     write(' You have to collect this item\n'),
-    write(' - '), write(X), write(' harvest item\n'),
-    write(' - '), write(Y), write(' fish\n'),
-    write(' - '), write(Z), write(' ranch item\n'),
+    (
+        X > 0 -> write(' - '), write(X), write(' harvest item\n');
+        write(' - (DONE) harvest item')
+    ),
+    (
+        Y > 0 -> write(' - '), write(Y), write(' fish\n');
+        write(' - (DONE) fish item')
+    ),
+    (
+        Z > 0 -> write(' - '), write(Z), write(' ranch item\n');
+        write(' - (DONE) ranch item')
+    ),
     write('\n'),
     write('Back to this place, \n'),
     write('if u finish all the quest\n'),

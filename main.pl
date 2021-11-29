@@ -210,7 +210,7 @@ help :-
     write('(questStatus.) Menampilkan progress quest\n'),
     write('(inventory.) Menampilkan menu inventory\n'),
     write('(equip.) Menampilkan alat yang bisa di equip dan menggunakannya sesuai input\n'),
-    write('(unequip.) Menampilkan alat yang bisa di unequip dan melepaskan alat sesuai input\n'),
+    write('(unequip.) Melepaskan equipment yang sedang diapakai\n'),
     write('(throwItem.) Membuang item dari inventory\n'),
     write('(map.) Menampilkan peta serta lokasi player\n'),
     write('(w.) Bergerak ke arah atas\n'),

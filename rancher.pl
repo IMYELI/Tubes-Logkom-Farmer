@@ -71,10 +71,15 @@ animalInfo(IDs, AnimalType):-
         item(_, NProdName, ProdName),
         format('You got %d %s!\n', [Amount, NProdName]),
         add(NProdName, Amount),
+        ExpTotal is 1 * Amount,
         addExpRanch(1),
         (
           goalQuest(ranch, Quest), Quest > 0 ->
-            NQuest is Quest - 1,
+            TempQuest is Quest - Amount,
+            (
+              TempQuest < 0 -> NQuest is 0;
+              NQuest is TempQuest
+            ),
             retract(goalQuest(ranch, _)),
             assertz(goalQuest(ranch, NQuest));
           true
