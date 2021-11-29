@@ -21,3 +21,7 @@ Jika menggunakan windows bisa langsung klik 2x file driver.pl.
 1. Untuk memulai game gunakan command ```startGame.```
 2. Setelah muncul title menu gunakan command ```start.```
 3. Input ```help.``` untuk menunjukan command list.
+
+## Note
+1. Jika menggunakan WSL, ada kemungkinan gambar title dan fairy terpotong karena layar terlalu kecil.
+2. Disarankan menggunakan WSL agar tidak terjadi lag di tengah-tengah permainan setelah menggunakan banyak command. 
