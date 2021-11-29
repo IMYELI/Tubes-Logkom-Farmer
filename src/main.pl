@@ -101,7 +101,7 @@ gameMenu :-
         Input = 'd' -> call(d), nl, nl;
         Input = 'plant' -> call(plant), nl, nl;
         Input = 'harvest' -> call(harvest);
-        Inpit = 'exit' ->
+        Input = 'exit' ->
             write('Thank you for playing the game!\n\n'), halt;
         Input = 'questStatus' -> 
                 (
@@ -218,7 +218,7 @@ mainMenu :-
     catch(read(Input), error(_,_), errorMessage), nl,
     (
         Input = 'start' -> call(start), init;
-        Input = 'exit' -> write('Thank you for playing the game!');
+        Input = 'exit' -> write('Thank you for playing the game!\n\n'), halt;
         write('Unknown input, try again!\n\n'), mainMenu
     ).
 

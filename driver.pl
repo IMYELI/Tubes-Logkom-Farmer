@@ -1,4 +1,4 @@
 startGame :-
-    ['main.pl'],
+    consult('./src/main.pl'),
     title, 
     mainMenu.
